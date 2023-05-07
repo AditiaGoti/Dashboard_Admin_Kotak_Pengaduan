@@ -32,6 +32,9 @@
       </form>
       <!-- User -->
       <ul class="flex-col md:flex-row list-none items-center hidden md:flex">
+        <notification-dropdown />
+      </ul>
+      <ul class="flex-col md:flex-row list-none items-center hidden md:flex">
         <user-dropdown />
       </ul>
     </div>
@@ -41,10 +44,12 @@
 
 <script>
 import UserDropdown from "@/components/Dropdowns/UserDropdown.vue";
+import NotificationDropdown from "@/components/Dropdowns/NotificationDropdown.vue";
 
 export default {
   components: {
     UserDropdown,
+    NotificationDropdown,
   },
 };
 </script>

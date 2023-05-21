@@ -138,7 +138,7 @@
                 <div class="modal-backdrop"></div>
                 <div class="modal">
                   <div class="flex flex-row justify-between">
-                  <p class="text-xl font-bold	text-red-500 mb-6">Moderasi Tanggapan</p>
+                  <p class="text-xl font-bold	text-red-500 mb-6">Detail Tanggapan</p>
                   <div>
                           <img
                             :src="close"

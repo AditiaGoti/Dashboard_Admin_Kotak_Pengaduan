@@ -132,20 +132,20 @@
             >
               <div class="flex items-center mouse-pointer" @click="showModal = true">
                 <span class="mr-2 moderasi">Moderasi</span>
-                <div v-if="showModal">
-                <div class="modal-backdrop"></div>
-                <div class="modal">
+                <div>
+                <div class="modal-backdrop" v-if="showModal"></div>
+                <div class="modal" v-if="showModal">
                   <div class="flex flex-row justify-between">
                   <p class="text-xl font-bold	text-red-500 mb-6">Moderasi Tanggapan</p>
-                  <div @click="showModal = false">
-                      <img
-                        :src="close"
-                        class="h-8 w-8 cursor-pointer"
-                        alt="..."
-                        @click="closeModal"
-                      />
+                  <div>
+                          <img
+                            :src="close"
+                            class="h-8 w-8 cursor-pointer"
+                            alt="..."
+                            @click="closeModal()"
+                          />
                   </div>
-                  </div>
+                  </div>  
                 <div class="grid grid-cols-2 mb-4" >
                     <div class="flex flex-col">
                       <div class="mr-4">
@@ -185,7 +185,7 @@
         rounded-md
         bg-emerald-600	
         text-white
-        hover:bg-emerald-800"> 
+        hover:bg-pink-500"> 
               Publikasikan Tanggapan
             </button>
             <button class="w-fit
@@ -197,11 +197,12 @@
         rounded-md
         bg-red-500
         text-white
-        hover:bg-red-800">
+        hover:bg-pink-500">
               Tolak Tanggapan
             </button>
+            <!-- Button trigger modal -->
           </footer>
-                  <div @click="showModal = false">Tutup Modal</div>
+                  <div class="cursor-pointer" @click="closeModal">Tutup Modal</div>
                 </div>
               </div>
               </div>
@@ -234,6 +235,7 @@ export default {
    methods: {
   closeModal() {
     this.showModal = false;
+    console.log('Modal telah ditutup'); // tambahkan console log di sini
   }
 },
   props: {

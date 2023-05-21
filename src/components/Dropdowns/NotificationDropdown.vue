@@ -5,6 +5,7 @@
       ref="btnDropdownRef"
       v-on:click="toggleDropdown($event)"
     >
+    
       <i class="fas fa-bell"></i>
     </a>
     <div

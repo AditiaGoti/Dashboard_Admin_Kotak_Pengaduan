@@ -20,6 +20,8 @@ import LayoutAdmin from "@/layouts/LayoutAdmin.vue";
 import LayoutMahasiswa from "@/layouts/LayoutMahasiswa.vue";
 import LayoutKeluhan from "@/layouts/LayoutKeluhan.vue";
 import LayoutTanggapan from "@/layouts/LayoutTanggapan.vue";
+import LayoutKomentar from "@/layouts/LayoutKomentar.vue";
+import LayoutProfile from "@/layouts/LayoutProfile.vue";
 
 
 // views for Admin layout
@@ -33,7 +35,9 @@ import TableAdmin from "@/views/admin/TableAdmin.vue";
 import TableMahasiswa from "@/views/admin/TableMahasiswa.vue";
 import TambahMahasiswa from "@/views/admin/TambahMahasiswa.vue";
 import TambahAdmin from "@/views/admin/TambahAdmin.vue";
-
+import TableKomentar from "@/views/admin/TableKomentar.vue";
+import ProfileAdmin from "@/views/admin/ProfileAdmin.vue";
+import ChangePass from "@/views/admin/ChangePassword.vue";
 // views for Auth layout
 
 import Login from "@/views/auth/Login.vue";
@@ -49,13 +53,23 @@ import Profile from "@/views/Profile.vue";
 
 const routes = [
   {
-    path: "/",
-    redirect: "/admin/dashboard",
+    path: "/admin/dashboard",
     component: Admin,
     children: [
       {
         path: "/admin/dashboard",
         component: Dashboard,
+      },
+    ],
+  },
+  {
+    path: "/",
+    redirect: "/auth/login",
+    component: Auth,
+    children: [
+      {
+        path: "/auth/login",
+        component: Login,
       },
     ],
   },
@@ -106,12 +120,38 @@ const routes = [
     ],
   },
   {
+    component: LayoutProfile,
+    children: [
+     
+      {
+        path: "/admin/profile",
+        component: ProfileAdmin,
+      },
+      {
+        path: "/admin/changepassword",
+        component: ChangePass,
+      },
+    ],
+  },
+ 
+  {
     path: "/",
     component: LayoutMahasiswa,
     children: [
       {
         path: "/admin/mahasiswa",
         component: TableMahasiswa,
+      },
+      
+    ],
+  },
+  {
+    path: "/",
+    component: LayoutKomentar,
+    children: [
+      {
+        path: "/admin/komentar",
+        component: TableKomentar,
       },
       
     ],

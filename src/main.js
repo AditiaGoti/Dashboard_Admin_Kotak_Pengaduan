@@ -30,11 +30,15 @@ import Dashboard from "@/views/admin/Dashboard.vue";
 import ModerasiKeluhan from "@/views/admin/ModerasiKeluhan.vue";
 import ModerasiTanggapan from "@/views/admin/ModerasiTanggapan.vue";
 import TableKeluhan from "@/views/admin/TableKeluhan.vue";
+import SemuaModerasiKeluhan from "@/views/admin/TableSemuaModerasiKeluhan.vue";
 import TableTanggapan from "@/views/admin/TableTanggapan.vue";
+import SemuaModerasiTanggapan from "@/views/admin/TableSemuaModerasiTanggapan.vue";
 import TableAdmin from "@/views/admin/TableAdmin.vue";
 import TableMahasiswa from "@/views/admin/TableMahasiswa.vue";
 import TambahMahasiswa from "@/views/admin/TambahMahasiswa.vue";
+import ImportMahasiswa from "@/views/admin/ImportMahasiswa.vue";
 import TambahAdmin from "@/views/admin/TambahAdmin.vue";
+import ImportAdmin from "@/views/admin/ImportLecturer.vue";
 import TableKomentar from "@/views/admin/TableKomentar.vue";
 import ProfileAdmin from "@/views/admin/ProfileAdmin.vue";
 import ChangePass from "@/views/admin/ChangePassword.vue";
@@ -82,10 +86,18 @@ const routes = [
         path: "/admin/TambahMahasiswa",
         component: TambahMahasiswa,
       },
+      {
+        path: "/admin/ImportMahasiswa",
+        component: ImportMahasiswa,
+      },
       
       {
         path: "/admin/TambahAdmin",
         component: TambahAdmin,
+      },
+      {
+        path: "/admin/ImportLecturer",
+        component: ImportAdmin,
       },
     ],
   },
@@ -102,6 +114,10 @@ const routes = [
         path: "/admin/moderasikeluhan",
         component: ModerasiKeluhan,
       },
+      {
+        path: "/admin/semuamoderasikeluhan",
+        component: SemuaModerasiKeluhan,
+      },
     ],
   },
   {
@@ -116,6 +132,10 @@ const routes = [
       {
         path: "/admin/moderasitanggapan",
         component: ModerasiTanggapan,
+      },
+      {
+        path: "/admin/moderasisemuatanggapan",
+        component: SemuaModerasiTanggapan,
       },
     ],
   },

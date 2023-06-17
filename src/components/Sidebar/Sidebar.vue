@@ -86,7 +86,7 @@
                 class="text-xs uppercase py-3 font-bold block"
                 :class="[
                   isActive
-                    ? 'text-emerald-500 hover:text-emerald-600'
+                    ? 'text-blue-500 hover:text-blue-600'
                     : 'text-blueGray-700 hover:text-blueGray-500',
                 ]"
               >
@@ -98,7 +98,7 @@
               </a>
             </router-link>
           </li>
-
+          <div v-if="[5, 11, 12, 13, 14,17,18].includes(profileList.lecturer_type)" class="items-center">
           <li class="items-center">
             <router-link
               to="/admin/moderasikeluhan"
@@ -110,7 +110,7 @@
                 class="text-xs uppercase py-3 font-bold block"
                 :class="[
                   isActive
-                    ? 'text-emerald-500 hover:text-emerald-600'
+                    ? 'text-blue-500 hover:text-blue-600'
                     : 'text-blueGray-700 hover:text-blueGray-500',
                 ]"
               >
@@ -124,6 +124,29 @@
           </li>
           <li class="items-center">
             <router-link
+              to="/admin/semuamoderasikeluhan"
+              v-slot="{ href, navigate, isActive }"
+            >
+              <a
+                :href="href"
+                @click="navigate"
+                class="text-xs uppercase py-3 font-bold block"
+                :class="[
+                  isActive
+                    ? 'text-blue-500 hover:text-blue-600'
+                    : 'text-blueGray-700 hover:text-blueGray-500',
+                ]"
+              >
+                <i
+                  class="fas fa-tools mr-2 text-sm"
+                  :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
+                ></i>
+                Moderasi Semua Keluhan
+              </a>
+            </router-link>
+          </li>
+          <li class="items-center" >
+            <router-link
               to="/admin/moderasitanggapan"
               v-slot="{ href, navigate, isActive }"
             >
@@ -133,7 +156,7 @@
                 class="text-xs uppercase py-3 font-bold block"
                 :class="[
                   isActive
-                    ? 'text-emerald-500 hover:text-emerald-600'
+                    ? 'text-blue-500 hover:text-blue-600'
                     : 'text-blueGray-700 hover:text-blueGray-500',
                 ]"
               >
@@ -145,7 +168,31 @@
               </a>
             </router-link>
           </li>
-
+          <li class="items-center">
+            <router-link
+              to="/admin/moderasisemuatanggapan"
+              v-slot="{ href, navigate, isActive }"
+            >
+              <a
+                :href="href"
+                @click="navigate"
+                class="text-xs uppercase py-3 font-bold block"
+                :class="[
+                  isActive
+                    ? 'text-blue-500 hover:text-blue-600'
+                    : 'text-blueGray-700 hover:text-blueGray-500',
+                ]"
+              >
+                <i
+                  class="fas fa-tools mr-2 text-sm"
+                  :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
+                ></i>
+                Moderasi Semua Tanggapan
+              </a>
+            </router-link>
+          </li>
+</div>
+<div v-else></div>
           <li class="items-center">
             <router-link
               to="/admin/keluhan"
@@ -157,7 +204,7 @@
                 class="text-xs uppercase py-3 font-bold block"
                 :class="[
                   isActive
-                    ? 'text-emerald-500 hover:text-emerald-600'
+                    ? 'text-blue-500 hover:text-blue-600'
                     : 'text-blueGray-700 hover:text-blueGray-500',
                 ]"
               >
@@ -180,7 +227,7 @@
                 class="text-xs uppercase py-3 font-bold block"
                 :class="[
                   isActive
-                    ? 'text-emerald-500 hover:text-emerald-600'
+                    ? 'text-blue-500 hover:text-blue-600'
                     : 'text-blueGray-700 hover:text-blueGray-500',
                 ]"
               >
@@ -193,7 +240,7 @@
             </router-link>
           </li>
           
-          <li class="items-center">
+          <li class="items-center" >
             <router-link
               to="/admin/komentar"
               v-slot="{ href, navigate, isActive }"
@@ -216,6 +263,7 @@
               </a>
             </router-link>
           </li>
+          <div v-if="[1, 2, 3, 6, 7, 8, 9].includes(profileList.lecturer_type)" class="items-center">
           <li class="items-center">
             <router-link to="/admin/admin" v-slot="{ href, navigate, isActive }">
               <a
@@ -256,6 +304,10 @@
               </a>
             </router-link>
           </li>
+          </div>
+          <div v-else>
+
+          </div>
         </ul>
 
         
@@ -269,16 +321,47 @@
 <script>
 import NotificationDropdown from "@/components/Dropdowns/NotificationDropdown.vue";
 import UserDropdown from "@/components/Dropdowns/UserDropdown.vue";
+import { ProfileController } from "../../controller/ProfileController";
 
 export default {
   data() {
     return {
       collapseShow: "hidden",
+      Profile: new ProfileController(false, false, ""),
+      lecturerTypes: [1, 2, 3, 5, 6, 7, 8, 9],
+      moderateTypes: [1, 4, 10, 11, 12, 13],
+
     };
+  },
+  mounted() {
+      this.profile();
+      console.log(this.Profile,"profile"); // Add this line to log the complaint data
+
+    },
+  computed: {
+    isError() {
+      return this.Profile.error;
+    },
+    profileList() {
+      return this.Profile.list;
+    },
+    errorCause() {
+      return this.Profile.errorCause;
+    },
+
+    isLoading() {
+      return this.Profile.loading;
+    },
   },
   methods: {
     toggleCollapseShow: function (classes) {
       this.collapseShow = classes;
+    },
+    async getProfile() {
+      return this.Profile.getProfile();
+    },
+    async profile() {
+      await this.getProfile();
     },
   },
   components: {

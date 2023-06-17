@@ -14,6 +14,12 @@
           </h3>
         </div>
         <router-link
+          to="/admin/ImportLecturer"
+          class="text-blue-500 bg-white mr-2 border-2 font-bold focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center hover:bg-blue-200"
+        >
+          Import Data
+        </router-link> 
+        <router-link
           to="/admin/TambahAdmin"
           class="text-white bg-blue-500 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >
@@ -44,7 +50,7 @@
                   : 'bg-emerald-800 text-emerald-300 border-emerald-700',
               ]"
             >
-              Email
+              NIP
             </th>
             <th
               class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
@@ -54,7 +60,7 @@
                   : 'bg-emerald-800 text-emerald-300 border-emerald-700',
               ]"
             >
-              Jabatan
+              Divisi
             </th>
             <th
               class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
@@ -68,13 +74,13 @@
             </th>
           </tr>
         </thead>
-        <tbody>
+        <tbody v-for="(lecturer , index) in lecturerList.list" :key="lecturer._id">
           <tr>
             <th
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center"
+              class="border-t-0 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center"
             >
               <img
-                :src="bootstrap"
+                :src="lecturer.avatar"
                 class="h-12 w-12 bg-white rounded-full border"
                 alt="..."
               />
@@ -84,108 +90,207 @@
                   color === 'light' ? 'text-blueGray-600' : 'text-white',
                 ]"
               >
-                Argon Design System
-              </span>
+              {{ lecturer.name }}
+            </span>
             </th>
             <td
               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
             >
-              $2,500 USD
+              {{lecturer.nip}}
             </td>
             <td
               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
             >
-              <i class="fas fa-circle text-orange-500 mr-2"></i> pending
+            {{lecturer.lecturer_type}}
             </td>
             <td
               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
             >
-             
-<!-- Modal toggle -->
-<div data-modal-target="defaultModal" data-modal-toggle="defaultModal" class="mr-2 moderasi">
-  Lihat Detail
-</div>
-
-<!-- Main modal -->
-<div id="defaultModal" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
-    <div class="relative w-full max-w-2xl max-h-full">
-        <!-- Modal content -->
-        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-            <!-- Modal header -->
-            <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
-                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                    Data Admin
-                </h3>
-                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="defaultModal">
-                    <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                    <span class="sr-only">Close modal</span>
-                </button>
-            </div>
-            <!-- Modal body -->
-            <div class="grid grid-cols-2 my-4" >
-                    <div class="flex flex-col">
-                      <div class="mx-4">
-                      <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> ID </p>
-                        <p class="text-md mt-1 break-words whitespace-normal mb-5 "> 02439024932 </p>
-                        <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Nama Pengguna </p>
-                        <p class="text-md mt-1 mb-5 break-words whitespace-normal"> Aditia Goti Pratama </p>
-                        <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Jabatan </p>
-                        <p class="text-md mt-1 break-words whitespace-normal"> KPS </p>
-                      </div>
-                    </div>
-                    <div class="flex flex-col">
-                        <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Kategori Keluhan </p>
-                        <p class="text-md mt-1 mb-5 break-words whitespace-normal">Fasilitas/Layanan</p>
-                        <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Tujuan </p>
-                        <p class="text-md mt-1 mb-5">JTIK</p>
-                        <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Waktu Pembuatan </p>
-                        <p class="text-md mt-1">13-04-2023, 11:59</p>
-                    </div>
+            <div class="flex items-center mouse-pointer" @click="toAdminDetail(index)">
+                <span class="mr-2 moderasi">Lihat Detail</span>
                 </div>
-            <!-- Modal footer -->
-            <div class="flex justify-end  p-3 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
-                <button data-modal-hide="defaultModal" type="button" class="text-white bg-red-500 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Hapus Pengguna</button>
-                <button data-modal-hide="defaultModal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Kembali</button>
-            </div>
-        </div>
-    </div>
-</div>
-
             </td> 
           </tr>
         </tbody>
-      </table>
+<div class="flex justify-center item-center ml-64">
+  <a href="#" @click="goToPreviousPage" class="px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
+
+<a href="#" @click="goToNextPage" class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
+
+</div>
+        <div class="modal-backdrop" v-if="showModal"></div>
+        <div v-if="showModal">
+<div class="modal-backdrop"></div>
+<div class="modal">
+  <div class="flex flex-row justify-between">
+  <p class="text-xl font-bold	text-red-500 mb-6">Detail Admin</p>
+  <div>
+    <button @click="closeModal">
+<img
+:src="close"
+class="h-8 w-8 cursor-pointer"
+alt="..."
+/>
+</button>
+  </div>
+  </div>  
+<div class="grid grid-cols-2 mb-4" >
+    <div class="flex flex-col">
+      <div class="mr-4">
+        <input v-model="selectedAdmin._id" type="textarea" class="hidden text-md text-left border-none break-words whitespace-normal mb-5" disabled />
+      <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Nama </p>
+        <p class="text-md mt-1 break-words whitespace-normal mb-5 "> {{ selectedAdmin.name }} </p>
+        <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Nip </p>
+        <p class="text-md mt-1 break-words whitespace-normal mb-5">{{ selectedAdmin.nip }} </p>
+        <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Jabatan </p>
+        <p class="text-md mt-1 mb-5 break-words whitespace-normal">{{ selectedAdmin.lecturer_type }}</p>
+      </div>
     </div>
+    <div class="flex flex-col">
+        <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Email </p>
+        <p class="text-md mt-1 mb-5">{{ selectedAdmin.email ? selectedAdmin.email : 'Tidak ada email'  }}</p>
+        <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> No. Telp </p>
+        <p class="text-md mt-1 mb-5 ">{{ selectedAdmin.phoneNumber }}</p>
+        <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Foto </p>
+                        <img :src="selectedAdmin.avatar"
+                        class="h-8 w-8 "
+>
+      </div>
+</div>
+<hr class="mb-5 "/>
+<footer className="bg-white flex flex-row-reverse">
+<button class="w-fit
+py-3
+pl-4
+pr-4	
+text-l
+font-semibold
+mx-4
+rounded-md
+bg-red-500	
+text-white
+hover:bg-red-300"
+@click="deletedLecturer(selectedAdmin._id)"> 
+Hapus Akun
+</button>
+</footer>
+  <!-- <div @click="showModal = false">Tutup Modal</div> -->
+</div>
+</div>
+
+      </table>
+      
+      <div class="toast-container"></div>
+
+    </div>
+    
   </div>
 </template>
 <script>
 
-import bootstrap from "@/assets/img/bootstrap.jpg";
-import angular from "@/assets/img/angular.jpg";
-import sketch from "@/assets/img/sketch.jpg";
-import react from "@/assets/img/react.jpg";
-import vue from "@/assets/img/react.jpg";
-
-import team1 from "@/assets/img/team-1-800x800.jpg";
-import team2 from "@/assets/img/team-2-800x800.jpg";
-import team3 from "@/assets/img/team-3-800x800.jpg";
-import team4 from "@/assets/img/team-4-470x470.png";
+import {LecturerControllers} from "../../controller/LecturerController"
+import moment from "moment";
+import close from "@/assets/img/x.svg";
 
 export default {
   data() {
     return {
-      bootstrap,
-      angular,
-      sketch,
-      react,
-      vue,
-      team1,
-      team2,
-      team3,
-      team4,
+      moment: moment,
+      meta: {
+          page: 1,
+          size: "",
+        },
+        close,
+        currentPage: 1,
+      selectedAdmin:null,
+      showModal: false,
+      lecturer: new LecturerControllers(false, false, ""),
     };
   },
-  components: {
+  computed:{
+    isError() {
+        return this.lecturer.error;
+      },
+      lecturerList() {
+        return this.lecturer.lists;
+      },
+      errorCause() {
+        return this.lecturer.errorCause;
+      },
+  
+      isLoading() {
+        return this.student.loading;
+      },
+  },
+  mounted() {
+      this.getLecturer();
+      console.log(this.lecturer,"lecturer"); // Add this line to log the complaint data
+
+    },
+    methods: {
+      toAdminDetail(index) {
+    this.selectedAdmin = this.lecturerList.list[index];
+  console.log(this.selectedAdmin, "complain selected");
+  this.showModal = true;
+},
+async goToPreviousPage() {
+    if (this.meta.page > 1) {
+      this.meta.page --;
+      await this.getLecturer();
+    }
+  },
+  async goToNextPage() {
+    this.meta.page++;
+    await this.getLecturer();
+  },
+      closeModal() {
+    this.showModal = false;
+    console.log('Modal telah ditutup');
+  },
+  async getLecturerList(page, size) {
+  return this.lecturer.getLecturerList(page, size);
+},
+
+async getLecturer() {
+  await this.getLecturerList(this.page, this.meta.size);
+},
+
+      async deletedLecturer(lecturer_id) {
+        await this.lecturerDeleted(
+          lecturer_id
+          ).then(() => {
+          const toast = document.createElement("div");
+          toast.className = "toast toast-success";
+          toast.innerHTML = "Menghapus Admin Berhasil ";
+
+          const toastContainer = document.querySelector(".toast-container");
+          toastContainer.appendChild(toast);
+          this.showModal =  false,
+
+          setTimeout(() => {
+            toastContainer.removeChild(toast);
+            window.location.reload()
+          }, 2000);
+        })
+        .catch((error) => {
+          console.error(error);
+          this.errorMessage = "Terjadi kesalahan saat Menghapus Admin ";
+          const toast = document.createElement("div");
+          toast.className = "toast toast-error";
+          toast.innerHTML = this.errorMessage;
+          const toastContainer = document.querySelector(".toast-container");
+          toastContainer.appendChild(toast);
+
+          setTimeout(() => {
+            toastContainer.removeChild(toast);
+          }, 2000);        });
+},
+    async lecturerDeleted(lecturer_id) {
+      return this.lecturer.lecturerDeleted(
+        lecturer_id
+       
+      );
+    },
 
 },
   props: {
@@ -200,8 +305,47 @@ export default {
 };
 </script>
 <style>
-td:hover .moderasi {
-  color: blue;
-  cursor: pointer;
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  width: 700px;
+  border-radius: 5px;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
+}
+.toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+}
+
+.toast {
+  padding: 10px 20px;
+  border-radius: 4px;
+  box-shadow: 10px;
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
+  opacity: 0.9;
+}
+
+.toast-success {
+  background-color: #2ecc71;
+}
+.toast-error {
+  background-color: red;
 }
 </style>

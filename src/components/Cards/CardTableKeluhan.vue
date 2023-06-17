@@ -90,8 +90,8 @@
             ></th>
           </tr>
         </thead>
-        <tbody>
-         <tr>
+        <tbody  v-if="(lecturer === 1 || lecturer === 2 || lecturer === 3 || lecturer === 5 || lecturer === 6 || lecturer === 7 || lecturer === 8 || lecturer === 9) ? ComplaintSuperList.length > 0 : ComplaintList.length > 0">
+          <tr  v-for="(complaint, index) in (lecturer === 1 || lecturer === 2 || lecturer === 3 || lecturer === 5 || lecturer === 6 || lecturer === 7 || lecturer === 8 || lecturer === 9) ? ComplaintSuperList : ComplaintList" :key="complaint._id">
             <th
               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center"
             >
@@ -101,145 +101,236 @@
                   color === 'light' ? 'text-blueGray-600' : 'text-white',
                 ]"
               >
-                Susah dalam menyampaikan pendapat
-              </span>
+              {{complaint.title}}             
+             </span>
             </th>
             <td
               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
             >
-              anonim
+            {{complaint.createdBy}}             
+
             </td>
             <td
               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
             >
-              <i></i> JTIK
+              <i></i>{{complaint.division}}             
             </td>
             <td
               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
             >
-              <i></i> Fasilitas/ Layanan
+              <i></i>{{complaint.category}}    
             </td>
             <td
               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
             >
-              04-12-2023, 11:10
+            {{ moment(complaint.createdAt).locale("id").format("DD-MM-YYYY") }}   
             </td>
             <td
               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
             >
-              <div class="flex items-center mouse-pointer" @click="showModal = true">
+            <div class="flex items-center mouse-pointer" @click="toComplaintDetail(index)">
                 <span class="mr-2 moderasi">Lihat Detail</span>
-                <div v-if="showModal">
-                <div class="modal-backdrop"></div>
-                <div class="modal">
-                  <div class="flex flex-row justify-between">
-                  <p class="text-xl font-bold	text-red-500 mb-6">Detail Tanggapan</p>
-                  <div>
-                          <img
-                            :src="close"
-                            class="h-8 w-8 cursor-pointer"
-                            alt="..."
-                            @click="closeModal"
-                          />
-                  </div>
-                  </div>  
-                <div class="grid grid-cols-2 mb-4" >
-                    <div class="flex flex-col">
-                      <div class="mr-4">
-                      <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Judul Keluhan </p>
-                        <p class="text-md mt-1 break-words whitespace-normal mb-5 "> Tidak Bisa Menyampaikan Keluhan </p>
-                        <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Isi Keluhan </p>
-                        <p class="text-md mt-1 break-words whitespace-normal">Lorem ipsum dolor sit amet, 
-                          consectetur adipiscing elit. Faucibus velit, adipiscing senectus
-                           eget semper id. Pretium venenatis ridiculus ornare nec a, arcu aenean. 
-                            at scelerisque porta etiam consectetur varius. Arcu, quis sed dictum libero. 
-                            Nulla eu commodo in odio aenean sit amet mattis. Purus massa velit sapien 
-                            fermentum non amet, amet ac. Magnis mattis egestas lobortis elementum elit 
-                            ut rhoncus. Viverra vivamus condimentum nisl erat lobortis dictum risus
-                             scelerisque. Dapibus semper eu est et non neque, sed. Massa, id nunc lectus 
-                             , tortor. Non a, eget imperdiet proin turpis placerat. Sagittis donec 
-                              feugiat orci dolor. </p>
-                      </div>
-                    </div>
-                    <div class="flex flex-col">
-                        <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Kategori Keluhan </p>
-                        <p class="text-md mt-1 mb-5 break-words whitespace-normal">Fasilitas/Layanan</p>
-                        <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Tujuan </p>
-                        <p class="text-md mt-1 mb-5">JTIK</p>
-                        <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Waktu Pembuatan </p>
-                        <p class="text-md mt-1">13-04-2023, 11:59</p>
-                    </div>
                 </div>
-                <hr class="mb-5 "/>
-                <footer className="bg-white flex flex-row-reverse">
-            <button class="w-fit
-        py-3
-        pl-4
-        pr-4	
-        text-l
-        font-semibold
-        mx-4
-        rounded-md
-        bg-emerald-600	
-        text-white
-        hover:bg-pink-500"> 
-              Hapus Keluhan
-            </button>
-            <button class="w-fit
-        py-3
-        pl-4
-        pr-4	
-        text-l
-        font-semibold
-        rounded-md
-        bg-red-500
-        text-white
-        hover:bg-pink-500">
-              Ubah Keluhan
-            </button>
-          </footer>
-                  <!-- <div @click="showModal = false">Tutup Modal</div> -->
-                </div>
-              </div>
-              </div>
             </td>
           </tr>
         </tbody>
+        <tbody v-else>
+    <tr>
+      <td colspan="5" class="text-center py-4">Tidak ada data</td>
+    </tr>
+  </tbody>
+  <div class="modal-backdrop" v-if="showModal"></div>
+
+<div v-if="showModal">
+<div class="modal-backdrop"></div>
+<div class="modal">
+  <div class="flex flex-row justify-between">
+  <p class="text-xl font-bold	text-red-500 mb-6">Detail Keluhan</p>
+  <div>
+    <button @click="closeModal">
+<img
+:src="close"
+class="h-8 w-8 cursor-pointer"
+alt="..."
+/>
+</button>
+  </div>
+  </div>  
+<div class="grid grid-cols-2 mb-4" >
+    <div class="flex flex-col">
+      <div class="mr-4">
+        <input v-model="selectedComplaint._id" type="textarea" class="hidden text-md text-left border-none break-words whitespace-normal mb-5" disabled />
+      <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Judul Keluhan </p>
+        <p class="text-md mt-1 break-words whitespace-normal mb-5 "> {{ selectedComplaint.title }} </p>
+        <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Isi Keluhan </p>
+        <p class="text-md mt-1 break-words whitespace-normal">{{ selectedComplaint.body }} </p>
+      </div>
+    </div>
+    <div class="flex flex-col">
+        <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Kategori Keluhan </p>
+        <p class="text-md mt-1 mb-5 break-words whitespace-normal">{{ selectedComplaint.category }}</p>
+        <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Tujuan </p>
+        <p class="text-md mt-1 mb-5">{{ selectedComplaint.lecturer_type }}</p>
+        <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Waktu Pembuatan </p>
+        <p class="text-md mt-1">  {{ moment(selectedComplaint.createdAt).locale("id").format("DD-MM-YYYY") }}</p>
+        <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Foto </p>
+                        <img :src="selectedComplaint.attachmentImage"
+                        class="h-8 w-8 "
+>
+      </div>
+</div>
+<hr class="mb-5 "/>
+<footer className="bg-white flex flex-row-reverse">
+<button class="w-fit
+py-3
+pl-4
+pr-4	
+text-l
+font-semibold
+mx-4
+rounded-md
+bg-red-500	
+text-white
+hover:bg-red-300"
+@click="deletedComplaint(selectedComplaint._id)"> 
+Hapus Keluhan
+</button>
+</footer>
+  <!-- <div @click="showModal = false">Tutup Modal</div> -->
+</div>
+</div>
+      <!-- </div> -->
       </table>
+      <div class="toast-container"></div>
+      
     </div>
   </div>
 </template>
 <script>
 
-
 import bootstrap from "@/assets/img/bootstrap.jpg";
-import angular from "@/assets/img/angular.jpg";
-import sketch from "@/assets/img/sketch.jpg";
-import react from "@/assets/img/react.jpg";
-import vue from "@/assets/img/react.jpg";
 import close from "@/assets/img/x.svg";
-import team1 from "@/assets/img/team-1-800x800.jpg";
-import team2 from "@/assets/img/team-2-800x800.jpg";
-import team3 from "@/assets/img/team-3-800x800.jpg";
+import {ComplaintControllers} from "../../controller/ComplaintController"
+import moment from 'moment';
+import { ProfileController } from "../../controller/ProfileController";
 
 export default {
   data() {
     return {
+      moment: moment,
+      meta: {
+          page: 1,
+          size: "",
+        },
       bootstrap,
-      angular,
-      sketch,
-      react,
-      vue,
-      team1,
-      team2,
-      team3,
+      selectedComplaint: null,
       close,
-        showModal: false,
-    };
+      complaint_id:"",
+      showModal: false,
+      complaint: new ComplaintControllers(false, false, ""),
+      Profile: new ProfileController(false, false, ""),
+
+    }
   },
-  components: {
-    
+  computed:{
+    isError() {
+        return this.complaint.error;
+      },
+      ComplaintList() {
+        return this.complaint.lists;
+      },
+      ComplaintSuperList() {
+        return this.complaint.lists;
+      },
+      errorCause() {
+        return this.complaint.errorCause;
+      },
+  
+      isLoading() {
+        return this.complaint.loading;
+      },
+      profileList() {
+      return this.Profile.list;
+    },
   },
+  mounted() {
+      this.getComplaint();
+      this.getComplaintSuper();
+      this.profile();
+
+      console.log(this.complaint,"complaint"); // Add this line to log the complaint data
+
+    },
+  methods: {
+    toComplaintDetail(index) {
+  if (this.lecturer === 1 || this.lecturer === 2 || this.lecturer === 3 || this.lecturer === 5 || this.lecturer === 6 || this.lecturer === 7 || this.lecturer === 8 || this.lecturer === 9) {
+    this.selectedComplaint = this.ComplaintSuperList[index];
+  } else {
+    this.selectedComplaint = this.ComplaintList[index];
+  }
+  console.log(this.selectedComplaint, "complain selected");
+  this.showModal = true;
+},
+
+    closeModal() {
+    this.showModal = false;
+    console.log('Modal telah ditutup');
+  },
+      async getComplaintListLecturer(page, size) {
+        return this.complaint.getComplaintListLecturer(page, size);
+      },
+      async getComplaint() {
+        await this.getComplaintListLecturer(this.meta.page, this.meta.size);
+      },
+      async getComplaintListSuper(page, size) {
+        return this.complaint.getComplaintListSuper(page, size);
+      },
+      async getComplaintSuper() {
+        await this.getComplaintListSuper(this.meta.page, this.meta.size);
+      },
+      async getProfile() {
+      return this.Profile.getProfile();
+    },
+    async profile() {
+      await this.getProfile();
+    },
+    async deletedComplaint(complaint_id) {
+        await this.complaintDeleted(
+          complaint_id
+          ).then(() => {
+          const toast = document.createElement("div");
+          toast.className = "toast toast-success";
+          toast.innerHTML = "Menghapus Keluhan Berhasil ";
+
+          const toastContainer = document.querySelector(".toast-container");
+          toastContainer.appendChild(toast);
+          this.showModal =  false,
+
+          setTimeout(() => {
+            toastContainer.removeChild(toast);
+            window.location.reload()
+          }, 2000);
+        })
+        .catch((error) => {
+          console.error(error);
+          this.errorMessage = "Terjadi kesalahan saat Menghapus Keluhan ";
+          const toast = document.createElement("div");
+          toast.className = "toast toast-error";
+          toast.innerHTML = this.errorMessage;
+          const toastContainer = document.querySelector(".toast-container");
+          toastContainer.appendChild(toast);
+
+          setTimeout(() => {
+            toastContainer.removeChild(toast);
+          }, 2000);        });
+},
+    async complaintDeleted(complaint_id) {
+      return this.complaint.complaintDeleted(
+        complaint_id
+       
+      );
+    },
+    },
   props: {
     color: {
       default: "light",
@@ -268,11 +359,35 @@ export default {
   transform: translate(-50%, -50%);
   background-color: white;
   padding: 20px;
+  width: 700px;
   border-radius: 5px;
   box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
 }
 td:hover .moderasi {
   color: blue;
   cursor: pointer;
+}
+.toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+}
+
+.toast {
+  padding: 10px 20px;
+  border-radius: 4px;
+  box-shadow: 10px;
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
+  opacity: 0.9;
+}
+
+.toast-success {
+  background-color: #2ecc71;
+}
+.toast-error {
+  background-color: red;
 }
 </style>

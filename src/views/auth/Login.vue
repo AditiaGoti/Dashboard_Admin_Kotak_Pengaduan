@@ -3,7 +3,7 @@
     <div class="flex content-center items-center justify-center h-full">
       <div class="w-full lg:w-4/12 px-4">
         <div
-          class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-emerald-600 border-3 border-emerald-900	"
+          class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blue-800 border-3 border-blue-900	"
         >
           <div class="flex-auto px-4 lg:px-10 py-10 pt-0">
             <div class="text-white text-center mb-5 mt-8 ">
@@ -17,15 +17,24 @@
                   class="block uppercase text-white text-xs font-bold mb-2"
                   htmlFor="grid-password"
                 >
-                  Email
+                  NIP
                 </label>
                 <input
+                v-model="nip"
                   type="email"
                   class="border-0 px-3 py-3 placeholder-blueGray-300 text-red-600 bg-white rounded text-sm shadow focus:outline-emerald-900 focus:ring w-full ease-linear transition-all duration-150"
-                  placeholder="Email"
-                />
+                  placeholder="Nim"
+                    @focus="focus"
+                @keyup.enter="loginAction"
+                :class="{
+                   'mb-4': !errorMsg.nim,
+                  'outline-blue-input': !errorMsg.nim,
+                  'outline-red-star': errorMsg.nim,
+                }"                />
               </div>
-
+              <p v-if="errorMsg.nim" class="text-red-star mb-2">
+              {{ errorMsg.nim }}
+            </p>
               <div class="relative w-full mb-3">
                 <label
                   class="block uppercase text-white text-xs font-bold mb-2"
@@ -34,24 +43,22 @@
                   Password
                 </label>
                 <input
+                v-model="password"
                   type="password"
                   class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                   placeholder="Password"
+                  @focus="focus"
+                @keyup.enter="loginAction"
+                :class="{
+                  'outline-blue-input': !errorMsg.password,
+                  'outline-red-star': errorMsg.password,
+                }"
                 />
               </div>
+              <p v-if="errorMsg.password" class="text-red-star mx-[30px] mb-4">
+            {{ errorMsg.password }}
+          </p>
               <div class="flex flex-row justify-between">
-                <div>
-                <label class="inline-flex items-center cursor-pointer">
-                  <input
-                    id="customCheckLogin"
-                    type="checkbox"
-                    class="form-checkbox border-0 rounded text-blueGray-700 ml-1 w-5 h-5 ease-linear transition-all duration-150"
-                  />
-                  <span class="ml-2 text-sm font-semibold text-white">
-                    Remember me
-                  </span>
-                </label>
-                </div>
                 <div class="relative bottom-1">
             <a href="javascript:void(0)" class=" font-semibold text-white">
               <small>Forgot password?</small>
@@ -60,14 +67,14 @@
               </div>
 
               <div class="text-center mt-6">
-                <router-link to="/admin/dashboard">
                 <button
-                  class="bg-white text-white text-emerald-600 active:bg-blueGray-600 text-md font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
+                  class="bg-white text-blue-600 active:bg-blueGray-600 text-md font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                   type="button"
+                  :onClick="loginAction"
+
                 >
                   Sign In
                 </button>
-                </router-link>
               </div>
             </form>
           </div>
@@ -77,15 +84,127 @@
   </div>
 </template>
 <script>
-import github from "@/assets/img/github.svg";
-import google from "@/assets/img/google.svg";
+import { AuthControllers } from "../../controller/AuthController.js";
+// import { setModal, removeOnboarding } from "@/Utils/cookies";
 
 export default {
-  data() {
-    return {
-      github,
-      google,
-    };
-  },
-};
+    data() {
+      return {
+        auth: new AuthControllers(false, false, ""),
+        showPassword: false,
+        nip: "",
+        password: "",
+        validate: {
+          emptyNip: false,
+          emptyPassword: false,
+          nip: false,
+          password: false,
+        },
+        errorMsg: {
+          nip: "",
+          password: "",
+        },
+      };
+    },
+    computed: {
+      isError() {
+        return this.auth.error;
+      },
+  
+      errorCause() {
+        return this.auth.errorCause;
+      },
+  
+      isLoading() {
+        return this.auth.loading;
+      },
+      buttonLabel() {
+        return this.showPassword ? "Hide" : "Show";
+      },
+    },
+    watch: {
+      nip(value) {
+        // binding this to the data value in the email input
+        this.nim = value;
+        this.validatenip(value);
+      },
+      password(value) {
+        this.password = value;
+        this.validatePassword(value);
+      },
+    },
+    methods: {
+      async doLogin(nip, password) {
+        return this.auth.signInLecturer(nip, password);
+        },
+      async LoginLecturer() {
+        await this.doLogin(this.nip, this.password).
+        then(response => {
+          localStorage.setItem('kpjtik_access_token', response.data.data.accessToken)
+          localStorage.setItem('kpjtik_acc_name', response.data.data.name)
+          localStorage.setItem('kpjtik_email', response.data.data.email)
+          localStorage.setItem('kpjtik_nim', response.data.data.nim)
+        });
+        if (!this.isError) {
+          this.$router.push("/admin/dashboard");
+          // this.$store.dispatch("pin/getPin");
+        } else if (this.errorCause == "user not found") {
+          this.errorMsg.nip = "Nip Belum Terdaftar";
+          this.errorMsg.password = "Password salah. Silahkan coba lagi";
+        } else if (this.errorCause == "Not a valid Nip") {
+          this.errorMsg.nip = "Nip tidak boleh kosong";
+          if (this.password == "") {
+            this.errorMsg.password = "Password tidak boleh kosong";
+          } else {
+            this.errorMsg.password = "";
+          }
+        } else if (
+          this.errorCause == "password invalid" ||
+          this.errorCause == "Not a valid password"
+        ) {
+          if (this.password == "") {
+            this.errorMsg.password = "Password tidak boleh kosong";
+          } else {
+            this.errorMsg.password = "Password salah. Silahkan coba lagi";
+          }
+        }
+      },
+      loginAction() {
+        this.LoginLecturer();
+      },
+      validatenip(nip) {
+        // if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+        //   this.errorMsg.email = "";
+        // } else {
+        //   this.errorMsg.email = "Email tidak Valid";
+        // }
+        if (nip == "") {
+          this.errorMsg.nip = "Email tidak boleh Kosong";
+        }
+      },
+      validatePassword(password) {
+        // if (/^(?=.*?[0-9])[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]{8,}$/g.test(password)) {
+        //   this.errorMsg.password = "";
+        // } else {
+        //   this.errorMsg.password =
+        //     "Password minimal 8 karakter kombinasi huruf dan angka";
+        // }
+        if (password == "") {
+          this.errorMsg.password = "Password tidak boleh Kosong";
+        }
+      },
+      focus() {
+        this.validate.empty = false;
+      },
+  
+      toggleShow() {
+        if (this.showPassword === false) {
+          this.showPassword = true;
+        } else {
+          this.showPassword = false;
+        }
+      },
+    },
+  };
 </script>
+

@@ -13,6 +13,12 @@
             Tabel Mahasiswa
           </h3>
         </div>
+        <router-link
+          to="/admin/ImportMahasiswa"
+          class="text-blue-500 bg-white mr-2 border-2 font-bold focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center hover:bg-blue-200"
+        >
+          Import Data
+        </router-link> 
   <router-link
           to="/admin/TambahMahasiswa"
           class="text-white bg-blue-500 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
@@ -43,7 +49,7 @@
                   : 'bg-emerald-800 text-emerald-300 border-emerald-700',
               ]"
             >
-              Email
+              NIM
             </th>
             <th
               class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
@@ -53,7 +59,7 @@
                   : 'bg-emerald-800 text-emerald-300 border-emerald-700',
               ]"
             >
-              Kelas
+              Prodi
             </th>
             <th
               class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
@@ -67,13 +73,13 @@
             </th>
           </tr>
         </thead>
-        <tbody>
+        <tbody v-for="(student, index) in studentList" :key="student._id">
           <tr>
             <th
               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center"
             >
               <img
-                :src="bootstrap"
+                :src="student.avatar"
                 class="h-12 w-12 bg-white rounded-full border"
                 alt="..."
               />
@@ -83,108 +89,186 @@
                   color === 'light' ? 'text-blueGray-600' : 'text-white',
                 ]"
               >
-              Aditia Goti              
+              {{student.name}}              
               </span>
             </th>
             <td
               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
             >
-              Aditia@gmail.com
-            </td>
+{{student.nim}}          
+  </td>
             <td
               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
             >
-              TI-CCIT
-            </td>
+{{student.major}}            </td>
             <td
               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
             >
-             
-<!-- Modal toggle -->
-<div data-modal-target="defaultModal" data-modal-toggle="defaultModal" class="mr-2 moderasi">
-  Lihat Detail
-</div>
-
-<!-- Main modal -->
-<div id="defaultModal" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
-    <div class="relative w-full max-w-2xl max-h-full">
-        <!-- Modal content -->
-        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-            <!-- Modal header -->
-            <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
-                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                    Data Mahasiswa
-                </h3>
-                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="defaultModal">
-                    <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                    <span class="sr-only">Close modal</span>
-                </button>
-            </div>
-            <!-- Modal body -->
-            <div class="grid grid-cols-2 my-4" >
-                    <div class="flex flex-col">
-                      <div class="mx-4">
-                      <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> ID </p>
-                        <p class="text-md mt-1 break-words whitespace-normal mb-5 "> 02439024932 </p>
-                        <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Nama Pengguna </p>
-                        <p class="text-md mt-1 mb-5 break-words whitespace-normal"> Aditia Goti Pratama </p>
-                        <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Kelas </p>
-                        <p class="text-md mt-1 break-words whitespace-normal"> TI-CCIT </p>
-                      </div>
-                    </div>
-                    <div class="flex flex-col">
-                        <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Kategori Keluhan </p>
-                        <p class="text-md mt-1 mb-5 break-words whitespace-normal">Fasilitas/Layanan</p>
-                        <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Tujuan </p>
-                        <p class="text-md mt-1 mb-5">JTIK</p>
-                        <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Waktu Pembuatan </p>
-                        <p class="text-md mt-1">13-04-2023, 11:59</p>
-                    </div>
+            <div class="flex items-center mouse-pointer" @click="toStudentDetail(index)">
+                <span class="mr-2 moderasi">Lihat Detail</span>
                 </div>
-            <!-- Modal footer -->
-            <div class="flex justify-end  p-3 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
-                <button data-modal-hide="defaultModal" type="button" class="text-white bg-red-500 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Hapus Pengguna</button>
-                <button data-modal-hide="defaultModal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Kembali</button>
-            </div>
-        </div>
-    </div>
-</div>
             </td> 
           </tr>
         </tbody>
+        <div class="modal-backdrop" v-if="showModal"></div>
+        <div v-if="showModal">
+<div class="modal-backdrop"></div>
+<div class="modal">
+  <div class="flex flex-row justify-between">
+  <p class="text-xl font-bold	text-red-500 mb-6">Detail Admin</p>
+  <div>
+    <button @click="closeModal">
+<img
+:src="close"
+class="h-8 w-8 cursor-pointer"
+alt="..."
+/>
+</button>
+  </div>
+  </div>  
+<div class="grid grid-cols-2 mb-4" >
+    <div class="flex flex-col">
+      <div class="mr-4">
+        <input v-model="selectedStudent._id" type="textarea" class="hidden text-md text-left border-none break-words whitespace-normal mb-5" disabled />
+      <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Nama </p>
+        <p class="text-md mt-1 break-words whitespace-normal mb-5 "> {{ selectedStudent.name }} </p>
+        <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Nim </p>
+        <p class="text-md mt-1 break-words whitespace-normal mb-5">{{ selectedStudent.nim }} </p>
+        <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Prodi </p>
+        <p class="text-md mt-1 mb-5 break-words whitespace-normal">{{ selectedStudent.major }}</p>
+      </div>
+    </div>
+    <div class="flex flex-col">
+        <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Email </p>
+        <p class="text-md mt-1 mb-5">{{ selectedStudent.email ? selectedStudent.email : 'Tidak ada email'  }}</p>
+        <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> No. Telp </p>
+        <p class="text-md mt-1 mb-5 ">{{ selectedStudent.phoneNumber ?   selectedStudent.phoneNumber : 'Tidak ada No Telp' }}</p>
+        <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Foto </p>
+                        <img :src="selectedStudent.avatar"
+                        class="h-8 w-8 "
+>
+      </div>
+</div>
+<hr class="mb-5 "/>
+<footer className="bg-white flex flex-row-reverse">
+<button class="w-fit
+py-3
+pl-4
+pr-4	
+text-l
+font-semibold
+mx-4
+rounded-md
+bg-red-500	
+text-white
+hover:bg-red-300"
+@click="deletedStudent(selectedStudent._id)"> 
+Hapus Akun
+</button>
+</footer>
+  <!-- <div @click="showModal = false">Tutup Modal</div> -->
+</div>
+</div>
       </table>
+      <div class="toast-container"></div>
+
     </div>
   </div>
 </template>
 <script>
 
 import bootstrap from "@/assets/img/bootstrap.jpg";
-import angular from "@/assets/img/angular.jpg";
-import sketch from "@/assets/img/sketch.jpg";
-import react from "@/assets/img/react.jpg";
-import vue from "@/assets/img/react.jpg";
-
-import team1 from "@/assets/img/team-1-800x800.jpg";
-import team2 from "@/assets/img/team-2-800x800.jpg";
-import team3 from "@/assets/img/team-3-800x800.jpg";
-import team4 from "@/assets/img/team-4-470x470.png";
+import {StudentControllers} from "../../controller/StudentController"
+import moment from "moment";
 
 export default {
   data() {
     return {
+      moment: moment,
+      meta: {
+          page: 1,
+          size: "10",
+        },
       bootstrap,
-      angular,
-      sketch,
-      react,
-      vue,
-      team1,
-      team2,
-      team3,
-      team4,
+      selectedStudent:null,
+      showModal: false,
+      student: new StudentControllers(false, false, ""),
     };
   },
-  components: {
+  computed:{
+    isError() {
+        return this.student.error;
+      },
+      studentList() {
+        return this.student.lists;
+      },
+      errorCause() {
+        return this.student.errorCause;
+      },
+  
+      isLoading() {
+        return this.student.loading;
+      },
   },
+  mounted() {
+      this.getStudent();
+      console.log(this.student,"student"); // Add this line to log the complaint data
+
+    },
+    methods: {
+      closeModal() {
+    this.showModal = false;
+    console.log('Modal telah ditutup');
+  },
+  toStudentDetail(index) {
+    this.selectedStudent = this.studentList[index];
+  console.log(this.selectedStudent, "complain selected");
+  this.showModal = true;
+},
+  async getStudentList(page, size) {
+        return this.student.getStudentList(page, size);
+      },
+      async getStudent() {
+        await this.getStudentList(this.meta.page, this.meta.size);
+      },
+      async deletedStudent(student_id) {
+        await this.studentDeleted(
+          student_id
+          ).then(() => {
+          const toast = document.createElement("div");
+          toast.className = "toast toast-success";
+          toast.innerHTML = "Menghapus Mahasiswa Berhasil ";
+
+          const toastContainer = document.querySelector(".toast-container");
+          toastContainer.appendChild(toast);
+          this.showModal =  false,
+
+          setTimeout(() => {
+            toastContainer.removeChild(toast);
+            window.location.reload()
+          }, 2000);
+        })
+        .catch((error) => {
+          console.error(error);
+          this.errorMessage = "Terjadi kesalahan saat Menghapus Mahasiswa ";
+          const toast = document.createElement("div");
+          toast.className = "toast toast-error";
+          toast.innerHTML = this.errorMessage;
+          const toastContainer = document.querySelector(".toast-container");
+          toastContainer.appendChild(toast);
+
+          setTimeout(() => {
+            toastContainer.removeChild(toast);
+          }, 2000);        });
+},
+    async studentDeleted(student_id) {
+      return this.student.studentDeleted(
+        student_id
+       
+      );
+    },
+
+},
   props: {
     color: {
       default: "light",
@@ -196,3 +280,52 @@ export default {
   },
 };
 </script>
+<style>
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  width: 700px;
+  border-radius: 5px;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
+}
+td:hover .moderasi {
+  color: blue;
+  cursor: pointer;
+}
+.toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+}
+
+.toast {
+  padding: 10px 20px;
+  border-radius: 4px;
+  box-shadow: 10px;
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
+  opacity: 0.9;
+}
+
+.toast-success {
+  background-color: #2ecc71;
+}
+.toast-error {
+  background-color: red;
+}
+</style>

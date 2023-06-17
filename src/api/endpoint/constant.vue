@@ -1,0 +1,1 @@
+export const BaseUrl = () => process.env.VUE_APP_KPJTIK_LECTURER_API_URL

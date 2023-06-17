@@ -21,38 +21,61 @@
     </div>
   </div>
 </template>
+
 <script>
 import Chart from "chart.js";
+import { ComplaintControllers } from "../../controller/ComplaintController";
+
 export default {
-  mounted: function () {
-    this.$nextTick(function () {
+  data() {
+    return {
+      meta: {
+        page: 1,
+        size: "",
+      },
+      complaint: new ComplaintControllers(false, false, ""),
+    };
+  },
+  computed: {
+    isError() {
+      return this.complaint.error;
+    },
+    ComplaintList() {
+      return this.complaint.lists;
+    },
+    errorCause() {
+      return this.complaint.errorCause;
+    },
+    isLoading() {
+      return this.complaint.loading;
+    },
+  },
+  mounted() {
+    this.getComplaint();
+  },
+  methods: {
+    async getComplaint(page, size) {
+      await this.getComplaintAnalysis(page, size);
+      this.renderChart();
+    },
+    async getComplaintAnalysis() {
+      await this.complaint.getComplaintAnalysis(this.meta.page, this.meta.size);
+    },
+    renderChart() {
+      const labels = this.ComplaintList.map((item) => item.date);
+      const data = this.ComplaintList.map((item) => item.total_complaint);
+
       let config = {
         type: "bar",
         data: {
-          labels: [
-            "January",
-            "February",
-            "March",
-            "April",
-            "May",
-            "June",
-            "July",
-          ],
+          labels,
           datasets: [
             {
               label: new Date().getFullYear(),
               backgroundColor: "#ed64a6",
               borderColor: "#ed64a6",
-              data: [30, 78, 56, 34, 100, 45, 13],
+              data,
               fill: false,
-              barThickness: 8,
-            },
-            {
-              label: new Date().getFullYear() - 1,
-              fill: false,
-              backgroundColor: "#4c51bf",
-              borderColor: "#4c51bf",
-              data: [27, 68, 86, 74, 10, 4, 87],
               barThickness: 8,
             },
           ],
@@ -82,15 +105,15 @@ export default {
           scales: {
             xAxes: [
               {
-                display: false,
+                display: true,
                 scaleLabel: {
                   display: true,
-                  labelString: "Month",
+                  labelString: "Bulan",
                 },
                 gridLines: {
                   borderDash: [2],
                   borderDashOffset: [2],
-                  color: "rgba(33, 37, 41, 0.3)",
+                  color: "rgba(33, 50, 41, 0.3)",
                   zeroLineColor: "rgba(33, 37, 41, 0.3)",
                   zeroLineBorderDash: [2],
                   zeroLineBorderDashOffset: [2],
@@ -101,8 +124,8 @@ export default {
               {
                 display: true,
                 scaleLabel: {
-                  display: false,
-                  labelString: "Value",
+                  display: true,
+                  labelString: "Total Pengaduan",
                 },
                 gridLines: {
                   borderDash: [2],
@@ -113,14 +136,19 @@ export default {
                   zeroLineBorderDash: [2],
                   zeroLineBorderDashOffset: [2],
                 },
+                ticks: {
+              beginAtZero: true, // Start y-axis from 0
+              precision: 0, // Display only regular numbers without decimal places
+            },
               },
             ],
           },
         },
       };
+
       let ctx = document.getElementById("bar-chart").getContext("2d");
       window.myBar = new Chart(ctx, config);
-    });
+    },
   },
 };
 </script>

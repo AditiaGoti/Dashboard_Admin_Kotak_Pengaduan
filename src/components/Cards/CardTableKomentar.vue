@@ -38,27 +38,7 @@
                   : 'bg-emerald-800 text-emerald-300 border-emerald-700',
               ]"
             >
-              Jabatan
-            </th>
-            <th
-              class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
-              :class="[
-                color === 'light'
-                  ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
-                  : 'bg-emerald-800 text-emerald-300 border-emerald-700',
-              ]"
-            >
               Komentar
-            </th>
-            <th
-              class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
-              :class="[
-                color === 'light'
-                  ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
-                  : 'bg-emerald-800 text-emerald-300 border-emerald-700',
-              ]"
-            >
-              Kategori
             </th>
             <th
               class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
@@ -90,13 +70,13 @@
             ></th>
           </tr>
         </thead>
-        <tbody>
-         <tr>
+        <tbody v-if="(lecturer === 1 || lecturer === 2 || lecturer === 3 || lecturer === 5 || lecturer === 6 || lecturer === 7 || lecturer === 8 || lecturer === 9) ? commentSuperList.length > 0 : commentList.length > 0">
+    <tr v-for="(comment,index) in (lecturer === 1 || lecturer === 2 || lecturer === 3 || lecturer === 5 || lecturer === 6 || lecturer === 7 || lecturer === 8 || lecturer === 9) ? commentSuperList : commentList" :key="comment._id">
             <th
               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center"
             >
             <img
-                :src="bootstrap"
+                :src="comment.avatar"
                 class="h-12 w-12 bg-white rounded-full border"
                 alt="..."
               />
@@ -106,35 +86,35 @@
                   color === 'light' ? 'text-blueGray-600' : 'text-white',
                 ]"
               >
-                Anonim            
+                {{comment.createdBy}}            
                   </span>
             </th>
             <td
               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
             >
-              JTIK
+              {{comment.message}}
             </td>
             <td
               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
             >
-              <i></i> Susah dalam menyampaikan pendapat
+            {{ moment(comment.createdAt).locale("id").format("DD-MM-YYYY") }}   
             </td>
             <td
               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
             >
-              <i></i> Fasilitas/ Layanan
-            </td>
-            <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-            >
-              04-12-2023, 11:10
-            </td>
-            <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-            >
-              <div class="flex items-center mouse-pointer" @click="showModal = true">
+              <div class="flex items-center mouse-pointer" @click="toCommentDetail(index)">
                 <span class="mr-2 moderasi">Lihat Detail</span>
-                <div v-if="showModal">
+               </div>
+            </td>
+          </tr>
+        </tbody>
+        <tbody v-else>
+    <tr>
+      <td colspan="5" class="text-center py-4">Tidak ada data</td>
+    </tr>
+  </tbody>
+  <div class="modal-backdrop" v-if="showModal"></div>
+  <div v-if="showModal">
                 <div class="modal-backdrop"></div>
                 <div class="modal">
                   <div class="flex flex-row justify-between">
@@ -152,42 +132,21 @@
                     <div class="flex flex-col">
                       <div class="mr-4">
                         <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Isi Komentar </p>
-                        <p class="text-md mt-2 break-words whitespace-normal">Lorem ipsum dolor sit amet, 
-                          consectetur adipiscing elit. Faucibus velit, adipiscing senectus
-                           eget semper id. Pretium venenatis ridiculus ornare nec a, arcu aenean. 
-                            at scelerisque porta etiam consectetur varius. Arcu, quis sed dictum libero. 
-                            Nulla eu commodo in odio aenean sit amet mattis. Purus massa velit sapien 
-                            fermentum non amet, amet ac. Magnis mattis egestas lobortis elementum elit 
-                            ut rhoncus. Viverra vivamus condimentum nisl erat lobortis dictum risus
-                             scelerisque. Dapibus semper eu est et non neque, sed. Massa, id nunc lectus 
-                             , tortor. Non a, eget imperdiet proin turpis placerat. Sagittis donec 
-                              feugiat orci dolor. </p>
+                        <p class="text-md mt-2 break-words whitespace-normal">{{ selectedComment.message }}</p>
                       </div>
                     </div>
                     <div class="flex flex-col">
                         <p class="align-middle text-xs uppercase  font-semibold text-left"> Pembuat Komentar </p>
-                        <p class="text-md mt-1 mb-5">Anonim</p>
+                        <p class="text-md mt-1 mb-5">{{ selectedComment.createdBy }}</p>
                         <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Jabatan </p>
                         <p class="text-md mt-1 mb-5">JTIK</p>
                         <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Waktu Pembuatan </p>
-                        <p class="text-md mt-1">13-04-2023, 11:59</p>
+                        <p class="text-md mt-1"> {{ moment(selectedComment.createdAt).locale("id").format("DD-MM-YYYY") }}</p>
                     </div>
                 </div>
                 <hr class="mb-5 "/>
                 <footer className="bg-white flex flex-row-reverse">
-            <button class="w-fit
-        py-3
-        pl-4
-        pr-4	
-        text-l
-        font-semibold
-        mx-4
-        rounded-md
-        bg-emerald-600	
-        text-white
-        hover:bg-emerald-800"> 
-              Edit Komentar
-            </button>
+  
             <button class="w-fit
         py-3
         pl-4
@@ -197,52 +156,140 @@
         rounded-md
         bg-red-500
         text-white
-        hover:bg-red-800">
+        hover:bg-red-800"
+        @click="deletedComment(selectedComment.complaint_id)">
               Hapus Komentar
             </button>
           </footer>
-                  <!-- <div @click="showModal = false">Tutup Modal</div> -->
-                </div>
+                </div                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        >
               </div>
-              </div>
-            </td>
-          </tr>
-        </tbody>
       </table>
+      <div class="toast-container"></div>
+
     </div>
   </div>
 </template>
 <script>
 
 import bootstrap from "@/assets/img/bootstrap.jpg";
-import angular from "@/assets/img/angular.jpg";
-import sketch from "@/assets/img/sketch.jpg";
-import react from "@/assets/img/react.jpg";
-import vue from "@/assets/img/react.jpg";
 import close from "@/assets/img/x.svg";
-
-import team1 from "@/assets/img/team-1-800x800.jpg";
-import team2 from "@/assets/img/team-2-800x800.jpg";
-import team3 from "@/assets/img/team-3-800x800.jpg";
+import {CommentControllers} from "../../controller/CommentController"
+import moment from "moment";
+import { ProfileController } from "../../controller/ProfileController";
 
 export default {
   data() {
     return {
+      moment: moment,
+      meta: {
+          page: 1,
+          size: "",
+        },
       bootstrap,
-      angular,
-      sketch,
-      react,
-      vue,
-      team1,
-      team2,
-      team3,
       close,
+      selectedComment : null,
       showModal: false,
+      comment: new CommentControllers(false, false, ""),
+      Profile: new ProfileController(false, false, ""),
+
     };
   },
-  components: {
+  computed:{
+    isError() {
+        return this.comment.error;
+      },
+      commentList() {
+        return this.comment.lists;
+      },
+      commentSuperList() {
+        return this.comment.lists;
+      },
+      errorCause() {
+        return this.comment.errorCause;
+      },
   
+      isLoading() {
+        return this.comment.loading;
+      },
+      profileList() {
+      return this.Profile.list; }
   },
+  mounted() {
+      this.getComment();
+      console.log(this.comment,"complaint"); // Add this line to log the complaint data
+      this.getCommentSuper();
+      this.profile();
+    },
+   methods: {
+    toCommentDetail(index) {
+  if (this.lecturer === 1 || this.lecturer === 2 || this.lecturer === 3 || this.lecturer === 5 || this.lecturer === 6 || this.lecturer === 7 || this.lecturer === 8 || this.lecturer === 9) {
+    this.selectedComment = this.commentSuperList[index];
+  } else {
+    this.selectedComment = this.commentList[index];
+  }
+  console.log(this.selectedComment, "complain selected");
+  this.showModal = true;
+},
+
+  closeModal() {
+    this.showModal = false;
+    console.log('Modal telah ditutup'); // tambahkan console log di sini
+  },
+  async getCommentList(page, size) {
+        return this.comment.getCommentList(page, size);
+      },
+      async getComment() {
+        await this.getCommentList(this.meta.page, this.meta.size);
+      },
+      async getSuperCommentList(page, size) {
+        return this.comment.getSuperCommentList(page, size);
+      },
+      async getCommentSuper() {
+        await this.getSuperCommentList(this.meta.page, this.meta.size);
+      },
+      async getProfile() {
+      return this.Profile.getProfile(); },
+      async profile() {
+      await this.getProfile();
+    },
+    async deletedComment(comment_id) {
+        await this.commentDeleted(
+          comment_id
+          ).then(() => {
+          const toast = document.createElement("div");
+          toast.className = "toast toast-success";
+          toast.innerHTML = "Menghapus Komentar Berhasil ";
+
+          const toastContainer = document.querySelector(".toast-container");
+          toastContainer.appendChild(toast);
+          this.showModal =  false,
+
+          setTimeout(() => {
+            toastContainer.removeChild(toast);
+            window.location.reload()
+          }, 2000);
+        })
+        .catch((error) => {
+          console.error(error);
+          this.errorMessage = "Terjadi kesalahan saat Menghapus Komentar ";
+          const toast = document.createElement("div");
+          toast.className = "toast toast-error";
+          toast.innerHTML = this.errorMessage;
+          const toastContainer = document.querySelector(".toast-container");
+          toastContainer.appendChild(toast);
+
+          setTimeout(() => {
+            toastContainer.removeChild(toast);
+          }, 2000);        });
+},
+async commentDeleted(complaint_id) {
+      return this.comment.commentDeleted(
+        complaint_id
+       
+      );
+    },
+
+},
   props: {
     color: {
       default: "light",

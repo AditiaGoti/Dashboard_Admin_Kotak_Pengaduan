@@ -13,7 +13,7 @@
           <img
             alt="..."
             class="w-full rounded-full align-middle border-none shadow-lg"
-            :src="image"
+            :src="profileList.avatar"
           />
         </span>
       </div>
@@ -62,13 +62,25 @@
 import { createPopper } from "@popperjs/core";
 
 import image from "@/assets/img/team-1-800x800.jpg";
+import { ProfileController } from "../../controller/ProfileController";
+import { removeAuth } from "../..//Utils/localstorage";
 
 export default {
   data() {
     return {
       dropdownPopoverShow: false,
       image: image,
+      Profile: new ProfileController(false,false,""),
     };
+  },
+  computed: {
+    profileList() {
+      return this.Profile.list;
+    },
+    isLoading() {
+      return this.notif.loading;
+    },
+
   },
   methods: {
     toggleDropdown: function (event) {
@@ -81,6 +93,19 @@ export default {
           placement: "bottom-start",
         });
       }
+    },
+    logout() {
+      this.loadingStatus = true;
+      setTimeout(removeAuth(), 3500);
+      localStorage.clear();
+      this.$router.push("/");
+      window.location.reload();
+    },
+    async getProfileLecturer() {
+      return this.Profile.getProfileLecturer();
+    },
+    async profile() {
+      await this.getProfileLecturer();
     },
   },
 };

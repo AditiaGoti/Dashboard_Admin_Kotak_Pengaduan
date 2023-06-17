@@ -1,6 +1,6 @@
 <template>
   <!-- Header -->
-  <div class="relative bg-emerald-600 md:pt-32 pb-32 pt-12 text-sm">
+  <div class="relative bg-blue-800 md:pt-32 pb-32 pt-12 text-sm">
     <div class="px-4 md:px-5 mx-auto w-full">
       <div>
         <!-- Card stats -->

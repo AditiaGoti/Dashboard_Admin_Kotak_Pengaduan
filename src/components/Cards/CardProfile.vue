@@ -16,7 +16,7 @@
       </div>
       <div class="flex justify-center">
         <div>
-      <img :src="image" class="rounded-full w-36 h-36"/>
+      <img :src="profileList.avatar" class="rounded-full w-36 h-36"/>
         </div>
         </div>
     </div>
@@ -36,6 +36,7 @@
               </label>
               <input
                 type="text"
+                v-model="profileList.name"
                 class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
               />
             </div>
@@ -49,6 +50,7 @@
                 Email address
               </label>
               <input
+              v-model="profileList.email"
                 type="email"
                 class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
               />
@@ -63,6 +65,7 @@
                 NIP
               </label>
               <input
+              v-model="profileList.nip"
                 type="text"
                 class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
               />
@@ -78,6 +81,7 @@
               </label>
               <input
                 type="text"
+                v-model="profileList.lecturer_type"
                 class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
               />
             </div>
@@ -85,32 +89,14 @@
         </div>
 
         <hr class="mt-6 border-b-1 border-blueGray-300" />
-
-        <h6 class="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
-          Contact Information
-        </h6>
-        <div class="flex flex-wrap">
-          <div class="w-full lg:w-12/12 px-4">
-            <div class="relative w-full mb-3">
-              <label
-                class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                htmlFor="grid-password"
-              >
-                Address
-              </label>
-              <input
-                type="text"
-                class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-              />
-            </div>
-          </div>
-          
-        </div>
       </form>
+      <div class="toast-container"></div>
+
       <div class="flex justify-end">
         <button
           class="bg-blue-500 text-white active:bg-emerald-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
           type="button"
+          :onClick="changeProfile"
         >
           Edit Profile
         </button>
@@ -127,14 +113,93 @@
   </div>
 </template>
 <script>
-import image from "@/assets/img/team-1-800x800.jpg";
+import { ProfileController } from "../../controller/ProfileController";
 
-export default ({
-data() {
-    return {
-      dropdownPopoverShow: false,
-      image: image,
-    };
+export default {
+  name: 'HelloWorld',
+  props: {
+    msg: String
   },
-})
+  data()
+{
+  return{
+    errorMessage: "",
+  Profile: new ProfileController(false, false, ""),
+  }
+},
+created() {
+  this.profile();
+  this.profileList.avatar = this.profileList.avatar || ''; // Assign value to profileList.avatar
+  this.profileList.name = this.profileList.name || ''; // Assign value to profileList.name
+  this.profileList.nip = this.profileList.nip || ''; // Assign value to profileList.nip
+  this.profileList.phoneNumber = this.profileList.phoneNumber || ''; // Assign value to profileList.phoneNumber
+  this.profileList.email = this.profileList.email || ''; // Assign value to profileList.email
+  },
+  computed: {
+    isError() {
+      return this.Profile.error;
+    },
+    profileList() {
+      return this.Profile.list;
+    },
+    errorCause() {
+      return this.Profile.errorCause;
+    },
+
+    isLoading() {
+      return this.Profile.loading;
+    },
+  },
+  methods: {
+    async changeProfile() {
+      await this.updateProfile(
+        this.profileList.avatar,
+        this.profileList.name,
+        this.profileList.nip,
+        this.profileList.phoneNumber,
+        this.profileList.email,
+      )
+      .then(() => {
+          const toast = document.createElement("div");
+          toast.className = "toast toast-success";
+          toast.innerHTML = "Berhasil Mengubah Profile";
+
+          const toastContainer = document.querySelector(".toast-container");
+          toastContainer.appendChild(toast);
+
+          setTimeout(() => {
+            toastContainer.removeChild(toast);
+            this.$router.push("/admin/profile");
+          }, 2000);
+        })
+        .catch((error) => {
+          console.error(error);
+          this.errorMessage = "Terjadi kesalahan saat Mengubah Profile";
+          const toast = document.createElement("div");
+          toast.className = "toast toast-error";
+          toast.innerHTML = this.errorMessage;
+          const toastContainer = document.querySelector(".toast-container");
+          toastContainer.appendChild(toast);
+
+          setTimeout(() => {
+            toastContainer.removeChild(toast);
+          }, 2000);        });},
+    async updateProfile(avatar,name,nim,phoneNumber,email) {
+      return this.Profile.updateProfileLecturer(
+        avatar,
+        name,
+        nim,
+        phoneNumber,
+        email
+       
+      );
+    },
+    async getProfileLecturer() {
+      return this.Profile.getProfileLecturer();
+    },
+    async profile() {
+      await this.getProfileLecturer();
+    },
+  },
+}
 </script>

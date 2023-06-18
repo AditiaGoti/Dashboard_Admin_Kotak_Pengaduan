@@ -5,6 +5,7 @@ export class StudentControllers {
     errorCause = ''
     response = []
     lists =[]
+    data = []
     constructor(loading, error, errorCause) {
         this.loading = loading
         this.error = error
@@ -20,6 +21,18 @@ export class StudentControllers {
               console.log("student",response.data.data.list)
               return response   
           }
+          async searchStudent(name) {
+            const token = localStorage.getItem('kpjtik_access_token')
+            console.log("token",token)
+            setBearerToken(token);  
+                  const response = await axiosInstance.get(`/super/v1/student?name=${name}`)
+                  this.setLists(response.data.data.list);
+                  console.log("student",response.data.data.list)
+                  return response   
+              }
+          // setData(data){
+          //   this.data = data
+          // }
           setLists(data) {
               this.lists = data
           }

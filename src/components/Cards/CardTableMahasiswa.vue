@@ -13,6 +13,7 @@
             Tabel Mahasiswa
           </h3>
         </div>
+              <div v-if="[1, 2, 5].includes(profileList.lecturer_type)" class="items-center">
         <router-link
           to="/admin/ImportMahasiswa"
           class="text-blue-500 bg-white mr-2 border-2 font-bold focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center hover:bg-blue-200"
@@ -21,20 +22,20 @@
         </router-link> 
   <router-link
           to="/admin/TambahMahasiswa"
-          class="text-white bg-blue-500 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 mr-4 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          class="text-white bg-blue-500 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 mr-4 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >
           Tambah Pengguna
         </router-link>      
-      
-<form class="flex items-center">   
+              </div>
+<form class="flex items-center" @submit.prevent="studentSearch" >   
     <label for="simple-search" class="sr-only">Search</label>
     <div class="relative w-full">
         <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
             <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
         </div>
-        <input type="text" v-model="name" id="simple-search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search" required>
+        <input type="text" v-model="name" id="simple-search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search" >
     </div>
-    <button type="submit" @submit.prevent="studentSearch" class="p-2.5 ml-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+    <button type="submit" class="p-2.5 ml-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
         <span class="sr-only">Search</span>
     </button>
@@ -125,12 +126,48 @@
             </td> 
           </tr>
         </tbody>
-        <div class="modal-backdrop" v-if="showModal"></div>
+      </table>
+      <nav class="text-center py-3">
+  <ul class="list-style-none flex px-3 justify-between mb-3">
+    <li>
+      <a
+        class="relative block cursor-pointer rounded bg-blue-600 px-3 py-1.5 text-sm text-white font-bold transition-all duration-300 hover:bg-blue-400"
+        @click="goToPreviousPage"
+        :disabled="meta.page === 1"
+        :class="{ 'cursor-pointer-none': meta.page === 1 }"
+      >
+        Previous
+      </a>
+    </li>
+    <li class="px-3 mt-1 max-w overflow-x-scroll">
+      <a
+        class="rounded overflow-x-scroll px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-200  hover:text-black"
+        v-for="page in studentData.totalPage"
+        :key="page"
+        :class="{ 'bg-blue-600 font-bold text-white': page === meta.page }"
+        @click="goToPage(page)"
+      >
+        {{ page }}
+      </a>
+    </li>
+    <li>
+      <a
+        class="relative block cursor-pointer rounded bg-blue-600 px-3 py-1.5 text-sm text-white font-bold transition-all duration-300 hover:bg-blue-400"
+        @click="goToNextPage"
+        :disabled="page === studentData.totalPage"
+        :class="{ 'pointer-events-none': page === studentData.totalPage }"
+      >
+        Next
+      </a>
+    </li>
+  </ul>
+</nav>
+  <div class="modal-backdrop" v-if="showModal"></div>
         <div v-if="showModal">
 <div class="modal-backdrop"></div>
 <div class="modal">
   <div class="flex flex-row justify-between">
-  <p class="text-xl font-bold	text-red-500 mb-6">Detail Admin</p>
+  <p class="text-xl font-bold	text-red-500 mb-6">Detail Mahasiswa</p>
   <div>
     <button @click="closeModal">
 <img
@@ -166,6 +203,7 @@ alt="..."
 </div>
 <hr class="mb-5 "/>
 <footer className="bg-white flex flex-row-reverse">
+      <div v-if="[1, 2, 5].includes(profileList.lecturer_type)" class="items-center">
 <button class="w-fit
 py-3
 pl-4
@@ -180,11 +218,11 @@ hover:bg-red-300"
 @click="deletedStudent(selectedStudent._id)"> 
 Hapus Akun
 </button>
+      </div>
 </footer>
   <!-- <div @click="showModal = false">Tutup Modal</div> -->
 </div>
 </div>
-      </table>
       <div class="toast-container"></div>
 
     </div>
@@ -195,6 +233,8 @@ Hapus Akun
 import bootstrap from "@/assets/img/bootstrap.jpg";
 import {StudentControllers} from "../../controller/StudentController"
 import moment from "moment";
+import close from "@/assets/img/x.svg";
+import { ProfileController } from "../../controller/ProfileController";
 
 export default {
   data() {
@@ -202,12 +242,18 @@ export default {
       moment: moment,
       meta: {
           page: 1,
-          size: "10",
+          limit: 25,
         },
+        close,
       bootstrap,
+      currentPage:1,
+      TotalData:"",
+      TotalPage:"",
       selectedStudent:null,
       showModal: false,
       student: new StudentControllers(false, false, ""),
+                    Profile: new ProfileController(false, false, ""),
+
     };
   },
   computed:{
@@ -217,23 +263,30 @@ export default {
       studentList() {
         return this.student.lists;
       },
-      searchStudents(){
+      studentData(){
         return this.student.data;
       },
       errorCause() {
         return this.student.errorCause;
       },
-  
       isLoading() {
         return this.student.loading;
       },
+      profileList() {
+      return this.Profile.list; }
   },
   mounted() {
       this.getStudent();
+      this.getPageStudent() ;
       console.log(this.student,"student"); // Add this line to log the complaint data
-
+      this.profile();
     },
     methods: {
+       async getProfile() {
+      return this.Profile.getProfile(); },
+      async profile() {
+      await this.getProfile();
+    },
       closeModal() {
     this.showModal = false;
     console.log('Modal telah ditutup');
@@ -247,21 +300,47 @@ async searchStudent(name) {
 },
 
 async studentSearch() {
-  await this.searchStudent(this.$route.params.name);
+  await this.searchStudent(this.name);
 },
-  async getStudentList(page, size) {
-        return this.student.getStudentList(page, size);
+  async getStudentList(page, limit) {
+        return this.student.getStudentList(page, limit);
       },
       async getStudent() {
-        await this.getStudentList(this.meta.page, this.meta.size);
+        await this.getStudentList(this.meta.page, this.meta.limit);
       },
+      async goToPreviousPage() {
+  if (this.meta.page > 1) {
+    this.meta.page--;
+    await this.getStudentPage(this.meta.page, this.meta.limit);
+  }
+},
+
+async goToNextPage() {
+    this.meta.page++;
+    await this.getStudentPage(this.meta.page, this.meta.limit);
+    console.log(this.meta.page, this.meta.limit,"page")
+  
+},
+
+async getStudentPage(page, limit) {
+  return this.student.getStudentPage(page, limit);
+},
+async goToPage(page) {
+  this.meta.page = page;
+  await this.getStudentPage(this.meta.page, this.meta.limit);
+  console.log(this.getLecturerPage, "page")
+},
+async getPageStudent() {
+  this.meta.page = 1;
+  await this.getStudentPage(this.meta.page, this.meta.limit);
+},
       async deletedStudent(student_id) {
         await this.studentDeleted(
           student_id
           ).then(() => {
           const toast = document.createElement("div");
           toast.className = "toast toast-success";
-          toast.innerHTML = "Menghapus Mahasiswa Berhasil ";
+          toast.innerHTML = "Berhasil Menghapus Mahasiswa";
 
           const toastContainer = document.querySelector(".toast-container");
           toastContainer.appendChild(toast);
@@ -351,5 +430,13 @@ td:hover .moderasi {
 }
 .toast-error {
   background-color: red;
+}
+.pagination-container {
+  overflow-x: auto;
+  width: 100%;
+}
+
+ul.list-style-none {
+  white-space: nowrap;
 }
 </style>

@@ -13,9 +13,16 @@
           User Information
         </h6>
         <div class="flex justify-center">
+      <div v-if="avatar === null || avatar === ''">
+              <img :src="profile" class="rounded-full w-36 h-36"/>
+
+      </div>
+      <div v-else>
       <img :src="avatar" class="rounded-full w-36 h-36"/>
+      </div>
         </div>
         <input type="file" class="text-left ml-4 py-2" @change="handleFileUpload" accept="image/*">
+          <p class="text-xs ml-3 text-red-500">*boleh dikosongkan </p>
         <div class="flex flex-wrap">
           <div class="w-full lg:w-6/12 px-4">
             <div class="relative w-full mb-3">
@@ -79,11 +86,6 @@
                 type="password"
                 class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                 placeholder="Masukan Password"
-                @focus="focus"
-              :class="{
-                'outline-blue-input': !errorMsg.password,
-                'outline-red-star': errorMsg.password,
-              }"
               />
               <input
               v-model="password"
@@ -91,26 +93,19 @@
                 type="password"
                 class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                 placeholder="Masukan Password"
-                @focus="focus"
-              :class="{
-                'outline-blue-input': !errorMsg.password,
-                'outline-red-star': errorMsg.password,
-              }"
               />
             </div>
           </div>
-          <p v-if="errorMsg.password" class="text-red-star mx-[30px] mb-4">
-          {{ errorMsg.password }} </p>
           <div class="w-full lg:w-6/12 px-4">
   <div class="relative w-full mb-3">
     <label
       class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
       htmlFor="grid-password"
     >
-      Role
+      Divisi
     </label>
     <select
-      v-model="selectedLecturerId"
+      v-model="lecturer_type"
       class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
       id="lecturer-select"
     >
@@ -128,7 +123,7 @@
                 No Telp
               </label>
               <input
-                type="text"
+                type="number"
                 v-model="phoneNumber"
                 class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                 placeholder="Masukan Nomor Telpon Pengguna"
@@ -141,7 +136,7 @@
         <button
           type="button"
           :onClick="createLecturers"
-          class="text-white bg-blue-500 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          class="text-white bg-blue-500 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >
           Tambah Pengguna
         </button>
@@ -166,6 +161,7 @@
 <script>
 import angular from "../../assets/img/angular.jpg"
 import {LecturerControllers} from "../../controller/LecturerController"
+import profile from "../../assets/img/profile.svg"
 
 export default {
   name: 'HelloWorld',
@@ -179,16 +175,17 @@ export default {
         page: 1,
         size: "",
       },
-  avatar:"",
+  avatar:null,
+  file:"",
   name: "",
   nip: "",
   email: "",
   password: "",
   phoneNumber: "",
   lecturer_type: "",
-  imageFolder:'student',
   errorMessage: "",
   angular,
+  profile,
   validate: {
           emptyAvatar: false,
           emptyName: false,
@@ -239,60 +236,33 @@ created() {
     },
   },
   methods: {
-    validateName(name) {
-        if (name == "") {
-          this.errorMsg.name = "Nama tidak boleh Kosong";
-        }
-      },
-      validatePassword(password) {
-        if (password == "") {
-          this.errorMsg.password = "Password tidak boleh Kosong";
-        }
-      },
-      validateNip(nip) {
-        if (nip == "") {
-          this.errorMsg.nip = "NIP tidak boleh Kosong";
-        }
-      },
-      validateEmail(email) {
-        if (email == "") {
-          this.errorMsg.email = "Email tidak boleh Kosong";
-        }
-      },
-      validateAvatar(avatar) {
-        if (avatar == "") {
-          this.errorMsg.avatar = "Avatar tidak boleh Kosong";
-        }
-      },
-      validatePhonenumber(phoneNumber) {
-        if (phoneNumber == "") {
-          this.errorMsg.phoneNumber = "Nomor Telfon tidak boleh Kosong";
-        }
-      },
-      validateLectuereType(lecturer_type) {
-        if (lecturer_type == "") {
-          this.errorMsg.lecturer_type = "Lecturer Type tidak boleh Kosong";
-        }
-      },
-      async handleFileUpload(event) {
-  const file = event.target.files[0];
-  console.log("file", file.type);
-  const allowedFormats = ["image/jpeg", "image/jpg", "image/png"];
+  async handleFileUpload(event) {
+  const maxFileSize = 2 * 1024 * 1024; // 2MB
+  let formData = new FormData();
+  this.file = event.target.files[0];
   
-  if (file && allowedFormats.includes(file.type)) {
-    const imageUrl = URL.createObjectURL(file); // Convert File object to a data URL
-    this.avatar = imageUrl;
+  if (this.file.size > maxFileSize) {
+          this.errorMessage = "Gagal Menggunakan Gambar, Ukuran Gambar Maksimal 2Mb";
+          const toast = document.createElement("div");
+          toast.className = "toast toast-error";
+          toast.innerHTML = this.errorMessage;
+          const toastContainer = document.querySelector(".toast-container");
+          toastContainer.appendChild(toast);
 
-    const response = await this.lecturer.uploadImage(
-      this.avatar,
-      this.imageFolder
-    );
-
-    console.log(response, "response");
-    return response;
-  } else {
-    alert("Accepted file formats are: jpg, jpeg, png");
+          setTimeout(() => {
+            toastContainer.removeChild(toast);
+          }, 2000);
+              return;
   }
+  formData.append('image', this.file);
+  formData.append('imageFolder', 'lecturer');
+  const responseUploadImage = await this.lecturer.uploadImage({data : formData});
+  this.setAvatar(responseUploadImage.data.data)
+  console.log(responseUploadImage.data.data)
+  return responseUploadImage
+},
+setAvatar(data){
+  this.avatar = data
 },
     async createLecturers() {
       await this.createLecturer(
@@ -313,12 +283,12 @@ created() {
 
           setTimeout(() => {
             toastContainer.removeChild(toast);
-            this.$router.push("/admin/mahasiswa");
+            this.$router.push("/admin/admin");
           }, 2000);
         })
-        .catch((error) => {
-          console.error(error);
-          this.errorMessage = "Terjadi kesalahan saat menambahkan Admin";
+        .catch(() => {
+          if(this.errorCause === "Validation error, \"name\" is not allowed to be empty"){
+          this.errorMessage = "Nama Tidak Boleh Kosong";
           const toast = document.createElement("div");
           toast.className = "toast toast-error";
           toast.innerHTML = this.errorMessage;
@@ -327,7 +297,117 @@ created() {
 
           setTimeout(() => {
             toastContainer.removeChild(toast);
-          }, 2000);        });},
+          }, 2000);
+          }
+          else if(this.nip == ""){
+          this.errorMessage = "Nip Tidak Boleh Kosong";
+          const toast = document.createElement("div");
+          toast.className = "toast toast-error";
+          toast.innerHTML = this.errorMessage;
+          const toastContainer = document.querySelector(".toast-container");
+          toastContainer.appendChild(toast);
+
+          setTimeout(() => {
+            toastContainer.removeChild(toast);
+          }, 2000);
+          }
+          else if(this.errorCause == "NIP telah terdaftar!"){
+             this.errorMessage = "NIP telah terdaftar!";
+          const toast = document.createElement("div");
+          toast.className = "toast toast-error";
+          toast.innerHTML = this.errorMessage;
+          const toastContainer = document.querySelector(".toast-container");
+          toastContainer.appendChild(toast);
+
+          setTimeout(() => {
+            toastContainer.removeChild(toast);
+          }, 2000);
+          }
+          else if(this.email == ""){
+          this.errorMessage = "Email Tidak Boleh Kosong";
+          const toast = document.createElement("div");
+          toast.className = "toast toast-error";
+          toast.innerHTML = this.errorMessage;
+          const toastContainer = document.querySelector(".toast-container");
+          toastContainer.appendChild(toast);
+
+          setTimeout(() => {
+            toastContainer.removeChild(toast);
+          }, 2000);
+          }
+          else if(this.password == ""){
+          this.errorMessage = "Password Tidak Boleh Kosong";
+          const toast = document.createElement("div");
+          toast.className = "toast toast-error";
+          toast.innerHTML = this.errorMessage;
+          const toastContainer = document.querySelector(".toast-container");
+          toastContainer.appendChild(toast);
+
+          setTimeout(() => {
+            toastContainer.removeChild(toast);
+          }, 2000);
+          }
+           else if (!/^(?=.*[A-Z])(?=.*\d)[a-zA-Z0-9!@#$%^&*()+=._-]{8,}$/.test(this.password)) {
+        this.errorMessage = "Password Harus terdiri dari 1 huruf besar dan minimal 8 karakter";
+        const toast = document.createElement("div");
+        toast.className = "toast toast-error";
+        toast.innerHTML = this.errorMessage;
+        const toastContainer = document.querySelector(".toast-container");
+        toastContainer.appendChild(toast);
+
+        setTimeout(() => {
+          toastContainer.removeChild(toast);
+        }, 2000);
+      }
+        else if (this.phoneNumber === "") {
+          this.errorMessage = "Nomor HP Tidak Boleh Kosong";
+          const toast = document.createElement("div");
+          toast.className = "toast toast-error";
+          toast.innerHTML = this.errorMessage;
+          const toastContainer = document.querySelector(".toast-container");
+          toastContainer.appendChild(toast);
+
+          setTimeout(() => {
+            toastContainer.removeChild(toast);
+          }, 2000);
+        } 
+        else if (this.errorCause === "Nomor telepon harus dimulai dengan angka 62 dan diikuti dengan 7-16 nomor") {
+          this.errorMessage = "Nomor telepon harus dimulai dengan angka 62 dan diikuti dengan 7-16 nomor";
+          const toast = document.createElement("div");
+          toast.className = "toast toast-error";
+          toast.innerHTML = this.errorMessage;
+          const toastContainer = document.querySelector(".toast-container");
+          toastContainer.appendChild(toast);
+
+          setTimeout(() => {
+            toastContainer.removeChild(toast);
+          }, 2000);
+        }
+          else if(this.lecturer_type == ""){
+          this.errorMessage = "Role Tidak Boleh Kosong";
+          const toast = document.createElement("div");
+          toast.className = "toast toast-error";
+          toast.innerHTML = this.errorMessage;
+          const toastContainer = document.querySelector(".toast-container");
+          toastContainer.appendChild(toast);
+
+          setTimeout(() => {
+            toastContainer.removeChild(toast);
+          }, 2000);
+          }
+          else {
+          this.errorMessage = "Terjadi Error, Gagal Menambahkan Admin";
+          const toast = document.createElement("div");
+          toast.className = "toast toast-error";
+          toast.innerHTML = this.errorMessage;
+          const toastContainer = document.querySelector(".toast-container");
+          toastContainer.appendChild(toast);
+
+          setTimeout(() => {
+            toastContainer.removeChild(toast);
+          }, 2000);
+          }
+          });},
           async getLecturerTypeList(page, size) {
         return this.lecturer.getLecturerTypeList(page, size);
       },

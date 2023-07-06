@@ -13,7 +13,7 @@
             Tabel Komentar
           </h3>
         </div>
-         <!-- <div v-if="(lecturer === 1 || lecturer === 2 || lecturer === 3 || lecturer === 5 || lecturer === 6 || lecturer === 7 || lecturer === 8 || lecturer === 9)"> -->
+         <div v-if="(lecturer === 1 || lecturer === 2 || lecturer === 3 || lecturer === 5 || lecturer === 6 || lecturer === 7 || lecturer === 8 || lecturer === 9)">
 <form class="flex items-center" @submit.prevent="commentSearch" >   
     <label for="simple-search" class="sr-only">Search</label>
     <div class="relative w-full">
@@ -27,8 +27,8 @@
         <span class="sr-only">Search</span>
     </button>
 </form>
-<!-- </div> -->
-<!-- <div v-else> 
+</div>
+<div v-else> 
   <form class="flex items-center" @submit.prevent="commentSuperSearch" >   
     <label for="simple-search" class="sr-only">Search</label>
     <div class="relative w-full">
@@ -42,7 +42,7 @@
         <span class="sr-only">Search</span>
     </button>
 </form>
-</div> -->
+</div>
       </div>
     </div>
     <div class="block w-full overflow-x-auto">
@@ -69,6 +69,16 @@
               ]"
             >
               Komentar
+            </th>
+                        <th
+              class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+              :class="[
+                color === 'light'
+                  ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
+                  : 'bg-emerald-800 text-emerald-300 border-emerald-700',
+              ]"
+            >
+              Judul Keluhan
             </th>
             <th
               class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
@@ -100,8 +110,8 @@
             ></th>
           </tr>
         </thead>
-        <tbody v-if="commentList.length > 0">
-    <tr v-for="(comment,index) in commentList" :key="comment._id">
+        <tbody v-if="commentSuperList.length > 0">
+    <tr v-for="(comment,index) in commentSuperList" :key="comment._id">
             <th
               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center"
             >
@@ -127,6 +137,11 @@
             <td
               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
             >
+              {{comment.complaint.title}}
+            </td>
+            <td
+              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
+            >
             {{ moment(comment.createdAt).locale("id").format("DD-MM-YYYY") }}   
             </td>
             <td
@@ -144,13 +159,12 @@
     </tr>
   </tbody>
       </table>
-      <!-- <div v-if="(lecturer === 1 || lecturer === 2 || lecturer === 3 || lecturer === 5 || lecturer === 6 || lecturer === 7 || lecturer === 8 || lecturer === 9)"> -->
-      <nav class="text-center py-3">
+      <nav class="text-center">
   <ul class="list-style-none flex px-3 justify-between mb-3">
     <li>
       <a
         class="relative block cursor-pointer rounded bg-blue-600 px-3 py-1.5 text-sm text-white font-bold transition-all duration-300 hover:bg-blue-400"
-        @click="goToPreviousPageSuper"
+        @click="goToPreviousPage"
         :disabled="meta.page === 1"
         :class="{ 'cursor-pointer-none': meta.page === 1 }"
       >
@@ -159,44 +173,7 @@
     </li>
     <li class="px-3 mt-1 max-w overflow-x-scroll">
       <a
-        class="rounded overflow-x-scroll px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-200  hover:text-black"
-        v-for="page in commentSuperData.totalPage"
-        :key="page"
-        :class="{ 'bg-blue-600 font-bold text-white': page === meta.page }"
-        @click="goToPageSuper(page)"
-      >
-        {{ page }}
-      </a>
-    </li>
-    <li>
-      <a
-        class="relative block cursor-pointer rounded bg-blue-600 px-3 py-1.5 text-sm text-white font-bold transition-all duration-300 hover:bg-blue-400"
-        @click="goToNextPageSuper"
-        :disabled="page === commentSuperData.totalPage"
-        :class="{ 'pointer-events-none': page === commentSuperData.totalPage }"
-      >
-        Next
-      </a>
-    </li>
-  </ul>
-</nav>
-      <!-- </div> -->
-      <!-- <div v-else>
-        <nav class="text-center py-3">
-  <ul class="list-style-none flex px-3 justify-between mb-3">
-    <li>
-      <a
-        class="relative block cursor-pointer rounded bg-blue-600 px-3 py-1.5 text-sm text-white font-bold transition-all duration-300 hover:bg-blue-400"
-        @click="goToPreviousPageSuper"
-        :disabled="meta.page === 1"
-        :class="{ 'cursor-pointer-none': meta.page === 1 }"
-      >
-        Previous
-      </a>
-    </li>
-    <li class="px-3 mt-1 max-w overflow-x-scroll">
-      <a
-        class="rounded overflow-x-scroll px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-200  hover:text-black"
+        class="rounded overflow-x-scroll bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-200  hover:text-black"
         v-for="page in commentData.totalPage"
         :key="page"
         :class="{ 'bg-blue-600 font-bold text-white': page === meta.page }"
@@ -217,8 +194,7 @@
     </li>
   </ul>
 </nav>
-      </div> -->
-       <div class="modal-backdrop" v-if="showModal"></div>
+ <div class="modal-backdrop" v-if="showModal"></div>
   <div v-if="showModal">
                 <div class="modal-backdrop"></div>
                 <div class="modal">
@@ -250,10 +226,8 @@
                     </div>
                 </div>
                 <hr class="mb-5 "/>
-                          <div v-if="[1, 2, 5].includes(profileList.lecturer_type)" class="items-center">
-
                 <footer className="bg-white flex flex-row-reverse">
-  
+            <div v-if="[1, 2, 5].includes(profileList.lecturer_type)" class="items-center">
             <button class="w-fit
         py-3
         pl-4
@@ -267,8 +241,8 @@
         @click="deletedComment(selectedComment.complaint_id)">
               Hapus Komentar
             </button>
+            </div>
           </footer>
-                          </div>
                 </div                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        >
               </div>
       <div class="toast-container"></div>
@@ -294,6 +268,9 @@ export default {
         },
       bootstrap,
       close,
+      currentPage:1,
+      TotalData:"",
+      TotalPage:"",
       selectedComment : null,
       showModal: false,
       errorMsg: {
@@ -308,16 +285,13 @@ export default {
     isError() {
         return this.comment.error;
       },
-      commentList() {
+      commentSuperSeacrh() {
+        return this.comment.lists;
+      },
+      commentSuperList() {
         return this.comment.lists;
       },
       commentData(){
-        return this.comment.data;
-      },
-      commentSeacrh() {
-        return this.comment.lists;
-      },
-      commentSuperData(){
         return this.comment.data;
       },
       errorCause() {
@@ -331,19 +305,15 @@ export default {
       return this.Profile.list; }
   },
   mounted() {
-      this.getComment();
       console.log(this.comment,"complaint"); // Add this line to log the complaint data
+      this.getCommentSuper();
       this.profile();
-      this.commentSearch();
+      this.commentSuperSearch();
       this.getPageComment();
     },
    methods: {
     toCommentDetail(index) {
-  if (this.lecturer === 1 || this.lecturer === 2 || this.lecturer === 3 || this.lecturer === 5 || this.lecturer === 6 || this.lecturer === 7 || this.lecturer === 8 || this.lecturer === 9) {
     this.selectedComment = this.commentSuperList[index];
-  } else {
-    this.selectedComment = this.commentList[index];
-  }
   console.log(this.selectedComment, "complain selected");
   this.showModal = true;
 },
@@ -352,117 +322,28 @@ export default {
     this.showModal = false;
     console.log('Modal telah ditutup'); // tambahkan console log di sini
   },
-  async getCommentList(page, size) {
-        return this.comment.getCommentList(page, size);
+      async getSuperCommentList(page, limit) {
+        return this.comment.getSuperCommentList(page, limit);
       },
-      async getComment() {
-        await this.getCommentList(this.meta.page, this.meta.size);
+      async getCommentSuper() {
+        await this.getSuperCommentList(this.meta.page, this.meta.limit);
       },
-      // async getSuperCommentList(page, size) {
-      //   return this.comment.getSuperCommentList(page, size);
-      // },
-      // async getCommentSuper() {
-      //   await this.getSuperCommentList(this.meta.page, this.meta.size);
-      // },
       async getProfile() {
       return this.Profile.getProfile(); },
       async profile() {
       await this.getProfile();
     },
-async goToPreviousPage() {
-  if (this.meta.page > 1) {
-    this.meta.page--;
-    await this.getSuperCommentPage(this.meta.page, this.meta.limit);
-  }
-},
-
-async goToNextPage() {
-    this.meta.page++;
-    await this.getCommentPage(this.meta.page, this.meta.limit);
-    console.log(this.meta.page, this.meta.limit,"page")
   
-},
 
-async getCommentPage(page, limit) {
-  return this.comment.getCommentPage(page, limit);
-},
-async goToPage(page) {
-  this.meta.page = page;
-  await this.getCommentPage(this.meta.page, this.meta.limit);
-  console.log(this.getLecturerPage, "page")
-},
-async getPageComment() {
-  this.meta.page = 1;
-  await this.getCommentPage(this.meta.page, this.meta.limit);
-},
-// async goToPreviousPageSuper() {
-//   if (this.meta.page > 1) {
-//     this.meta.page--;
-//     await this.getSuperCommentPage(this.meta.page, this.meta.limit);
-//   }
-// },
-
-// async goToNextPageSuper() {
-//     this.meta.page++;
-//     await this.getSuperCommentPage(this.meta.page, this.meta.limit);
-//     console.log(this.meta.page, this.meta.limit,"page")
-  
-// },
-
-// async getSuperCommentPage(page, limit) {
-//   return this.comment.getSuperCommentPage(page, limit);
-// },
-// async goToPageSuper(page) {
-//   this.meta.page = page;
-//   await this.getSuperCommentPage(this.meta.page, this.meta.limit);
-//   console.log(this.getLecturerPage, "page")
-// },
-// async getPageCommentSuper() {
-//   this.meta.page = 1;
-//   await this.getSuperCommentPage(this.meta.page, this.meta.limit);
-// },
-// async commentSuperSearch() {
-// if (!this.message) {
-//     return this.getSuperCommentList();
-//   } else {
-//     try{
-//     await this.getCommentbyMessage(this.message);
-//     }
-//     catch(error){
-//      if(this.errorCause === "Komentar tidak ditemukan!"){
-//       console.error(error);
-//           this.errorMessage = "Komentar tidak ditemukan!";
-//           const toast = document.createElement("div");
-//           toast.className = "toast toast-error";
-//           toast.innerHTML = this.errorMessage;
-//           const toastContainer = document.querySelector(".toast-container");
-//           toastContainer.appendChild(toast);
-
-//           setTimeout(() => {
-//             toastContainer.removeChild(toast);
-//           }, 2000);    
-//     }}
-//   }},
-// async getCommentbyMessage (message) {
-// if (!message) {
-//     return this.getSuperCommentList();
-//   } else {
-//   return this.comment.getCommentbyMessage(message);
-//   }},
-async getCommentMessage (message) {
-  return this.comment.getCommentMessage(message);
-},
-
-async commentSearch() {
-  if(!this.message){
-    return this.getCommentList();
-
-  } else{
+async commentSuperSearch() {
+if (!this.message) {
+    return this.getSuperCommentList();
+  } else {
     try{
-  await this.getCommentMessage(this.message);
+    await this.getCommentbyMessage(this.message);
     }
     catch(error){
-      if(this.errorCause === "Data tidak ditemukan!"){
+     if(this.errorCause === "Komentar tidak ditemukan!"){
       console.error(error);
           this.errorMessage = "Komentar tidak ditemukan!";
           const toast = document.createElement("div");
@@ -474,18 +355,47 @@ async commentSearch() {
           setTimeout(() => {
             toastContainer.removeChild(toast);
           }, 2000);    
-    }
-    }
+    }}
+  }},
+async getCommentbyMessage (message) {
+if (!message) {
+    return this.getSuperCommentList();
+  } else {
+  return this.comment.getCommentbyMessage(message);
+  }},
+async goToPreviousPage() {
+  if (this.meta.page > 1) {
+    this.meta.page--;
+    await this.getSuperCommentPage(this.meta.page, this.meta.limit);
   }
 },
 
+async goToNextPage() {
+    this.meta.page++;
+    await this.getSuperCommentPage(this.meta.page, this.meta.limit);
+    console.log(this.meta.page, this.meta.limit,"page")
+  
+},
+
+async getSuperCommentPage(page, limit) {
+  return this.comment.getSuperCommentPage(page, limit);
+},
+async goToPage(page) {
+  this.meta.page = page;
+  await this.getSuperCommentPage(this.meta.page, this.meta.limit);
+  console.log(this.getLecturerPage, "page")
+},
+async getPageComment() {
+  this.meta.page = 1;
+  await this.getSuperCommentPage(this.meta.page, this.meta.limit);
+},
     async deletedComment(comment_id) {
         await this.commentDeleted(
           comment_id
           ).then(() => {
           const toast = document.createElement("div");
           toast.className = "toast toast-success";
-          toast.innerHTML = " Berhasil Menghapus Komentar ";
+          toast.innerHTML = "Berhasil Menghapus Komentar ";
 
           const toastContainer = document.querySelector(".toast-container");
           toastContainer.appendChild(toast);

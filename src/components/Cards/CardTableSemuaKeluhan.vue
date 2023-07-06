@@ -13,6 +13,7 @@
             Tabel Keluhan
           </h3>
         </div>
+<div v-if="(lecturer === 1 || lecturer === 2 || lecturer === 3 || lecturer === 5 || lecturer === 6 || lecturer === 7 || lecturer === 8 || lecturer === 9)">
 <form class="flex items-center" @submit.prevent="complaintSearch" >   
     <label for="simple-search" class="sr-only">Search</label>
     <div class="relative w-full">
@@ -26,6 +27,22 @@
         <span class="sr-only">Search</span>
     </button>
 </form>
+</div>
+<div v-else> 
+  <form class="flex items-center" @submit.prevent="complaintSuperSearch" >   
+    <label for="simple-search" class="sr-only">Search</label>
+    <div class="relative w-full">
+        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+            <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
+        </div>
+        <input type="text" v-model="title" id="simple-search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search" >
+    </div>
+    <button type="submit" class="p-2.5 ml-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+        <span class="sr-only">Search</span>
+    </button>
+</form>
+</div>
       </div>
     </div>
     <div class="block w-full overflow-x-auto">
@@ -103,8 +120,8 @@
             ></th>
           </tr>
         </thead>
-        <tbody  v-if="ComplaintList.length > 0" >
-          <tr  v-for="(complaint, index) in ComplaintList" :key="complaint._id">
+        <tbody  v-if=" ComplaintSuperList.length > 0 " >
+          <tr  v-for="(complaint, index) in  ComplaintSuperList" :key="complaint._id">
             <th
               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center"
             >
@@ -154,6 +171,8 @@
   </tbody>
       <!-- </div> -->
       </table>
+
+      <div class="toast-container"></div>
       <nav class="text-center py-3">
   <ul class="list-style-none flex px-3 justify-between mb-3">
     <li>
@@ -189,7 +208,7 @@
     </li>
   </ul>
 </nav>
-      <div class="modal-backdrop" v-if="showModal"></div>
+ <div class="modal-backdrop" v-if="showModal"></div>
 
 <div v-if="showModal">
 <div class="modal-backdrop"></div>
@@ -216,7 +235,8 @@ alt="..."
         <div class="h-64 overflow-auto">
                         <p type="textarea" class="text-md text-left border-none break-words whitespace-normal mb-5">{{selectedComplaint.body}}</p>
                         </div>      
-      </div>
+                        </div>
+      
     </div>
     <div class="flex flex-col">
         <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Kategori Keluhan </p>
@@ -232,8 +252,8 @@ alt="..."
       </div>
 </div>
 <hr class="mb-5 "/>
-          <div v-if="[1, 2, 5].includes(profileList.lecturer_type)" class="items-center">
 <footer className="bg-white flex flex-row-reverse">
+            <div v-if="[1, 2, 5].includes(profileList.lecturer_type)" class="items-center">
 <button class="w-fit
 py-3
 pl-4
@@ -248,13 +268,11 @@ hover:bg-red-300"
 @click="deletedComplaint(selectedComplaint._id)"> 
 Hapus Keluhan
 </button>
+            </div>
 </footer>
-          </div>
   <!-- <div @click="showModal = false">Tutup Modal</div> -->
 </div>
 </div>
-      <div class="toast-container"></div>
-      
     </div>
   </div>
 </template>
@@ -288,10 +306,10 @@ export default {
     isError() {
         return this.complaint.error;
       },
-      ComplaintList() {
+      ComplaintSuperList() {
         return this.complaint.lists;
       },
-      ComplaintData() {
+      ComplaintData(){
         return this.complaint.data;
       },
       errorCause() {
@@ -306,7 +324,7 @@ export default {
     },
   },
   mounted() {
-      this.getComplaint();
+      this.getComplaintSuper();
       this.profile();
       this.getPageComplaint();
       console.log(this.complaint,"complaint"); // Add this line to log the complaint data
@@ -314,8 +332,7 @@ export default {
     },
   methods: {
     toComplaintDetail(index) {
-    this.selectedComplaint = this.ComplaintList[index];
-  console.log(this.selectedComplaint, "complain selected");
+    this.selectedComplaint = this.ComplaintSuperList[index];
   this.showModal = true;
 },
 
@@ -323,52 +340,27 @@ export default {
     this.showModal = false;
     console.log('Modal telah ditutup');
   },
-      async getComplaintListLecturer(page, limit) {
-        return this.complaint.getComplaintListLecturer(page, limit);
+      async getComplaintListSuper(page, limit) {
+        return this.complaint.getComplaintListSuper(page, limit);
       },
-      async getComplaint() {
-        await this.getComplaintListLecturer(this.meta.page, this.meta.limit);
+      async getComplaintSuper() {
+        await this.getComplaintListSuper(this.meta.page, this.meta.limit);
       },
-async getComplaintTitle (title) {
-  return this.complaint.getComplaintTitle(title);
+      
+async getComplaintbyTitle (title) {
+  return this.complaint.getComplaintbyTitle(title);
 },
 
-async goToPreviousPage() {
-  if (this.meta.page > 1) {
-    this.meta.page--;
-    await this.getComplaintPage(this.meta.page, this.meta.limit);
-  }
-},
-
-async goToNextPage() {
-    this.meta.page++;
-    await this.getComplaintPage(this.meta.page, this.meta.limit);
-    console.log(this.meta.page, this.meta.limit,"page")
-  
-},
-
-async getComplaintPage(page, limit) {
-  return this.complaint.getComplaintPage(page, limit);
-},
-async goToPage(page) {
-  this.meta.page = page;
-  await this.getComplaintPage(this.meta.page, this.meta.limit);
-  console.log(this.getLecturerPage, "page")
-},
-async getPageComplaint() {
-  this.meta.page = 1;
-  await this.getComplaintPage(this.meta.page, this.meta.limit);
-},
-
-async complaintSearch() {
+async complaintSuperSearch() {
   if(!this.title){
-    await this.getComplaintListLecturer()
+    await this.getComplaintListSuper();
   }
-  try {
-  await this.getComplaintTitle(this.title);
-  }
-  catch(error){
-      if(this.errorCause === "Data tidak ditemukan!"){
+  else{
+    try {
+  await this.getComplaintbyTitle(this.title);
+    }
+    catch(error){
+ if(this.errorCause === "Data tidak ditemukan!"){
         console.error(error);
           this.errorMessage = "Data Tidak Ditemukan";
           const toast = document.createElement("div");
@@ -380,8 +372,39 @@ async complaintSearch() {
           setTimeout(() => {
             toastContainer.removeChild(toast);
           }, 2000);   
-      }
+      }    }
+}},
+async getComplaintTitle (title) {
+  return this.complaint.getComplaintTitle(title);
+},
+      async goToPreviousPage() {
+  if (this.meta.page > 1) {
+    this.meta.page--;
+    await this.getComplaintSuperPage(this.meta.page, this.meta.limit);
   }
+},
+
+async goToNextPage() {
+    this.meta.page++;
+    await this.getComplaintSuperPage(this.meta.page, this.meta.limit);
+    console.log(this.meta.page, this.meta.limit,"page")
+  
+},
+
+async getComplaintSuperPage(page, limit) {
+  return this.complaint.getComplaintSuperPage(page, limit);
+},
+async goToPage(page) {
+  this.meta.page = page;
+  await this.getComplaintSuperPage(this.meta.page, this.meta.limit);
+  console.log(this.getLecturerPage, "page")
+},
+async getPageComplaint() {
+  this.meta.page = 1;
+  await this.getComplaintSuperPage(this.meta.page, this.meta.limit);
+},
+async complaintSearch() {
+  await this.getComplaintTitle(this.title);
 },
       async getProfile() {
       return this.Profile.getProfile();

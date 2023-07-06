@@ -13,9 +13,16 @@
           User Information
         </h6>
         <div class="flex justify-center">
+      <div v-if="avatar === null || avatar === ''">
+              <img :src="profile" class="rounded-full w-36 h-36"/>
+
+      </div>
+      <div v-else>
       <img :src="avatar" class="rounded-full w-36 h-36"/>
+      </div>
         </div>
         <input type="file" class="text-left ml-4 py-2" @change="handleFileUpload" accept="image/*">
+        <p class="text-xs ml-3 text-red-500">*boleh dikosongkan </p>
         <div class="flex flex-wrap">
           <div class="w-full lg:w-6/12 px-4">
             <div class="relative w-full mb-3">
@@ -30,16 +37,9 @@
                 type="text"
                 class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                 placeholder="Masukan Nama Pengguna"
-                :class="{
-              'outline-grey-input': !errorMsg.name,
-              'outline-red-star': errorMsg.name,
-            }"
               />
             </div>
           </div>
-          <p v-if="errorMsg.name" class="text-red-star">
-            {{ errorMsg.name }}
-          </p>
           <div class="w-full lg:w-6/12 px-4">
             <div class="relative w-full mb-3">
               <label
@@ -86,12 +86,6 @@
                 type="password"
                 class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                 placeholder="Masukan Password"
-                @focus="focus"
-
-              :class="{
-                'outline-blue-input': !errorMsg.password,
-                'outline-red-star': errorMsg.password,
-              }"
               />
               <input
               v-model="password"
@@ -99,17 +93,9 @@
                 type="password"
                 class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                 placeholder="Masukan Password"
-                @focus="focus"
-
-              :class="{
-                'outline-blue-input': !errorMsg.password,
-                'outline-red-star': errorMsg.password,
-              }"
               />
             </div>
           </div>
-          <p v-if="errorMsg.password" class="text-red-star mx-[30px] mb-4">
-          {{ errorMsg.password }} </p>
           <div class="w-full lg:w-6/12 px-4">
   <div class="relative w-full mb-3">
     <label
@@ -122,7 +108,6 @@
       v-model="major"
       class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
       id="major-select"
-      placeholder="Pilih Prodi"
     >
       <option value="" disabled selected>Pilih Prodi</option>
       <option value="TI">Teknik Informatika</option>
@@ -154,7 +139,7 @@
         <button
           type="button"
           :onClick="createStudents"
-          class="text-white bg-blue-500 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          class="text-white bg-blue-500 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >
           Tambah Pengguna
         </button>
@@ -178,6 +163,8 @@
 </template>
 <script>
 import angular from "../../assets/img/angular.jpg"
+import profile from "../../assets/img/profile.svg"
+
 import {StudentControllers} from "../../controller/StudentController"
 
 export default {
@@ -188,7 +175,10 @@ export default {
   data()
 {
   return{
-  avatar:"",
+  avatar:null,
+  previewAvatar: false,
+  fileImage: null,
+  file:"",
   name: "",
   nip: "",
   email: "",
@@ -198,31 +188,7 @@ export default {
   imageFolder:'student',
   errorMessage: "",
   angular,
-  validate: {
-          emptyAvatar: false,
-          emptyName: false,
-          emptyNim: false,
-          emptyEmail: false,
-          emptyPassword: false,
-          emptyPhoneNumber: false,
-          emptyMajor: false,
-          avatar : false,
-          name : false,
-          nim: false,
-          email : false,
-          password: false,
-          phoneNumber: false,
-          major: false
-        },
-  errorMsg: {
-    avatar:"",
-    name: "",
-    nim: "",
-    email: "",
-    password: "",
-    phoneNumber: "",
-    major: "",
-        },
+  profile,
   student: new StudentControllers(false, false, ""),
   }
 },
@@ -240,60 +206,34 @@ created() {
     },
   },
   methods: {
-    validateName(name) {
-        if (name == "") {
-          this.errorMsg.name = "Nama tidak boleh Kosong";
-        }
-      },
-      validatePassword(password) {
-        if (password == "") {
-          this.errorMsg.password = "Password tidak boleh Kosong";
-        }
-      },
-      validateNim(nim) {
-        if (nim == "") {
-          this.errorMsg.nim = "NIP tidak boleh Kosong";
-        }
-      },
-      validateEmail(email) {
-        if (email == "") {
-          this.errorMsg.email = "Email tidak boleh Kosong";
-        }
-      },
-      validateAvatar(avatar) {
-        if (avatar == "") {
-          this.errorMsg.avatar = "Avatar tidak boleh Kosong";
-        }
-      },
-      validatePhonenumber(phoneNumber) {
-        if (phoneNumber == "") {
-          this.errorMsg.phoneNumber = "Nomor Telfon tidak boleh Kosong";
-        }
-      },
-      validateMajor(major) {
-        if (major == "") {
-          this.errorMsg.major = "Lecturer Type tidak boleh Kosong";
-        }
-      },
-      async handleFileUpload(event) {
-  const file = event.target.files[0];
-  console.log("file", file.type);
-  const allowedFormats = ["image/jpeg", "image/jpg", "image/png"];
+async handleFileUpload(event) {
+  const maxFileSize = 2 * 1024 * 1024; // 2MB
+  let formData = new FormData();
+  this.file = event.target.files[0];
   
-  if (file && allowedFormats.includes(file.type)) {
-    const imageUrl = URL.createObjectURL(file); // Convert File object to a data URL
-    this.avatar = imageUrl;
+  if (this.file.size > maxFileSize) {
+          this.errorMessage = "Gagal Menggunakan Gambar, Ukuran Gambar Maksimal 2Mb";
+          const toast = document.createElement("div");
+          toast.className = "toast toast-error";
+          toast.innerHTML = this.errorMessage;
+          const toastContainer = document.querySelector(".toast-container");
+          toastContainer.appendChild(toast);
 
-    const response = await this.lecturer.uploadImage(
-      this.avatar,
-      this.imageFolder
-    );
-
-    console.log(response, "response");
-    return response;
-  } else {
-    alert("Accepted file formats are: jpg, jpeg, png");
+          setTimeout(() => {
+            toastContainer.removeChild(toast);
+          }, 2000);
+              return;
   }
+
+  formData.append('image', this.file);
+  formData.append('imageFolder', 'student');
+  const responseUploadImage = await this.student.uploadImage({data : formData});
+  this.setAvatar(responseUploadImage.data.data)
+  console.log(responseUploadImage.data.data)
+  return responseUploadImage
+},
+setAvatar(data){
+  this.avatar = data
 },
     async createStudents() {
       await this.createStudent(
@@ -319,7 +259,8 @@ created() {
         })
         .catch((error) => {
           console.error(error);
-          this.errorMessage = "Terjadi kesalahan saat menambahkan mahasiswa";
+          if(this.name == ""){
+          this.errorMessage = "Nama Tidak Boleh Kosong";
           const toast = document.createElement("div");
           toast.className = "toast toast-error";
           toast.innerHTML = this.errorMessage;
@@ -328,7 +269,116 @@ created() {
 
           setTimeout(() => {
             toastContainer.removeChild(toast);
-          }, 2000);        });
+          }, 2000);
+          }
+          else if(this.nim == ""){
+          this.errorMessage = "Nim Tidak Boleh Kosong";
+          const toast = document.createElement("div");
+          toast.className = "toast toast-error";
+          toast.innerHTML = this.errorMessage;
+          const toastContainer = document.querySelector(".toast-container");
+          toastContainer.appendChild(toast);
+
+          setTimeout(() => {
+            toastContainer.removeChild(toast);
+          }, 2000);
+          }
+          else if(this.errorCause == "NIM already registered!"){
+          this.errorMessage = "NIM Telah terdaftar";
+          const toast = document.createElement("div");
+          toast.className = "toast toast-error";
+          toast.innerHTML = this.errorMessage;
+          const toastContainer = document.querySelector(".toast-container");
+          toastContainer.appendChild(toast);
+
+          setTimeout(() => {
+            toastContainer.removeChild(toast);
+          }, 2000);
+          }
+          else if(this.email == ""){
+          this.errorMessage = "Email Tidak Boleh Kosong";
+          const toast = document.createElement("div");
+          toast.className = "toast toast-error";
+          toast.innerHTML = this.errorMessage;
+          const toastContainer = document.querySelector(".toast-container");
+          toastContainer.appendChild(toast);
+
+          setTimeout(() => {
+            toastContainer.removeChild(toast);
+          }, 2000);
+          }
+          else if(this.password == ""){
+          this.errorMessage = "Password Tidak Boleh Kosong";
+          const toast = document.createElement("div");
+          toast.className = "toast toast-error";
+          toast.innerHTML = this.errorMessage;
+          const toastContainer = document.querySelector(".toast-container");
+          toastContainer.appendChild(toast);
+
+          setTimeout(() => {
+            toastContainer.removeChild(toast);
+          }, 2000);
+          }
+          else if (!/^(?=.*[A-Z])(?=.*\d)[a-zA-Z0-9!@#$%^&*()+=._-]{8,}$/.test(this.password)) {
+        this.errorMessage = "Password Harus terdiri dari 1 huruf besar dan minimal 8 karakter";
+        const toast = document.createElement("div");
+        toast.className = "toast toast-error";
+        toast.innerHTML = this.errorMessage;
+        const toastContainer = document.querySelector(".toast-container");
+        toastContainer.appendChild(toast);
+
+        setTimeout(() => {
+          toastContainer.removeChild(toast);
+        }, 2000);
+      }
+      else if (!this.phoneNumber.startsWith("62")) {
+          this.errorMessage = "Nomor HP harus diawali dengan 62";
+          const toast = document.createElement("div");
+          toast.className = "toast toast-error";
+          toast.innerHTML = this.errorMessage;
+          const toastContainer = document.querySelector(".toast-container");
+          toastContainer.appendChild(toast);
+
+          setTimeout(() => {
+            toastContainer.removeChild(toast);
+          }, 2000);
+        }
+          else if(this.phoneNumber == ""){
+          this.errorMessage = "Nomor HP Tidak Boleh Kosong";
+          const toast = document.createElement("div");
+          toast.className = "toast toast-error";
+          toast.innerHTML = this.errorMessage;
+          const toastContainer = document.querySelector(".toast-container");
+          toastContainer.appendChild(toast);
+
+          setTimeout(() => {
+            toastContainer.removeChild(toast);
+          }, 2000);
+          }
+          else if(this.major == ""){
+          this.errorMessage = "Jurusan Tidak Boleh Kosong";
+          const toast = document.createElement("div");
+          toast.className = "toast toast-error";
+          toast.innerHTML = this.errorMessage;
+          const toastContainer = document.querySelector(".toast-container");
+          toastContainer.appendChild(toast);
+
+          setTimeout(() => {
+            toastContainer.removeChild(toast);
+          }, 2000);
+          }
+          else {
+          this.errorMessage = "Terjadi Error, Gagal Menambahkan Admin";
+          const toast = document.createElement("div");
+          toast.className = "toast toast-error";
+          toast.innerHTML = this.errorMessage;
+          const toastContainer = document.querySelector(".toast-container");
+          toastContainer.appendChild(toast);
+
+          setTimeout(() => {
+            toastContainer.removeChild(toast);
+          }, 2000);
+          }     });
      },
     async createStudent(avatar,name,nim,email,password,phoneNumber,major) {
       return this.student.AddStudent(

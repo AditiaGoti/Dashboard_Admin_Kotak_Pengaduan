@@ -7,8 +7,16 @@
         <div class="flex flex-wrap">
           <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
             <card-stats
+            v-if="lecturerList.totalData"
               statSubtitle="TOTAL ADMIN"
               :statTitle="lecturerList.totalData"
+              statIconName="fas fa-users"
+              statIconColor="bg-pink-500"
+            />
+             <card-stats
+             v-else
+              statSubtitle="TOTAL ADMIN"
+              :statTitle="0"
               statIconName="fas fa-users"
               statIconColor="bg-pink-500"
             />
@@ -43,7 +51,7 @@ export default {
         return this.lecturer.error;
       },
       lecturerList() {
-        return this.lecturer.lists;
+        return this.lecturer.data;
       },
       errorCause() {
         return this.lecturer.errorCause;

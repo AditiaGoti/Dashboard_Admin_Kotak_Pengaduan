@@ -65,6 +65,7 @@
             </a>
         </div>
               </div>
+  <div class="toast-container"></div>
 
               <div class="text-center mt-6">
                 <button
@@ -143,31 +144,62 @@ export default {
           localStorage.setItem('kpjtik_access_token', response.data.data.accessToken)
           localStorage.setItem('kpjtik_acc_name', response.data.data.name)
           localStorage.setItem('kpjtik_email', response.data.data.email)
-          localStorage.setItem('kpjtik_nim', response.data.data.nim)
-        });
-        if (!this.isError) {
+          localStorage.setItem('kpjtik_nip', response.data.data.nip)
+        }).then(() => {
+          const toast = document.createElement("div");
+          toast.className = "toast toast-success";
+          toast.innerHTML = "Berhasil Login";
+
+          const toastContainer = document.querySelector(".toast-container");
+          toastContainer.appendChild(toast);
+
+          setTimeout(() => {
+            toastContainer.removeChild(toast);
           this.$router.push("/admin/dashboard");
-          // this.$store.dispatch("pin/getPin");
-        } else if (this.errorCause == "user not found") {
-          this.errorMsg.nip = "Nip Belum Terdaftar";
-          this.errorMsg.password = "Password salah. Silahkan coba lagi";
-        } else if (this.errorCause == "Not a valid Nip") {
-          this.errorMsg.nip = "Nip tidak boleh kosong";
-          if (this.password == "") {
-            this.errorMsg.password = "Password tidak boleh kosong";
-          } else {
-            this.errorMsg.password = "";
-          }
-        } else if (
-          this.errorCause == "password invalid" ||
-          this.errorCause == "Not a valid password"
-        ) {
-          if (this.password == "") {
-            this.errorMsg.password = "Password tidak boleh kosong";
-          } else {
-            this.errorMsg.password = "Password salah. Silahkan coba lagi";
-          }
-        }
+          }, 2000);
+         }) .catch(() => {
+             if(this.nip == "" && this.password==""){
+          this.errorMessage = "NIP dan Password Tidak Boleh Kosong";
+          const toast = document.createElement("div");
+          toast.className = "toast toast-error";
+          toast.innerHTML = this.errorMessage;
+          const toastContainer = document.querySelector(".toast-container");
+          toastContainer.appendChild(toast);
+          setTimeout(() => {
+            toastContainer.removeChild(toast);
+          }, 2000);       }
+          else if(this.nip == ""){
+          this.errorMessage = "Nip Tidak Boleh Kosong";
+          const toast = document.createElement("div");
+          toast.className = "toast toast-error";
+          toast.innerHTML = this.errorMessage;
+          const toastContainer = document.querySelector(".toast-container");
+          toastContainer.appendChild(toast);
+          setTimeout(() => {
+            toastContainer.removeChild(toast);
+          }, 2000);       }
+          else if(this.password == "")
+          {       
+          this.errorMessage = "Password Tidak Boleh Kosong";
+          const toast = document.createElement("div");
+          toast.className = "toast toast-error";
+          toast.innerHTML = this.errorMessage;
+          const toastContainer = document.querySelector(".toast-container");
+          toastContainer.appendChild(toast);
+          setTimeout(() => {
+            toastContainer.removeChild(toast);
+          }, 2000);       }
+          else {
+              this.errorMessage = "Nim atau password salah";
+          const toast = document.createElement("div");
+          toast.className = "toast toast-error";
+          toast.innerHTML = this.errorMessage;
+          const toastContainer = document.querySelector(".toast-container");
+          toastContainer.appendChild(toast);
+          setTimeout(() => {
+            toastContainer.removeChild(toast);
+          }, 2000);  
+          }});
       },
       loginAction() {
         this.LoginLecturer();
@@ -207,4 +239,26 @@ export default {
     },
   };
 </script>
+  <style>
+  .toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+  }
 
+  .toast {
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-size: 14px;
+    color: white;
+    opacity: 0.9;
+  }
+  .toast-error {
+  background-color: red;
+}
+
+  .toast-success {
+    background-color: #2ecc71;
+  }
+</style>

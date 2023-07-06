@@ -1,11 +1,10 @@
-import axiosInstance,{setBearerToken} from '../Utils/axios'
+import axiosInstance,{setBearerToken, setBasicAuth} from '../Utils/axios'
 
 export class ProfileController {
     loading = false
     error = false
     errorCause = ''
     response = []
-    lists = []
     list = []
     constructor(loading, error, errorCause) {
         this.loading = loading
@@ -51,5 +50,13 @@ export class ProfileController {
         return response
         
     }
+    async uploadImage(data){
+        setBasicAuth();
+        const response = await axiosInstance.post('/lecturer/v1/upload',
+          data.data
+        );
+        console.log(response.data, 'upload');
+        return response;
+      }
 
 }

@@ -11,7 +11,6 @@
           class="w-12 h-12 text-sm text-white bg-blueGray-200 inline-flex items-center justify-center rounded-full"
         >
           <img
-            alt="..."
             class="w-full rounded-full align-middle border-none shadow-lg"
             :src="profileList.avatar"
           />
@@ -26,20 +25,25 @@
         block: dropdownPopoverShow,
       }"
     >
+    <a
+        class="text-sm py-2 px-4 font-bold block w-full whitespace-normal hover:bg-gray-200  bg-transparent text-blueGray-700"
+      >
+{{profileList.name}}      </a>
     <router-link to="/admin/profile">
       <a
-        class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
+        class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent hover:bg-gray-200 text-blueGray-700"
       >
         Profile
       </a>
     </router-link>
       <router-link to="/admin/changepassword">
       <a
-        class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
+        class="text-sm py-2 px-4 font-normal block w-full whitespace-normal hover:bg-gray-200 bg-transparent text-blueGray-700"
       >
         Change Password
       </a>
       </router-link>
+      
       <!-- <a
         href="javascript:void(0);"
         class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
@@ -47,13 +51,12 @@
         Something else here
       </a> -->
       <div class="h-0 my-2 border border-solid border-blueGray-100" />
-      <router-link to="/auth/login">
       <a
-        class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
+        :onClick="logout"
+        class="text-sm py-2 px-4 cursor-pointer font-normal block w-full whitespace-nowrap hover:bg-gray-200 bg-transparent text-blueGray-700"
       >
         Logout
       </a>
-      </router-link>
     </div>
   </div>
 </template>
@@ -68,21 +71,24 @@ import { removeAuth } from "../..//Utils/localstorage";
 export default {
   data() {
     return {
+      meta: {
+          page: 1,
+          size: "",
+        },
       dropdownPopoverShow: false,
       image: image,
       Profile: new ProfileController(false,false,""),
     };
   },
-  computed: {
-    profileList() {
+  computed:{
+         profileList() {
       return this.Profile.list;
     },
-    isLoading() {
-      return this.notif.loading;
-    },
-
   },
-  methods: {
+  mounted() {
+      this.profile();
+    },
+    methods: {
     toggleDropdown: function (event) {
       event.preventDefault();
       if (this.dropdownPopoverShow) {
@@ -96,16 +102,19 @@ export default {
     },
     logout() {
       this.loadingStatus = true;
-      setTimeout(removeAuth(), 3500);
+      setTimeout(() => {
+      removeAuth()
+      this.$router.push("/auth/login");
+          }, 3500);
       localStorage.clear();
-      this.$router.push("/");
-      window.location.reload();
+      
+
     },
-    async getProfileLecturer() {
-      return this.Profile.getProfileLecturer();
+      async getProfile() {
+      return this.Profile.getProfile();
     },
     async profile() {
-      await this.getProfileLecturer();
+      await this.getProfile();
     },
   },
 };

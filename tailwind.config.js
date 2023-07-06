@@ -11,10 +11,15 @@ module.exports = {
       "./*.js",
       "./**/*.vue",
       "./*.vue",
+      "./node_modules/flowbite/**/*.js",
+
     ],
     options: {
       safelist: [],
     },
+    plugins: [
+      require('flowbite/plugin'),
+    ],
   },
   theme: {
     colors: {

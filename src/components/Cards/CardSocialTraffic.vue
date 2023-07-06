@@ -6,18 +6,8 @@
       <div class="flex flex-wrap items-center">
         <div class="relative w-full px-4 max-w-full flex-grow flex-1">
           <h3 class="font-semibold text-base text-blueGray-700">
-            Social traffic
+            Lecturer Respond Data
           </h3>
-        </div>
-        <div
-          class="relative w-full px-4 max-w-full flex-grow flex-1 text-right"
-        >
-          <button
-            class="bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-            type="button"
-          >
-            See all
-          </button>
         </div>
       </div>
     </div>
@@ -29,162 +19,44 @@
             <th
               class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
             >
-              Referral
+              Nama
             </th>
             <th
               class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
             >
-              Visitors
+              Divisi
             </th>
             <th
-              class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left min-w-140-px"
-            ></th>
+              class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+            >
+              Total Respon
+            </th>
+            <th
+              class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+            >Rata Rata Respon</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
+      <tbody v-for="(lecturer, index) in lecturerList.sort((a, b) => b.avgComplaint - a.avgComplaint)" :key="lecturer._id">
+          <tr v-if="index < 10">
             <th
               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left"
             >
-              Facebook
+              {{lecturer.name}}
             </th>
             <td
               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
             >
-              1,480
+            {{lecturer.lecturer_type}}
             </td>
             <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
+              class="border-t-0 px-6 p-4 flex item-center justify-center align-middle border-l-0 border-r-0 text-xs whitespace-nowrap"
             >
-              <div class="flex items-center">
-                <span class="mr-2">60%</span>
-                <div class="relative w-full">
-                  <div
-                    class="overflow-hidden h-2 text-xs flex rounded bg-red-200"
-                  >
-                    <div
-                      style="width: 60%;"
-                      class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500"
-                    ></div>
-                  </div>
-                </div>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <th
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left"
-            >
-              Facebook
-            </th>
-            <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-            >
-              5,480
+            {{lecturer.totalFeedback ? lecturer.totalFeedback : "0"}}
             </td>
             <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
+              class="border-t-0 p-4 px-6 text-center align-middle border-l-0 border-r-0 text-xs whitespace-nowrap"
             >
-              <div class="flex items-center">
-                <span class="mr-2">70%</span>
-                <div class="relative w-full">
-                  <div
-                    class="overflow-hidden h-2 text-xs flex rounded bg-emerald-200"
-                  >
-                    <div
-                      style="width: 70%;"
-                      class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-emerald-500"
-                    ></div>
-                  </div>
-                </div>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <th
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left"
-            >
-              Google
-            </th>
-            <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-            >
-              4,807
-            </td>
-            <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-            >
-              <div class="flex items-center">
-                <span class="mr-2">80%</span>
-                <div class="relative w-full">
-                  <div
-                    class="overflow-hidden h-2 text-xs flex rounded bg-purple-200"
-                  >
-                    <div
-                      style="width: 80%;"
-                      class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-purple-500"
-                    ></div>
-                  </div>
-                </div>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <th
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left"
-            >
-              Instagram
-            </th>
-            <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-            >
-              3,678
-            </td>
-            <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-            >
-              <div class="flex items-center">
-                <span class="mr-2">75%</span>
-                <div class="relative w-full">
-                  <div
-                    class="overflow-hidden h-2 text-xs flex rounded bg-lightBlue-200"
-                  >
-                    <div
-                      style="width: 75%;"
-                      class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-lightBlue-500"
-                    ></div>
-                  </div>
-                </div>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <th
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left"
-            >
-              twitter
-            </th>
-            <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-            >
-              2,645
-            </td>
-            <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-            >
-              <div class="flex items-center">
-                <span class="mr-2">30%</span>
-                <div class="relative w-full">
-                  <div
-                    class="overflow-hidden h-2 text-xs flex rounded bg-orange-200"
-                  >
-                    <div
-                      style="width: 30%;"
-                      class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-emerald-500"
-                    ></div>
-                  </div>
-                </div>
-              </div>
+            <p>{{ lecturer.avgComplaint !== 'null Minute' ? lecturer.avgComplaint : "0" }}</p>
             </td>
           </tr>
         </tbody>
@@ -192,3 +64,58 @@
     </div>
   </div>
 </template>
+
+<script>
+import { LecturerControllers } from "../../controller/LecturerController";
+
+export default {
+  data() {
+    return {
+      meta: {
+        page: 1,
+        size: "",
+      },
+      lecturer: new LecturerControllers(false, false, ""),
+    };
+  },
+  computed: {
+    isError() {
+      return this.lecturer.error;
+    },
+    lecturerList() {
+      return this.lecturer.lists;
+    },
+    errorCause() {
+      return this.lecturer.errorCause;
+    },
+    isLoading() {
+      return this.student.loading;
+    },
+  },
+  mounted() {
+    this.getLecturer();
+  },
+  methods: {
+    async getLecturerList(page, size) {
+      return this.lecturer.getLecturerList(page, size);
+    },
+    async getLecturer() {
+      await this.getLecturerList(this.page, this.meta.size);
+    },
+  },
+  props: {
+    color: {
+      default: "light",
+      validator: function (value) {
+        // The value must match one of these strings
+        return ["light", "dark"].indexOf(value) !== -1;
+      },
+    },
+  },
+};
+</script>
+
+
+
+
+

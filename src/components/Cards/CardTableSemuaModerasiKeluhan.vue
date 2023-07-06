@@ -140,6 +140,41 @@
       </tr>
     </tbody>
         </table>
+          <nav class="text-center">
+  <ul class="list-style-none flex px-3 justify-between mb-3">
+    <li>
+      <a
+        class="relative block cursor-pointer rounded bg-blue-600 px-3 py-1.5 text-sm text-white font-bold transition-all duration-300 hover:bg-blue-400"
+        @click="goToPreviousPage"
+        :disabled="meta.page === 1"
+        :class="{ 'pointer-events-none': meta.page === 1 }"
+      >
+        Previous
+      </a>
+    </li>
+    <li class="px-3 mt-1 max-w overflow-x-scroll">
+      <a
+        class="rounded overflow-x-scroll px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-200  hover:text-black"
+        v-for="page in complaintData.totalPage"
+        :key="page"
+        :class="{ 'bg-blue-600 font-bold text-white': page === meta.page }"
+        @click="goToPage(page)"
+      >
+        {{ page }}
+      </a>
+    </li>
+    <li>
+      <a
+        class="relative block cursor-pointer rounded bg-blue-600 px-3 py-1.5 text-sm text-white font-bold transition-all duration-300 hover:bg-blue-400"
+        @click="goToNextPage"
+        :disabled="page === complaintData.totalPage"
+        :class="{ 'pointer-events-none': page === complaintData.totalPage }"
+      >
+        Next
+      </a>
+    </li>
+  </ul>
+</nav>
         <div class="toast-container"></div>
       </div>
     <div class="modal-backdrop" v-if="showModal"></div>
@@ -159,12 +194,16 @@
                   </div>  
                 <div class="grid grid-cols-2 mb-4" >
                     <div class="flex flex-col">
-                      <div class="mr-4">
+                         <div class="mr-4">
                         <input v-model="selectedComplaint._id" type="textarea" class="hidden text-md text-left border-none break-words whitespace-normal mb-5" disabled />
                       <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Judul Keluhan </p>
-                        <input v-model="selectedComplaint.title" type="textarea" class="text-md text-left border-none break-words whitespace-normal mb-5" disabled />
+                        <input v-model="selectedComplaint.title" type="textarea" class="hidden text-md text-left border-none break-words whitespace-normal mb-5" disabled />
+                        <p type="textarea" class="text-md text-left border-none break-words whitespace-normal mb-5">{{selectedComplaint.title}} </p>
                         <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Isi Keluhan </p>
-                        <input v-model="selectedComplaint.body" type="textarea" class="text-md text-left border-none break-words whitespace-normal mb-5" disabled />
+                        <div class="h-64 overflow-auto">
+                        <input v-model="selectedComplaint.body" type="textarea" class="text-md hidden text-left border-none break-words whitespace-normal mb-5" disabled />
+                        <p type="textarea" class="text-md text-left border-none break-words whitespace-normal mb-5">{{selectedComplaint.body}}</p>
+                        </div>
                       </div>
                     </div>
                     <div class="flex flex-col">
@@ -229,7 +268,7 @@
         moment: moment,
         meta: {
             page: 1,
-            size: "",
+            limit: 25,
           },
         bootstrap,
         complaint_id:"",
@@ -253,7 +292,9 @@
         errorCause() {
           return this.complaint.errorCause;
         },
-    
+      complaintData(){
+        return this.complaint.data;
+      },
         isLoading() {
           return this.complaint.loading;
         },
@@ -264,6 +305,7 @@
     mounted() {
         this.getComplaint();
         this.profile();
+        this.getPageModerateComplaint();
         console.log(this.complaint,"complaint"); // Add this line to log the complaint data
   
       },
@@ -274,8 +316,8 @@
     this.complaint.attachmentImage = ''; // Remove this line
   },
     methods: {
-        async getComplaintModerated(page, size) {
-          return this.complaint.getComplaintModerated(page, size);
+        async getComplaintModerated(page, limit) {
+          return this.complaint.getComplaintModerated(page, limit);
         },
         toComplaintDetail(index) {
     this.selectedComplaint = this.ComplaintList[index];
@@ -283,8 +325,33 @@
   this.showModal = true;
 },
         async getComplaint() {
-          await this.getComplaintModerated(this.meta.page, this.meta.size);
+          await this.getComplaintModerated(this.meta.page, this.meta.limit);
         },
+        async getComplaintModeratedSuperPage(page, limit) {
+  return this.complaint.getComplaintModeratedSuperPage(page, limit);
+},
+async goToPreviousPage() {
+  if (this.meta.page > 1) {
+    this.meta.page--;
+    await this.getComplaintPage(this.meta.page, this.meta.limit);
+  }
+},
+
+async goToNextPage() {
+    this.meta.page++;
+    await this.getComplaintModeratedSuperPage(this.meta.page, this.meta.limit);
+    console.log(this.meta.page, this.meta.limit,"page")
+  
+},
+async goToPage(page) {
+  this.meta.page = page;
+  await this.getComplaintModeratedSuperPage(this.meta.page, this.meta.limit);
+  console.log(this.getComplaintPage, "page")
+},
+async getPageModerateComplaint() {
+  this.meta.page = 1;
+  await this.getComplaintModeratedSuperPage(this.meta.page, this.meta.limit);
+},
         async publishComplaint(complaint_id, title, body, attachmentImage) {
           await this.complaintPublish(
             complaint_id,

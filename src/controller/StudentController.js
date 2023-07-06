@@ -18,7 +18,8 @@ export class StudentControllers {
         setBearerToken(token);  
               const response = await axiosInstance.get(`/super/v1/student`)
               this.setLists(response.data.data.list);
-              console.log("student",response.data.data.list)
+              this.setData(response.data.data);
+              console.log("student",response.data.data)
               return response   
           }
           async searchStudent(name) {
@@ -36,7 +37,11 @@ export class StudentControllers {
           setLists(data) {
               this.lists = data
           }
+          setData(data) {
+            this.data = data
+        }
           async AddStudent(avatar,name,nim,email,password,phoneNumber,major) {
+           try{
             const token = localStorage.getItem('kpjtik_access_token')
             console.log("token",token)
             setBearerToken(token);  
@@ -51,8 +56,17 @@ export class StudentControllers {
                   })
                   this.setLists(response.data.data);
                   console.log("student",response.data.data)
-                  return response   
+                  return response
+                }
+                catch(error){
+                  this.setErrorCause(error.response.data.message);
+                  throw error; // Rethrow the error to be handled by the caller
+
+                }   
               }
+              setErrorCause(cause) {
+                this.errorCause = cause
+            }
               async ImportStudent(data) {
                 const token = localStorage.getItem('kpjtik_access_token')
                 console.log(data,"data")
@@ -65,14 +79,20 @@ export class StudentControllers {
                       console.log("student",response.data.data)
                       return response   
                   }
-             
-              async uploadImage(image,imageFolder){
+                  async getStudentPage(page, limit) {
+                    const token = localStorage.getItem('kpjtik_access_token');
+                    setBearerToken(token);
+                    const response = await axiosInstance.get(`/super/v1/student?limit=${limit}&page=${page}`);
+                    this.setLists(response.data.data.list);
+                    this.setData(response.data.data);
+                    console.log("student", response.data.data);
+                    return response;
+                  }          
+              async uploadImage(data){
                 setBasicAuth();
-                const response = await axiosInstance.post('/lecturer/v1/upload',{
-                  image : image,
-                  imageFolder : imageFolder
-                });
-                this.setLists([{ key: 'attachmentImage', value: 'https://storage.googleapis.com/kotak-pengaduanjtik.appspot.com/' + response.data}]);
+                const response = await axiosInstance.post('/lecturer/v1/upload',
+                  data.data
+                );
                 console.log(response.data, 'upload');
                 return response;
               }

@@ -90,8 +90,8 @@
             ></th>
           </tr>
         </thead>
-        <tbody  v-if="(lecturer_type === 1 || lecturer_type === 2 || lecturer_type === 3 || lecturer_type === 5 || lecturer_type === 6 || lecturer_type === 7 || lecturer_type === 8 || lecturer_type === 9) ? ComplaintSuperList.length > 0 : ComplaintList.length > 0">
-          <tr  v-for="(complaint, index) in (lecturer_type === 1 || lecturer_type === 2 || lecturer_type === 3 || lecturer_type === 5 || lecturer_type === 6 || lecturer_type === 7 || lecturer_type === 8 || lecturer_type === 9) ? ComplaintSuperList : ComplaintList" :key="complaint._id">
+        <tbody  v-if="ComplaintList.length > 0">
+          <tr  v-for="(complaint, index) in ComplaintList" :key="complaint._id">
             <th
               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center"
             >
@@ -159,9 +159,13 @@
                       <div class="mr-4">
                         <input v-model="selectedComplaint._id" type="textarea" class="hidden text-md text-left border-none break-words whitespace-normal mb-5" disabled />
                       <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Judul Keluhan </p>
-                        <input v-model="selectedComplaint.title" type="textarea" class="text-md text-left border-none break-words whitespace-normal mb-5" disabled />
+                        <input v-model="selectedComplaint.title" type="textarea" class="hidden text-md text-left border-none break-words whitespace-normal mb-5" disabled />
+                        <p type="textarea" class="text-md text-left border-none break-words whitespace-normal mb-5">{{selectedComplaint.title}} </p>
                         <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Isi Keluhan </p>
-                        <input v-model="selectedComplaint.body" type="textarea" class="text-md text-left border-none break-words whitespace-normal mb-5" disabled />
+                        <div class="h-64 overflow-auto">
+                        <input v-model="selectedComplaint.body" type="textarea" class="text-md hidden text-left border-none break-words whitespace-normal mb-5" disabled />
+                        <p type="textarea" class="text-md text-left border-none break-words whitespace-normal mb-5">{{selectedComplaint.body}}</p>
+                        </div>
                       </div>
                     </div>
                     <div class="flex flex-col">
@@ -210,6 +214,41 @@
                 </div>
                 </div>
       </table>
+      <nav class="text-center py-3">
+  <ul class="list-style-none flex px-3 justify-between mb-3">
+    <li>
+      <a
+        class="relative block cursor-pointer rounded bg-blue-600 px-3 py-1.5 text-sm text-white font-bold transition-all duration-300 hover:bg-blue-400"
+        @click="goToPreviousPage"
+        :disabled="meta.page === 1"
+        :class="{ 'pointer-events-none': meta.page === 1 }"
+      >
+        Previous
+      </a>
+    </li>
+    <li class="px-3 mt-1 max-w overflow-x-scroll">
+      <a
+        class="rounded overflow-x-scroll px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-200  hover:text-black"
+        v-for="page in complaintData.totalPage"
+        :key="page"
+        :class="{ 'bg-blue-600 font-bold text-white': page === meta.page }"
+        @click="goToPage(page)"
+      >
+        {{ page }}
+      </a>
+    </li>
+    <li>
+      <a
+        class="relative block cursor-pointer rounded bg-blue-600 px-3 py-1.5 text-sm text-white font-bold transition-all duration-300 hover:bg-blue-400"
+        @click="goToNextPage"
+        :disabled="page === complaintData.totalPage"
+        :class="{ 'pointer-events-none': page === complaintData.totalPage }"
+      >
+        Next
+      </a>
+    </li>
+  </ul>
+</nav>
       <div class="toast-container"></div>
     </div>
               </div>
@@ -229,7 +268,7 @@ export default {
       moment: moment,
       meta: {
           page: 1,
-          size: "",
+          limit: 25,
         },
       bootstrap,
       complaint_id:"",
@@ -250,8 +289,8 @@ export default {
       ComplaintList() {
         return this.complaint.lists;
       },
-      ComplaintSuperList() {
-        return this.complaint.lists;
+      complaintData(){
+        return this.complaint.data;
       },
       errorCause() {
         return this.complaint.errorCause;
@@ -266,7 +305,7 @@ export default {
   },
   mounted() {
       this.getComplaint();
-      this.getComplaintSuper();
+      this.getPageModerateComplaint;
       this.profile();
       console.log(this.complaint,"complaint"); // Add this line to log the complaint data
 
@@ -278,8 +317,8 @@ export default {
   this.complaint.attachmentImage = ''; // Remove this line
 },
   methods: {
-      async getComplaintbyStatus(page, size) {
-        return this.complaint.getComplaintbyStatus(page, size);
+      async getComplaintbyStatus(page, limit) {
+        return this.complaint.getComplaintbyStatus(page, limit);
       },
       toComplaintDetail(index) {
     this.selectedComplaint = this.ComplaintList[index];
@@ -287,8 +326,33 @@ export default {
   this.showModal = true;
 },
       async getComplaint() {
-        await this.getComplaintbyStatus(this.meta.page, this.meta.size);
+        await this.getComplaintbyStatus(this.meta.page, this.meta.limit);
       },
+      async getComplaintPagebyStatus(page, limit) {
+  return this.complaint.getComplaintPagebyStatus(page, limit);
+},
+async goToPreviousPage() {
+  if (this.meta.page > 1) {
+    this.meta.page--;
+    await this.getComplaintPagebyStatus(this.meta.page, this.meta.limit);
+  }
+},
+
+async goToNextPage() {
+    this.meta.page++;
+    await this.getComplaintPagebyStatus(this.meta.page, this.meta.limit);
+    console.log(this.meta.page, this.meta.limit,"page")
+  
+},
+async goToPage(page) {
+  this.meta.page = page;
+  await this.getComplaintPagebyStatus(this.meta.page, this.meta.limit);
+  console.log(this.getComplaintPage, "page")
+},
+async getPageModerateComplaint() {
+  this.meta.page = 1;
+  await this.getComplaintPagebyStatus(this.meta.page, this.meta.limit);
+},
       async publishComplaint(complaint_id, title, body, attachmentImage) {
         await this.complaintPublish(
           complaint_id,
@@ -364,11 +428,11 @@ export default {
        
       );
     },
-    async getComplaintListSuperBystatus(page, size) {
-        return this.complaint.getComplaintListSuperBystatus(page, size);
+    async getComplaintListSuperBystatus(page, limit) {
+        return this.complaint.getComplaintListSuperBystatus(page, limit);
       },
       async getComplaintSuper() {
-        await this.getComplaintListSuperBystatus(this.meta.page, this.meta.size);
+        await this.getComplaintListSuperBystatus(this.meta.page, this.meta.limit);
       },
       async getProfile() {
       return this.Profile.getProfile();

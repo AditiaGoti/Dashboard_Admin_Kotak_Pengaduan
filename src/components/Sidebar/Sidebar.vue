@@ -98,54 +98,96 @@
               </a>
             </router-link>
           </li>
-          <div v-if="[5, 11, 12, 13, 14,17,18].includes(profileList.lecturer_type)" class="items-center">
-          <li class="items-center">
-            <router-link
-              to="/admin/moderasikeluhan"
-              v-slot="{ href, navigate, isActive }"
-            >
-              <a
-                :href="href"
-                @click="navigate"
-                class="text-xs uppercase py-3 font-bold block"
-                :class="[
-                  isActive
-                    ? 'text-blue-500 hover:text-blue-600'
-                    : 'text-blueGray-700 hover:text-blueGray-500',
-                ]"
-              >
-                <i
-                  class="fas fa-tools mr-2 text-sm"
+          <div v-if="[1,2,5].includes(profileList.lecturer_type)" class="items-center">
+  <div>
+    <div @click="toggleDropdown" 
+    class="cursor-pointer text-xs uppercase py-3 font-bold block"
+    :class="[isActive  ? 'text-blue-500 hover:text-blue-600' : 'text-blueGray-700 hover:text-blueGray-500']"
+>
+      <i
+        class="fas fa-tools mr-2 text-sm"
+        :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
+
+      ></i>
+      Moderasi Keluhan
+ <i
+        v-if="isDropdownOpen"
+        class="fas fa-chevron-up ml-2"
+      ></i>
+      <i
+        v-else
+        class="fas fa-chevron-down ml-2"
+      ></i>    </div>
+    <ul v-if="isDropdownOpen" class="ml-5">
+      <li v-if="isDropdownOpen">
+        <router-link
+          to="/admin/moderasikeluhan"
+          v-slot="{ href, navigate, isActive }"
+        >
+          <a
+            :href="href"
+            @click="navigate"
+            class="text-xs uppercase py-3 font-bold block"
+            :class="[
+              isActive
+                ? 'text-blue-500 hover:text-blue-600'
+                : 'text-blueGray-700 hover:text-blueGray-500',
+            ]"
+          >
+          <i
+                  class="fas fa-table mr-2 text-sm"
                   :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
                 ></i>
-                Moderasi Keluhan
-              </a>
-            </router-link>
-          </li>
-          <li class="items-center">
-            <router-link
-              to="/admin/semuamoderasikeluhan"
-              v-slot="{ href, navigate, isActive }"
-            >
-              <a
-                :href="href"
-                @click="navigate"
-                class="text-xs uppercase py-3 font-bold block"
-                :class="[
-                  isActive
-                    ? 'text-blue-500 hover:text-blue-600'
-                    : 'text-blueGray-700 hover:text-blueGray-500',
-                ]"
-              >
-                <i
-                  class="fas fa-tools mr-2 text-sm"
+            Moderasi Keluhan
+          </a>
+        </router-link>
+      </li>
+      <li v-if="isDropdownOpen">
+        <router-link
+          to="/admin/semuamoderasikeluhan"
+          v-slot="{ href, navigate, isActive }"
+        >
+          <a
+            :href="href"
+            @click="navigate"
+            class="text-xs uppercase py-3 font-bold block"
+            :class="[
+              isActive
+                ? 'text-blue-500 hover:text-blue-600'
+                : 'text-blueGray-700 hover:text-blueGray-500',
+            ]"
+          >
+          <i
+                  class="fas fa-table mr-2 text-sm"
                   :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
                 ></i>
-                Moderasi Semua Keluhan
-              </a>
-            </router-link>
-          </li>
-          <li class="items-center" >
+            Moderasi Semua Keluhan
+          </a>
+        </router-link>
+      </li>
+    </ul>
+  </div>
+  <div>
+    <div @click="toggleDropdownModerasiTanggapan" 
+    class="cursor-pointer text-xs uppercase py-3 font-bold block"
+    :class="[isActive  ? 'text-blue-500 hover:text-blue-600' : 'text-blueGray-700 hover:text-blueGray-500']"
+>
+      <i
+        class="fas fa-tools mr-2 text-sm"
+        :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
+
+      ></i>
+      Moderasi Tanggapan
+ <i
+        v-if="isDropdownModerasiTanggapanOpen"
+        class="fas fa-chevron-up ml-2"
+      ></i>
+      <i
+        v-else
+        class="fas fa-chevron-down ml-2"
+      ></i>    </div>
+    <ul v-if="isDropdownModerasiTanggapanOpen" class="ml-5">
+      <li v-if="isDropdownModerasiTanggapanOpen" class="items-center" >
             <router-link
               to="/admin/moderasitanggapan"
               v-slot="{ href, navigate, isActive }"
@@ -161,14 +203,14 @@
                 ]"
               >
                 <i
-                  class="fas fa-tools mr-2 text-sm"
+                  class="fas fa-table mr-2 text-sm"
                   :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
                 ></i>
                 Moderasi Tanggapan
               </a>
             </router-link>
           </li>
-          <li class="items-center">
+          <li v-if="isDropdownModerasiTanggapanOpen" class="items-center">
             <router-link
               to="/admin/moderasisemuatanggapan"
               v-slot="{ href, navigate, isActive }"
@@ -184,16 +226,39 @@
                 ]"
               >
                 <i
-                  class="fas fa-tools mr-2 text-sm"
+                  class="fas fa-table mr-2 text-sm"
                   :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
                 ></i>
                 Moderasi Semua Tanggapan
               </a>
             </router-link>
           </li>
+    </ul>
+  </div>
+          
 </div>
-<div v-else></div>
-          <li class="items-center">
+          <div v-if="[1, 2, 3, 4,5,6,7,8,9,10].includes(profileList.lecturer_type)" class="items-center">
+            <div>
+    <div @click="toggleDropdownkeluhan" 
+    class="cursor-pointer text-xs uppercase py-3 font-bold block"
+    :class="[isActive  ? 'text-blue-500 hover:text-blue-600' : 'text-blueGray-700 hover:text-blueGray-500']"
+>
+      <i
+        class="fas fa-tools mr-2 text-sm"
+        :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
+
+      ></i>
+      Keluhan
+ <i
+        v-if="isDropdownKeluhanOpen"
+        class="fas fa-chevron-up ml-2"
+      ></i>
+      <i
+        v-else
+        class="fas fa-chevron-down ml-2"
+      ></i>    </div>
+    <ul v-if="isDropdownKeluhanOpen" class="ml-5">
+      <li  class="items-center">
             <router-link
               to="/admin/keluhan"
               v-slot="{ href, navigate, isActive }"
@@ -216,7 +281,80 @@
               </a>
             </router-link>
           </li>
+          
           <li class="items-center">
+            <router-link
+              to="/admin/semuakeluhan"
+              v-slot="{ href, navigate, isActive }"
+            >
+              <a
+                :href="href"
+                @click="navigate"
+                class="text-xs uppercase py-3 font-bold block"
+                :class="[
+                  isActive
+                    ? 'text-blue-500 hover:text-blue-600'
+                    : 'text-blueGray-700 hover:text-blueGray-500',
+                ]"
+              >
+                <i
+                  class="fas fa-table mr-2 text-sm"
+                  :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
+                ></i>
+               Semua Keluhan
+              </a>
+            </router-link>
+          </li>
+    </ul>
+  </div>
+          </div>
+          <div v-else>
+            <li class="items-center">
+            <router-link
+              to="/admin/keluhan"
+              v-slot="{ href, navigate, isActive }"
+            >
+              <a
+                :href="href"
+                @click="navigate"
+                class="text-xs uppercase py-3 font-bold block"
+                :class="[
+                  isActive
+                    ? 'text-blue-500 hover:text-blue-600'
+                    : 'text-blueGray-700 hover:text-blueGray-500',
+                ]"
+              >
+                <i
+                  class="fas fa-table mr-2 text-sm"
+                  :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
+                ></i>
+                Keluhan
+              </a>
+            </router-link>
+          </li>
+          </div>
+                          <div v-if="[1, 2, 3, 4,5,6,7,8,9,10].includes(profileList.lecturer_type)" class="items-center">
+                          <div>
+    <div @click="toggleDropdownTanggapan" 
+    class="cursor-pointer text-xs uppercase py-3 font-bold block"
+    :class="[isActive  ? 'text-blue-500 hover:text-blue-600' : 'text-blueGray-700 hover:text-blueGray-500']"
+>
+      <i
+        class="fas fa-tools mr-2 text-sm"
+        :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
+
+      ></i>
+      Tanggapan
+ <i
+        v-if="isDropdownTanggapanOpen"
+        class="fas fa-chevron-up ml-2"
+      ></i>
+      <i
+        v-else
+        class="fas fa-chevron-down ml-2"
+      ></i>    </div>
+    <ul v-if="isDropdownTanggapanOpen" class="ml-5">
+                <li  v-if="isDropdownTanggapanOpen" class="items-center">
             <router-link
               to="/admin/tanggapan"
               v-slot="{ href, navigate, isActive }"
@@ -239,8 +377,80 @@
               </a>
             </router-link>
           </li>
-          
-          <li class="items-center" >
+          <li  v-if="isDropdownTanggapanOpen" class="items-center">
+            <router-link
+              to="/admin/semuatanggapan"
+              v-slot="{ href, navigate, isActive }"
+            >
+              <a
+                :href="href"
+                @click="navigate"
+                class="text-xs uppercase py-3 font-bold block"
+                :class="[
+                  isActive
+                    ? 'text-blue-500 hover:text-blue-600'
+                    : 'text-blueGray-700 hover:text-blueGray-500',
+                ]"
+              >
+                <i
+                  class="fas fa-table mr-2 text-sm"
+                  :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
+                ></i>
+                Semua Tanggapan
+              </a>
+            </router-link>
+          </li>
+    </ul>
+  </div>
+          </div>
+          <div v-else>
+            <li class="items-center">
+            <router-link
+              to="/admin/tanggapan"
+              v-slot="{ href, navigate, isActive }"
+            >
+              <a
+                :href="href"
+                @click="navigate"
+                class="text-xs uppercase py-3 font-bold block"
+                :class="[
+                  isActive
+                    ? 'text-blue-500 hover:text-blue-600'
+                    : 'text-blueGray-700 hover:text-blueGray-500',
+                ]"
+              >
+                <i
+                  class="fas fa-table mr-2 text-sm"
+                  :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
+                ></i>
+                Tanggapan
+              </a>
+            </router-link>
+          </li>
+          </div>
+                          <div v-if="[1, 2, 3, 4,5,6,7,8,9,10].includes(profileList.lecturer_type)" class="items-center">
+                <div>
+    <div @click="toggleDropdownKomentar" 
+    class="cursor-pointer text-xs uppercase py-3 font-bold block"
+    :class="[isActive  ? 'text-blue-500 hover:text-blue-600' : 'text-blueGray-700 hover:text-blueGray-500']"
+>
+      <i
+        class="fas fa-tools mr-2 text-sm"
+        :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
+
+      ></i>
+      Komentar
+ <i
+        v-if="isDrodownKomentarOpen"
+        class="fas fa-chevron-up ml-2"
+      ></i>
+      <i
+        v-else
+        class="fas fa-chevron-down ml-2"
+      ></i>    </div>
+    <ul v-if="isDrodownKomentarOpen" class="ml-5">
+ <li         v-if="isDrodownKomentarOpen"
+ class="items-center" >
             <router-link
               to="/admin/komentar"
               v-slot="{ href, navigate, isActive }"
@@ -251,7 +461,7 @@
                 class="text-xs uppercase py-3 font-bold block"
                 :class="[
                   isActive
-                    ? 'text-emerald-500 hover:text-emerald-600'
+                     ? 'text-blue-500 hover:text-blue-600'
                     : 'text-blueGray-700 hover:text-blueGray-500',
                 ]"
               >
@@ -263,7 +473,59 @@
               </a>
             </router-link>
           </li>
-          <div v-if="[1, 2, 3, 6, 7, 8, 9].includes(profileList.lecturer_type)" class="items-center">
+          <li         v-if="isDrodownKomentarOpen"
+ class="items-center" >
+            <router-link
+              to="/admin/semuakomentar"
+              v-slot="{ href, navigate, isActive }"
+            >
+              <a
+                :href="href"
+                @click="navigate"
+                class="text-xs uppercase py-3 font-bold block"
+                :class="[
+                  isActive
+                     ? 'text-blue-500 hover:text-blue-600'
+                    : 'text-blueGray-700 hover:text-blueGray-500',
+                ]"
+              >
+                <i
+                  class="fas fa-table mr-2 text-sm"
+                  :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
+                ></i>
+                Semua Komentar
+              </a>
+            </router-link>
+          </li>
+    </ul>
+  </div>
+          </div>
+          <div v-else>
+            <li class="items-center" >
+            <router-link
+              to="/admin/komentar"
+              v-slot="{ href, navigate, isActive }"
+            >
+              <a
+                :href="href"
+                @click="navigate"
+                class="text-xs uppercase py-3 font-bold block"
+                :class="[
+                  isActive
+                    ? 'text-blue-500 hover:text-blue-600'
+                    : 'text-blueGray-700 hover:text-blueGray-500',
+                ]"
+              >
+                <i
+                  class="fas fa-table mr-2 text-sm"
+                  :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
+                ></i>
+                Komentar
+              </a>
+            </router-link>
+          </li>
+          </div>
+          <div v-if="[1, 2, 3, 4,5,6,7,8,9,10].includes(profileList.lecturer_type)" class="items-center">
           <li class="items-center">
             <router-link to="/admin/admin" v-slot="{ href, navigate, isActive }">
               <a
@@ -272,7 +534,7 @@
                 class="text-xs uppercase py-3 font-bold block"
                 :class="[
                   isActive
-                    ? 'text-emerald-500 hover:text-emerald-600'
+                    ? 'text-blue-500 hover:text-blue-600'
                     : 'text-blueGray-700 hover:text-blueGray-500',
                 ]"
               >
@@ -280,7 +542,7 @@
                   class="fas fa-users mr-2 text-sm"
                   :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
                 ></i>
-                Admin
+                Dosen
               </a>
             </router-link>
           </li>
@@ -292,7 +554,7 @@
                 class="text-xs uppercase py-3 font-bold block"
                 :class="[
                   isActive
-                    ? 'text-emerald-500 hover:text-emerald-600'
+                    ? 'text-blue-500 hover:text-blue-600'
                     : 'text-blueGray-700 hover:text-blueGray-500',
                 ]"
               >
@@ -324,13 +586,21 @@ import UserDropdown from "@/components/Dropdowns/UserDropdown.vue";
 import { ProfileController } from "../../controller/ProfileController";
 
 export default {
+  components:{
+      NotificationDropdown,
+    UserDropdown,
+  },
   data() {
     return {
       collapseShow: "hidden",
       Profile: new ProfileController(false, false, ""),
       lecturerTypes: [1, 2, 3, 5, 6, 7, 8, 9],
       moderateTypes: [1, 4, 10, 11, 12, 13],
-
+      isDropdownOpen: false,
+      isDropdownModerasiTanggapanOpen:false,
+      isDropdownKeluhanOpen:false,
+      isDrodownKomentarOpen:false,
+      isDropdownTanggapanOpen:false,
     };
   },
   mounted() {
@@ -357,16 +627,27 @@ export default {
     toggleCollapseShow: function (classes) {
       this.collapseShow = classes;
     },
+    toggleDropdown(){
+      this.isDropdownOpen = !this.isDropdownOpen;
+    },
+    toggleDropdownModerasiTanggapan(){
+      this.isDropdownModerasiTanggapanOpen = !this.isDropdownModerasiTanggapanOpen;
+    },
+    toggleDropdownkeluhan(){
+      this.isDropdownKeluhanOpen = !this.isDropdownKeluhanOpen;
+    },
+    toggleDropdownTanggapan(){
+      this.isDropdownTanggapanOpen = !this.isDropdownTanggapanOpen;
+    },
+    toggleDropdownKomentar(){
+      this.isDrodownKomentarOpen = !this.isDrodownKomentarOpen;
+    },
     async getProfile() {
       return this.Profile.getProfile();
     },
     async profile() {
       await this.getProfile();
     },
-  },
-  components: {
-    NotificationDropdown,
-    UserDropdown,
   },
 };
 </script>

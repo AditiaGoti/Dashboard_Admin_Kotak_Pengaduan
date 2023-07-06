@@ -26,6 +26,7 @@ export class AuthControllers {
         return response
     }
     async changePassLecturer(oldPassword,newPassword) {
+      try{
         const token = localStorage.getItem('kpjtik_access_token')
         console.log("token",token)
         setBearerToken(token);
@@ -34,6 +35,11 @@ export class AuthControllers {
                 newPassword : newPassword,
               });
         return response
+            }
+            catch(error){
+                this.setErrorCause(error.response.data.message);
+                throw error;
+            }
     }
     setLoading(status) {
         this.loading = status

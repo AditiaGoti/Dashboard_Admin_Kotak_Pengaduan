@@ -17,14 +17,14 @@ export const getName = () => {
     const name = bytes.toString(CryptoJS.enc.Utf8)
     return name
 }
-export const getNimUser = () => {
+export const getNipUser = () => {
     const getNip = localStorage.getItem('kpjtik_nip') || ''
     let bytes = CryptoJS.AES.decrypt(
         getNip,
         process.env.VUE_APP_SECRET_KEY
     );
-    const nim = bytes.toString(CryptoJS.enc.Utf8)
-    return nim
+    const nip = bytes.toString(CryptoJS.enc.Utf8)
+    return nip
 }
 export const getEmail = () => {
     const getMail = localStorage.getItem('kpjtik_email' || '')

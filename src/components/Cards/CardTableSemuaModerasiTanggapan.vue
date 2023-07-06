@@ -46,7 +46,7 @@
                     : 'bg-emerald-800 text-emerald-300 border-emerald-700',
                 ]"
               >
-                Keluhan
+               Judul Keluhan
               </th>
               <th
                 class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
@@ -88,7 +88,7 @@
               ></th>
             </tr>
           </thead>
-          <tbody v-if="FeedbackList.length > 0">
+        <tbody v-if="FeedbackList.length > 0">
             <tr v-for="(feedback,index) in FeedbackList" :key="feedback._id">
               <th
                 class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center"
@@ -108,14 +108,14 @@
                     </span>
               </th>
               <td
-                class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
+                class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-normal break-all p-4"
               >
               <i></i>{{feedback.message}}
                           </td>
               <td
                 class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
               >
-                <i></i>{{feedback.message}}
+                <i></i>{{feedback.complaint.title}}
               </td>
               <td
                 class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
@@ -143,6 +143,41 @@
     </tr>
   </tbody>
         </table>
+          <nav class="text-center py-3">
+  <ul class="list-style-none flex px-3 justify-between mb-3">
+    <li>
+      <a
+        class="relative block cursor-pointer rounded bg-blue-600 px-3 py-1.5 text-sm text-white font-bold transition-all duration-300 hover:bg-blue-400"
+        @click="goToPreviousPage"
+        :disabled="meta.page === 1"
+        :class="{ 'cursor-pointer-none': meta.page === 1 }"
+      >
+        Previous
+      </a>
+    </li>
+    <li class="px-3 mt-1 max-w overflow-x-scroll">
+      <a
+        class="rounded overflow-x-scroll px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-200  hover:text-black"
+        v-for="page in FeedbackData.totalPage"
+        :key="page"
+        :class="{ 'bg-blue-600 font-bold text-white': page === meta.page }"
+        @click="goToPage(page)"
+      >
+        {{ page }}
+      </a>
+    </li>
+    <li>
+      <a
+        class="relative block cursor-pointer rounded bg-blue-600 px-3 py-1.5 text-sm text-white font-bold transition-all duration-300 hover:bg-blue-400"
+        @click="goToNextPage"
+        :disabled="page === FeedbackData.totalPage"
+        :class="{ 'pointer-events-none': page === FeedbackData.totalPage }"
+      >
+        Next
+      </a>
+    </li>
+  </ul>
+</nav>
         <div class="toast-container"></div>
       </div>
       <div>
@@ -161,23 +196,22 @@
                     </div>  
                   <div class="grid grid-cols-2 mb-4" >
                       <div class="flex flex-col">
-                        <div class="mr-4">
+                        <div class="mr-4 h-64 overflow-auto">
                           <input v-model="selectedFeedback._id" type="textarea" class="hidden text-md text-left border-none break-words whitespace-normal mb-5" disabled />
                           <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Isi Tanggapan </p>
                           <!-- <input v-model="FeedbackList[0].message" type="textarea" class="hidden text-md text-left border-none break-words whitespace-normal mb-5" disabled /> -->
-                          <input v-model="selectedFeedback.message" type="textarea" class="text-md text-left border-none break-words whitespace-normal mb-5" disabled />
-  
+                          <textarea v-model="selectedFeedback.message" class="hidden text-md text-left border-none break-words whitespace-normal h-24" disabled ></textarea>
+                          <p class="text-md text-left border-none whitespace-normal">{{selectedFeedback.message}}</p>
+
                         </div>
                       </div>
                       <div class="flex flex-col">
                           <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Keluhan Yang Ditanggapi </p>
-                          <!-- <p class="text-md mt-1 mb-5 break-words whitespace-normal">{{FeedbackList[0].complaint.title }}</p> -->
-                          <p class="text-md mt-1 mb-5 break-words whitespace-normal">Test</p>
-  
+                          <p class="text-md mt-1 mb-5">{{selectedFeedback.complaint.title}}</p>
                           <p class="align-middle text-xs uppercase  font-semibold text-left"> Pembuat Tanggapan </p>
                           <p class="text-md mt-1 mb-5">{{selectedFeedback.lecturer.name}}</p>
-                          <!-- <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Jabatan </p>
-                          <p class="text-md mt-1 mb-5">JTIK</p> -->
+                                          <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Jabatan </p>
+                          <p class="text-md mt-1 mb-5">{{selectedFeedback.lecturer.type}}</p>
                           <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Waktu Pembuatan </p>
                           <p class="text-md mt-1">{{ moment(selectedFeedback.createdAt).locale("id").format("DD-MM-YYYY") }}   
   </p>
@@ -193,9 +227,9 @@
           font-semibold
           mx-4
           rounded-md
-          bg-emerald-600	
+          bg-blue-600	
           text-white
-          hover:bg-pink-500"
+          hover:bg-blue-300"
           :onClick="publishFeedback"> 
                 Publikasikan Tanggapan
               </button>
@@ -208,7 +242,7 @@
           rounded-md
           bg-red-500
           text-white
-          hover:bg-pink-500"
+          hover:bg-red-300"
           :onClick="rejectedFeedback">
                 Tolak Tanggapan
               </button>
@@ -232,7 +266,7 @@
         moment: moment,
         meta: {
             page: 1,
-            size: "",
+            limit: 25,
           },
         bootstrap,
         feedback_id:"",
@@ -251,8 +285,8 @@
         FeedbackList() {
           return this.feedback.lists;
         },
-        FeedbackSuperList() {
-          return this.feedback.lists;
+        FeedbackData() {
+          return this.feedback.data;
         },
         errorCause() {
           return this.feedback.errorCause;
@@ -271,8 +305,9 @@
     mounted() {
         this.getFeedback();
         console.log(this.feedback,"complaint"); // Add this line to log the complaint data
-        this.getFeedbackSuper();
         this.profile();
+        this.getPageFeedback();
+
       },
      methods: {
       toFeedbackDetail(index) {
@@ -284,12 +319,35 @@
       this.showModal = false;
       console.log('Modal telah ditutup'); // tambahkan console log di sini
     },
-    async getFeedbackModerated(page, size) {
-          return this.feedback.getFeedbackModerated(page, size);
+    async getFeedbackModerated(page, limit) {
+          return this.feedback.getFeedbackModerated(page, limit);
         },
         async getFeedback() {
-          await this.getFeedbackModerated(this.meta.page, this.meta.size);
+          await this.getFeedbackModerated(this.meta.page, this.meta.limit);
         },
+async goToPreviousPage() {
+        if (this.meta.page > 1) {
+          this.meta.page--;
+          await this.getFeedbackSuperPageByStatus(this.meta.page, this.meta.limit);
+        }
+      },
+
+      async goToNextPage() {
+          this.meta.page++;
+          await this.getFeedbackSuperPageByStatus(this.meta.page, this.meta.limit);
+          console.log(this.meta.page, this.meta.limit,"page")  
+      },
+      async getFeedbackSuperPageByStatus(page, limit) {
+        return this.feedback.getFeedbackSuperPageByStatus(page, limit);
+      },
+      async goToPage(page) {
+        this.meta.page = page;
+        await this.getFeedbackSuperPageByStatus(this.meta.page, this.meta.limit);
+      },
+      async getPageFeedback() {
+        this.meta.page = 1;
+        await this.getFeedbackSuperPageByStatus(this.meta.page, this.meta.limit);
+      },
           async publishFeedback() {
     await this.feedbackPublish(
       this.FeedbackList[0]._id,
@@ -297,7 +355,7 @@
     ).then(() => {
           const toast = document.createElement("div");
           toast.className = "toast toast-success";
-          toast.innerHTML = "Moderasi Tanggapan Berhasil ";
+          toast.innerHTML = "Tanggapan Berhasil di Publikasi";
 
           const toastContainer = document.querySelector(".toast-container");
           toastContainer.appendChild(toast);
@@ -357,11 +415,11 @@
   async feedbackRejected(feedback_id) {
     return this.feedback.feedbackRejected(feedback_id);
   },
-  async getFeedbackSuperListByStatus(page, size) {
-          return this.feedback.getFeedbackSuperListByStatus(page, size);
+  async getAllFeedbackModerated(page, limit) {
+          return this.feedback.getAllFeedbackModerated(page, limit);
         },
         async getFeedbackSuper() {
-          await this.getFeedbackSuperListByStatus(this.meta.page, this.meta.size);
+          await this.getAllFeedbackModerated(this.meta.limit, this.meta.limit);
         },
         async getProfile() {
         return this.Profile.getProfile();
@@ -396,6 +454,7 @@
     position: fixed;
     top: 50%;
     left: 50%;
+    height: fit-content;
     transform: translate(-50%, -50%);
     background-color: white;
     padding: 20px;

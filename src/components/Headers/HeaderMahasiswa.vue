@@ -7,8 +7,16 @@
         <div class="flex flex-wrap">
           <div class="w-full lg:w-6/12 xl:w-4/12 px-4">
             <card-stats
+              v-if="studentCountList.totalData"
               statSubtitle="TOTAL MAHASISWA"
-              :statTitle="studentCountList.length"
+              :statTitle="studentCountList.totalData"
+              statIconName="fas fa-users"
+              statIconColor="bg-orange-500"
+            />
+            <card-stats
+              v-else
+              statSubtitle="TOTAL MAHASISWA"
+              :statTitle="0"
               statIconName="fas fa-users"
               statIconColor="bg-orange-500"
             />
@@ -41,7 +49,7 @@ export default {
         return this.student.error;
       },
       studentCountList() {
-        return this.student.lists;
+        return this.student.data;
       },
       errorCause() {
         return this.student.errorCause;

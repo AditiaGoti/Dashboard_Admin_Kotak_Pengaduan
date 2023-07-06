@@ -5,26 +5,54 @@
       <div>
         <!-- Card stats -->
         <div class="flex flex-wrap">
-          <div class="w-full lg:w-6/12 xl:w-4/12 px-4">
+          <div v-if="[5, 11, 12, 13, 14,17,18].includes(profileList.lecturer_type)" class="w-full lg:w-6/12 xl:w-4/12 px-4">
             <card-stats
+            v-if="ComplaintModeratedList.totalData"
               statSubtitle="JUMLAH MODERASI KELUHAN"
-              :statTitle="ComplaintModeratedList.length"
-              statArrow="up"
-              statPercent="3.48"
+              :statTitle="ComplaintModeratedList.totalData"
               statPercentColor="text-emerald-500"
-              statDescripiron="Since last month"
+              statIconName="far fa-chart-bar"
+              statIconColor="bg-red-500"
+            />
+            <card-stats
+            v-else
+              statSubtitle="JUMLAH MODERASI KELUHAN"
+              :statTitle="0"
+              statPercentColor="text-emerald-500"
               statIconName="far fa-chart-bar"
               statIconColor="bg-red-500"
             />
           </div>
+          <div v-if="(lecturer === 1 || lecturer === 2 || lecturer === 3 || lecturer === 5 || lecturer === 6 || lecturer === 7 || lecturer === 8 || lecturer === 9)">
           <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
             <card-stats
-              statSubtitle="JUMLAH KELUHAN"
-              statTitle="10"
-              statArrow="up"
-              statPercent="3.48"
-              statPercentColor="text-emerald-500"
-              statDescripiron="Since last month"
+            v-if="ComplaintList.totalData"
+              statSubtitle="TOTAL KELUHAN"
+              :statTitle="ComplaintList.totalData"
+              statIconName="far fa-chart-bar"
+              statIconColor="bg-red-500"
+            />
+             <card-stats
+             v-else
+              statSubtitle="TOTAL KELUHAN"
+              :statTitle="0"
+              statIconName="far fa-chart-bar"
+              statIconColor="bg-red-500"
+            />
+          </div>
+          </div>
+           <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
+            <card-stats
+            v-if="ComplaintSuperList.totalData"
+              statSubtitle="TOTAL KELUHAN"
+              :statTitle="ComplaintSuperList.totalData"
+              statIconName="far fa-chart-bar"
+              statIconColor="bg-red-500"
+            />
+            <card-stats
+            v-else
+              statSubtitle="TOTAL KELUHAN"
+              :statTitle="0"
               statIconName="far fa-chart-bar"
               statIconColor="bg-red-500"
             />
@@ -38,6 +66,7 @@
 <script>
 import CardStats from "@/components/Cards/CardStats.vue";
 import {ComplaintControllers} from "../../controller/ComplaintController"
+import { ProfileController } from "../../controller/ProfileController";
 
 export default {
   components: {
@@ -50,6 +79,8 @@ export default {
           size: "",
         },
       complaint: new ComplaintControllers(false, false, ""),
+      Profile: new ProfileController(false, false, ""),
+
     }
   },
   computed:{
@@ -57,11 +88,14 @@ export default {
         return this.complaint.error;
       },
       ComplaintModeratedList() {
-        return this.complaint.lists;
+        return this.complaint.data;
       },
-      // ComplaintList() {
-      //   return this.complaint.list;
-      // },
+      ComplaintList() {
+        return this.complaint.data;
+      },
+       ComplaintSuperList() {
+        return this.complaint.data;
+      },
       errorCause() {
         return this.complaint.errorCause;
       },
@@ -69,11 +103,15 @@ export default {
       isLoading() {
         return this.complaint.loading;
       },
+      profileList() {
+      return this.Profile.list;
+    },
   },
   mounted() {
-      // this.getComplaintList();
-      // console.log(this.complaint,"complaint"); // Add this line to log the complaint data
-
+      this.getComplaintList();
+      this.getComplaintSuper();
+      console.log(this.complaint,"complaint"); // Add this line to log the complaint data
+      this.profile();
       this.getComplaint();
 
     },
@@ -86,18 +124,30 @@ export default {
         item:"",
       });
     },
-      // async getComplaintListLecturer(page, size) {
-      //   return this.complaint.getComplaintListLecturer(page, size);
-      // },
-      // async getComplaintList() {
-      //   await this.getComplaintListLecturer(this.meta.page, this.meta.size);
-      // },
+      async getComplaintListLecturer(page, size) {
+        return this.complaint.getComplaintListLecturer(page, size);
+      },
+      async getComplaintList() {
+        await this.getComplaintListLecturer(this.meta.page, this.meta.size);
+      },
+       async getComplaintListSuper(page, size) {
+        return this.complaint.getComplaintListSuper(page, size);
+      },
+      async getComplaintSuper() {
+        await this.getComplaintListSuper(this.meta.page, this.meta.size);
+      },
       async getComplaintbyStatus(page, size) {
         return this.complaint.getComplaintbyStatus(page, size);
       },
       async getComplaint() {
         await this.getComplaintbyStatus(this.meta.page, this.meta.size);
       },
+      async getProfile() {
+      return this.Profile.getProfile();
+    },
+    async profile() {
+      await this.getProfile();
+    },
     },
 };
 </script>

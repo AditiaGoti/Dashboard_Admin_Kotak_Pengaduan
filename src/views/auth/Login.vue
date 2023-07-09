@@ -190,7 +190,7 @@ export default {
             toastContainer.removeChild(toast);
           }, 2000);       }
           else {
-              this.errorMessage = "Nim atau password salah";
+              this.errorMessage = "NIP atau password salah";
           const toast = document.createElement("div");
           toast.className = "toast toast-error";
           toast.innerHTML = this.errorMessage;

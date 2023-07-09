@@ -77,7 +77,7 @@
                     : 'bg-emerald-800 text-emerald-300 border-emerald-700',
                 ]"
               >
-               Judul Keluhan
+               Judul Pengaduan
               </th>
             <th
               class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
@@ -273,7 +273,7 @@
                       </div>
                     </div>
                     <div class="flex flex-col">
-                        <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Keluhan Yang Ditanggapi </p>
+                        <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Pengaduan Yang Ditanggapi </p>
                         <p class="text-md mt-1 mb-5 break-words whitespace-normal">{{selectedFeedback.complaint.title }}</p>
                         <p class="align-middle text-xs uppercase  font-semibold text-left"> Pembuat Tanggapan </p>
                         <p class="text-md mt-1 mb-5">{{selectedFeedback.lecturer.name}}</p>

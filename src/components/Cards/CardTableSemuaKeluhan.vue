@@ -10,7 +10,7 @@
             class="font-semibold text-lg"
             :class="[color === 'light' ? 'text-blueGray-700' : 'text-white']"
           >
-            Tabel Keluhan
+            Tabel Semua Pengaduan
           </h3>
         </div>
 <div v-if="(lecturer === 1 || lecturer === 2 || lecturer === 3 || lecturer === 5 || lecturer === 6 || lecturer === 7 || lecturer === 8 || lecturer === 9)">
@@ -58,7 +58,7 @@
                   : 'bg-emerald-800 text-emerald-300 border-emerald-700',
               ]"
             >
-              Judul Keluhan
+              Judul Pengaduan
             </th>
             <th
               class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
@@ -68,7 +68,7 @@
                   : 'bg-emerald-800 text-emerald-300 border-emerald-700',
               ]"
             >
-              Pembuat Keluhan
+              Pembuat Pengaduan
             </th>
             <th
               class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
@@ -214,7 +214,7 @@
 <div class="modal-backdrop"></div>
 <div class="modal">
   <div class="flex flex-row justify-between">
-  <p class="text-xl font-bold	text-red-500 mb-6">Detail Keluhan</p>
+  <p class="text-xl font-bold	text-red-500 mb-6">Detail Pengaduan</p>
   <div>
     <button @click="closeModal">
 <img
@@ -229,9 +229,9 @@ alt="..."
     <div class="flex flex-col">
       <div class="mr-4">
         <input v-model="selectedComplaint._id" type="textarea" class="hidden text-md text-left border-none break-words whitespace-normal mb-5" disabled />
-      <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Judul Keluhan </p>
+      <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Judul Pengaduan </p>
         <p class="text-md mt-1 break-words whitespace-normal mb-5 "> {{ selectedComplaint.title }} </p>
-        <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Isi Keluhan </p>
+        <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Isi Pengaduan </p>
         <div class="h-64 overflow-auto">
                         <p type="textarea" class="text-md text-left border-none break-words whitespace-normal mb-5">{{selectedComplaint.body}}</p>
                         </div>      
@@ -239,7 +239,7 @@ alt="..."
       
     </div>
     <div class="flex flex-col">
-        <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Kategori Keluhan </p>
+        <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Kategori Pengaduan </p>
         <p class="text-md mt-1 mb-5 break-words whitespace-normal">{{ selectedComplaint.category }}</p>
         <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Tujuan </p>
         <p class="text-md mt-1 mb-5">{{ selectedComplaint.lecturer_type }}</p>
@@ -266,7 +266,7 @@ bg-red-500
 text-white
 hover:bg-red-300"
 @click="deletedComplaint(selectedComplaint._id)"> 
-Hapus Keluhan
+Hapus Pengaduan
 </button>
             </div>
 </footer>
@@ -418,7 +418,7 @@ async complaintSearch() {
           ).then(() => {
           const toast = document.createElement("div");
           toast.className = "toast toast-success";
-          toast.innerHTML = "Berhasil Menghapus Keluhan";
+          toast.innerHTML = "Berhasil Menghapus Pengaduan";
 
           const toastContainer = document.querySelector(".toast-container");
           toastContainer.appendChild(toast);

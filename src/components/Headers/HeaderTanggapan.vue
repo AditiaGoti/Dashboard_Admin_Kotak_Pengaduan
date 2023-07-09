@@ -22,7 +22,6 @@
               statIconColor="bg-red-500"
             />
           </div>
-         <div v-if="(lecturer === 1 || lecturer === 2 || lecturer === 3 || lecturer === 5 || lecturer === 6 || lecturer === 7 || lecturer === 8 || lecturer === 9)">
           <div class="w-full lg:w-6/12 xl:w-3/12 px-4 xl:text-sm">
             <card-stats
               v-if="feedbackList.totalData"
@@ -39,16 +38,15 @@
               statIconColor="bg-red-500"
             />
           </div>
-        </div>
         <!-- <div v-else > -->
-          <div class="w-full lg:w-6/12 xl:w-3/12 px-4 xl:text-sm">
+          <!-- <div class="w-full lg:w-6/12 xl:w-3/12 px-4 xl:text-sm">
             <card-stats
               statSubtitle="TOTAL TANGGAPAN"
               :statTitle="FeedbackSuperList.totalData"
               statIconName="far fa-chart-bar"
               statIconColor="bg-red-500"
             />
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -78,9 +76,9 @@ export default {
       feedbackModeratedList(){
         return this.feedback.data;
       },
-      FeedbackSuperList() {
-        return this.feedback.data;
-      },
+      // FeedbackSuperList() {
+      //   return this.feedback.data;
+      // },
       feedbackList(){
         return this.feedback.data;
       },
@@ -90,7 +88,6 @@ export default {
     },
   },
   mounted() {
-      this.getFeedbackSuper();
       this.feedbackModerated();
       this.getFeedback();
       this.profile();
@@ -98,12 +95,6 @@ export default {
 
     },
   methods:{
-     async getFeedbackSuperList(page, size) {
-        return this.feedback.getFeedbackSuperList(page, size);
-      },
-      async getFeedbackSuper() {
-        await this.getFeedbackSuperList(this.meta.page, this.meta.size);
-      },
       async getFeedbackList(page, size) {
         return this.feedback.getFeedbackList(page, size);
       },

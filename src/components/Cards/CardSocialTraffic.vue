@@ -36,7 +36,7 @@
             >Rata Rata Respon</th>
           </tr>
         </thead>
-      <tbody v-for="(lecturer, index) in lecturerList.sort((a, b) => b.avgComplaint - a.avgComplaint)" :key="lecturer._id">
+      <tbody v-for="(lecturer, index) in filteredLecturerList.sort((a, b) => b.avgComplaint - a.avgComplaint)" :key="lecturer._id">
           <tr v-if="index < 10">
             <th
               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left"
@@ -56,7 +56,7 @@
             <td
               class="border-t-0 p-4 px-6 text-center align-middle border-l-0 border-r-0 text-xs whitespace-nowrap"
             >
-            <p>{{ lecturer.avgComplaint !== 'null Minute' ? lecturer.avgComplaint : "0" }}</p>
+            <p>{{ lecturer.avgComplaint}}</p>
             </td>
           </tr>
         </tbody>
@@ -82,6 +82,11 @@ export default {
     isError() {
       return this.lecturer.error;
     },
+     filteredLecturerList() {
+      return this.lecturerList.filter(
+        (lecturer) => lecturer.avgComplaint !== '0 Menit' 
+      );
+     },
     lecturerList() {
       return this.lecturer.lists;
     },

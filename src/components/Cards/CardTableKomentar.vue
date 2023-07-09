@@ -236,6 +236,7 @@
                 <div class="grid grid-cols-2 mb-4" >
                     <div class="flex flex-col">
                       <div class="mr-4 h-64 overflow-auto">
+                        <input v-model="selectedComment._id" type="textarea" class="hidden text-md text-left border-none break-words whitespace-normal mb-5" disabled />
                         <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Isi Komentar </p>
                         <p class="text-md mt-2 break-words whitespace-normal">{{ selectedComment.message }}</p>
                       </div>
@@ -264,7 +265,7 @@
         bg-red-500
         text-white
         hover:bg-red-800"
-        @click="deletedComment(selectedComment.complaint_id)">
+        @click="deletedComment(selectedComment._id)">
               Hapus Komentar
             </button>
           </footer>
@@ -509,9 +510,9 @@ async commentSearch() {
             toastContainer.removeChild(toast);
           }, 2000);        });
 },
-async commentDeleted(complaint_id) {
+async commentDeleted(comment_id) {
       return this.comment.commentDeleted(
-        complaint_id
+        comment_id
        
       );
     },

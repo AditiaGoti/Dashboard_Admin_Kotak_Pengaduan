@@ -22,7 +22,9 @@ import LayoutKeluhan from "@/layouts/LayoutKeluhan.vue";
 import LayoutTanggapan from "@/layouts/LayoutTanggapan.vue";
 import LayoutKomentar from "@/layouts/LayoutKomentar.vue";
 import LayoutProfile from "@/layouts/LayoutProfile.vue";
-
+import LayoutSemuaTanggapan from "@/layouts/LayoutSemuaTanggapan.vue";
+import LayoutSemuaKeluhan from "@/layouts/LayoutSemuaKeluhan.vue";
+import LayoutSemuaKomentar from "@/layouts/LayoutSemuaKomentar.vue";
 
 // views for Admin layout
 
@@ -114,10 +116,6 @@ const routes = [
         component: TableKeluhan,
       },
       {
-        path: "/admin/semuakeluhan",
-        component: TableSemuaKeluhan,
-      },
-      {
         path: "/admin/moderasikeluhan",
         component: ModerasiKeluhan,
       },
@@ -129,6 +127,38 @@ const routes = [
   },
   {
     path: "/",
+    component: LayoutSemuaKeluhan,
+    children: [
+  {
+    path: "/admin/semuakeluhan",
+    component: TableSemuaKeluhan,
+  },
+]
+  },
+  {
+    path: "/",
+    component: LayoutSemuaKomentar,
+    children: [
+      {
+        path: "/admin/semuakomentar",
+        component: TableSemuaKomentar,
+      },
+      
+]
+  },
+  {
+    path: "/",
+    component: LayoutSemuaTanggapan,
+    children: [
+      {
+        path: "/admin/semuatanggapan",
+        component: TableSemuaTanggapan,
+      },
+      
+]
+  },
+  {
+    path: "/",
     component: LayoutTanggapan,
     children: [
      
@@ -136,10 +166,7 @@ const routes = [
         path: "/admin/tanggapan",
         component: TableTanggapan,
       },
-      {
-        path: "/admin/semuatanggapan",
-        component: TableSemuaTanggapan,
-      },
+      
       {
         path: "/admin/moderasitanggapan",
         component: ModerasiTanggapan,
@@ -184,11 +211,6 @@ const routes = [
         path: "/admin/komentar",
         component: TableKomentar,
       },
-      {
-        path: "/admin/semuakomentar",
-        component: TableSemuaKomentar,
-      },
-      
     ],
   },
   {

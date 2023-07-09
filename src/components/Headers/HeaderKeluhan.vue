@@ -23,7 +23,6 @@
               statIconColor="bg-red-500"
             />
           </div>
-          <div v-if="(lecturer === 1 || lecturer === 2 || lecturer === 3 || lecturer === 5 || lecturer === 6 || lecturer === 7 || lecturer === 8 || lecturer === 9)">
           <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
             <card-stats
             v-if="ComplaintList.totalData"
@@ -40,8 +39,7 @@
               statIconColor="bg-red-500"
             />
           </div>
-          </div>
-           <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
+           <!-- <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
             <card-stats
             v-if="ComplaintSuperList.totalData"
               statSubtitle="TOTAL KELUHAN"
@@ -56,7 +54,7 @@
               statIconName="far fa-chart-bar"
               statIconColor="bg-red-500"
             />
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -93,9 +91,9 @@ export default {
       ComplaintList() {
         return this.complaint.data;
       },
-       ComplaintSuperList() {
-        return this.complaint.data;
-      },
+      //  ComplaintSuperList() {
+      //   return this.complaint.data;
+      // },
       errorCause() {
         return this.complaint.errorCause;
       },
@@ -109,7 +107,7 @@ export default {
   },
   mounted() {
       this.getComplaintList();
-      this.getComplaintSuper();
+      // this.getComplaintSuper();
       console.log(this.complaint,"complaint"); // Add this line to log the complaint data
       this.profile();
       this.getComplaint();
@@ -130,12 +128,12 @@ export default {
       async getComplaintList() {
         await this.getComplaintListLecturer(this.meta.page, this.meta.size);
       },
-       async getComplaintListSuper(page, size) {
-        return this.complaint.getComplaintListSuper(page, size);
-      },
-      async getComplaintSuper() {
-        await this.getComplaintListSuper(this.meta.page, this.meta.size);
-      },
+      //  async getComplaintListSuper(page, size) {
+      //   return this.complaint.getComplaintListSuper(page, size);
+      // },
+      // async getComplaintSuper() {
+      //   await this.getComplaintListSuper(this.meta.page, this.meta.size);
+      // },
       async getComplaintbyStatus(page, size) {
         return this.complaint.getComplaintbyStatus(page, size);
       },

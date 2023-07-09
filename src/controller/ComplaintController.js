@@ -106,7 +106,7 @@ export class ComplaintControllers {
                 const response = await axiosInstance.get(`/super/v1/complaint`)
                       this.setLists(response.data.data.list);
                       this.setData(response.data.data);
-                      console.log(response.data.data,"list complaint")
+                      console.log(response.data.data,"list complaint super")
                       return response
                   }
                   async getComplaintListSuperBystatus() {

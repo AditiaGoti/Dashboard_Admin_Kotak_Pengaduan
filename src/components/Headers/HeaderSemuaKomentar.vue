@@ -6,37 +6,21 @@
         <!-- Card stats -->
         <div class="flex flex-wrap">
             <div  class="w-full lg:w-6/12 xl:w-4/12 px-4">
-              <card-stats
-              v-if="commentList.totalData"
-              statSubtitle="TOTAL KOMENTAR"
-              :statTitle="commentList.totalData"
-              statIconName="fas fa-users"
-              statIconColor="bg-orange-500"
-            />
-            <card-stats
-              v-else
-              statSubtitle="TOTAL KOMENTAR"
-              :statTitle="0"
-              statIconName="fas fa-users"
-              statIconColor="bg-orange-500"
-            />
-            </div>
-            <!-- <div v-else class="w-full lg:w-6/12 xl:w-4/12 px-4">
             <card-stats
               v-if="commentSuperList.totalData"
-              statSubtitle="TOTAL KOMENTAR"
+              statSubtitle="TOTAL SEMUA KOMENTAR"
               :statTitle="commentSuperList.totalData"
               statIconName="fas fa-users"
               statIconColor="bg-orange-500"
             />
             <card-stats
               v-else
-              statSubtitle="TOTAL KOMENTAR"
+              statSubtitle="TOTAL SEMUA KOMENTAR"
               :statTitle="0"
               statIconName="fas fa-users"
               statIconColor="bg-orange-500"
             />
-          </div> -->
+          </div>
         </div>
       </div>
     </div>
@@ -65,6 +49,9 @@ export default {
       commentList() {
         return this.comment.data;
       },
+      commentSuperList() {
+        return this.comment.data;
+      },
       errorCause() {
         return this.comment.errorCause;
       },
@@ -78,6 +65,7 @@ export default {
   mounted() {
       this.getComment();
       console.log(this.comment,"complaint"); // Add this line to log the complaint data
+      this.getCommentSuper();
       this.profile();
     },
    methods: {
@@ -86,6 +74,12 @@ export default {
       },
       async getComment() {
         await this.getCommentList(this.meta.page, this.meta.size);
+      },
+      async getSuperCommentList(page, size) {
+        return this.comment.getSuperCommentList(page, size);
+      },
+      async getCommentSuper() {
+        await this.getSuperCommentList(this.meta.page, this.meta.size);
       },
       async getProfile() {
       return this.Profile.getProfile(); },

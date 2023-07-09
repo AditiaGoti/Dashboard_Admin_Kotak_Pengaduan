@@ -5,7 +5,6 @@
       <div>
         <!-- Card stats -->
         <div class="flex flex-wrap">
-          <div v-if="(lecturer === 1 || lecturer === 2 || lecturer === 3 || lecturer === 5 || lecturer === 6 || lecturer === 7 || lecturer === 8 || lecturer === 9)">
           <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
             <card-stats
             v-if="ComplaintList.totalData"
@@ -22,8 +21,7 @@
               statIconColor="bg-red-500"
             />
           </div>
-          </div>
-           <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
+           <!-- <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
             <card-stats
             v-if="ComplaintSuperList.totalData"
               statSubtitle="TOTAL KELUHAN"
@@ -38,8 +36,7 @@
               statIconName="far fa-chart-bar"
               statIconColor="bg-red-500"
             />
-          </div>
-        <div v-if="(lecturer === 1 || lecturer === 2 || lecturer === 3 || lecturer === 5 || lecturer === 6 || lecturer === 7 || lecturer === 8 || lecturer === 9)">
+          </div> -->
           <div class="w-full lg:w-6/12 xl:w-3/12 px-4 xl:text-sm">
             <card-stats
             v-if="feedbackList.totalData"
@@ -56,9 +53,8 @@
               statIconColor="bg-red-500"
             />
           </div>
-        </div>
         <!-- <div v-else > -->
-          <div class="w-full lg:w-6/12 xl:w-3/12 px-4 xl:text-sm">
+          <!-- <div class="w-full lg:w-6/12 xl:w-3/12 px-4 xl:text-sm">
             <card-stats
             v-if="FeedbackSuperList.totalData"
               statSubtitle="TOTAL TANGGAPAN"
@@ -73,7 +69,7 @@
               statIconName="far fa-chart-bar"
               statIconColor="bg-red-500"
             />
-          </div>
+          </div> -->
         <!-- </div> -->
             <div class="w-full lg:w-6/12 xl:w-3/12 px-4" v-if="[1, 2, 3, 4,5,6,7,8,9,10].includes(profileList.lecturer_type)">
            <card-stats
@@ -137,18 +133,18 @@ export default {
       studentList() {
         return this.student.data;
       },
-      FeedbackSuperList() {
-        return this.feedback.data;
-      },
+      // FeedbackSuperList() {
+      //   return this.feedback.data;
+      // },
       feedbackList(){
         return this.feedback.data;
       },
       ComplaintList() {
         return this.complaint.data;
       },
-      ComplaintSuperList() {
-        return this.complaint.data;
-      },
+      // ComplaintSuperList() {
+      //   return this.complaint.data;
+      // },
       lecturerList() {
         return this.lecturer.data;
       },
@@ -158,10 +154,10 @@ export default {
   },
   mounted() {
       this.getStudent();
-      this.getFeedbackSuper();
+      // this.getFeedbackSuper();
       this.getFeedback();
       this.getComplaint();
-      this.getComplaintSuper();
+      // this.getComplaintSuper();
       this.getLecturer();
       this.profile();
       console.log(this.student,"student"); // Add this line to log the complaint data
@@ -174,12 +170,12 @@ export default {
       async getStudent() {
         await this.getStudentList(this.meta.page, this.meta.size);
       },
-  async getFeedbackSuperList(page, size) {
-        return this.feedback.getFeedbackSuperList(page, size);
-      },
-      async getFeedbackSuper() {
-        await this.getFeedbackSuperList(this.meta.page, this.meta.size);
-      },
+  // async getFeedbackSuperList(page, size) {
+  //       return this.feedback.getFeedbackSuperList(page, size);
+  //     },
+  //     async getFeedbackSuper() {
+  //       await this.getFeedbackSuperList(this.meta.page, this.meta.size);
+  //     },
       async getFeedbackList(page, size) {
         return this.feedback.getFeedbackList(page, size);
       },
@@ -192,12 +188,12 @@ export default {
       async getComplaint() {
         await this.getComplaintListLecturer(this.meta.page, this.meta.size);
       },
-      async getComplaintListSuper(page, size) {
-        return this.complaint.getComplaintListSuper(page, size);
-      },
-      async getComplaintSuper() {
-        await this.getComplaintListSuper(this.meta.page, this.meta.size);
-      },
+      // async getComplaintListSuper(page, size) {
+      //   return this.complaint.getComplaintListSuper(page, size);
+      // },
+      // async getComplaintSuper() {
+      //   await this.getComplaintListSuper(this.meta.page, this.meta.size);
+      // },
         async getLecturerList(page, size) {
   return this.lecturer.getLecturerList(page, size);
 },

@@ -37,7 +37,6 @@
   
   <script>
 import { StudentControllers } from "../../controller/StudentController";
-
 export default {
   name: "FileUploadForm",
   data() {

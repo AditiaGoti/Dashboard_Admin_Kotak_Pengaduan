@@ -119,10 +119,6 @@ const routes = [
         path: "/admin/moderasikeluhan",
         component: ModerasiKeluhan,
       },
-      {
-        path: "/admin/semuamoderasikeluhan",
-        component: SemuaModerasiKeluhan,
-      },
     ],
   },
   {
@@ -132,6 +128,10 @@ const routes = [
   {
     path: "/admin/semuakeluhan",
     component: TableSemuaKeluhan,
+  },
+  {
+    path: "/admin/semuamoderasikeluhan",
+    component: SemuaModerasiKeluhan,
   },
 ]
   },
@@ -154,7 +154,10 @@ const routes = [
         path: "/admin/semuatanggapan",
         component: TableSemuaTanggapan,
       },
-      
+      {
+        path: "/admin/moderasisemuatanggapan",
+        component: SemuaModerasiTanggapan,
+      },
 ]
   },
   {
@@ -170,10 +173,6 @@ const routes = [
       {
         path: "/admin/moderasitanggapan",
         component: ModerasiTanggapan,
-      },
-      {
-        path: "/admin/moderasisemuatanggapan",
-        component: SemuaModerasiTanggapan,
       },
     ],
   },

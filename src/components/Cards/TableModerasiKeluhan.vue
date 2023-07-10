@@ -146,12 +146,13 @@
                   <div class="flex flex-row justify-between">
                   <p class="text-xl font-bold	text-red-500 mb-6">Moderasi Pengaduan</p>
                   <div>
-                          <img
-                            :src="close"
-                            class="h-8 w-8 cursor-pointer"
-                            alt="..."
-                            @click="showModal = false"
-                          />
+                                           <button @click="closeModal">
+<img
+:src="close"
+class="h-8 w-8 cursor-pointer"
+alt="..."
+/>
+</button>
                   </div>
                   </div>  
                 <div class="grid grid-cols-2 mb-4" >
@@ -325,6 +326,10 @@ export default {
   console.log(this.selectedComplaint, "complain selected");
   this.showModal = true;
 },
+closeModal() {
+    this.showModal = false;
+    console.log('Modal telah ditutup');
+  },
       async getComplaint() {
         await this.getComplaintbyStatus(this.meta.page, this.meta.limit);
       },

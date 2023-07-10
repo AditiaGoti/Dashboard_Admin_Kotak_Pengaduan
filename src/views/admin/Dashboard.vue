@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="[1, 2, 3, 4,5,6,7,8,9,10].includes(profileList.lecturer_type)" class="items-center">
+    <div v-if="[1, 2, 3, 4,6,7,8,9,10].includes(profileList.lecturer_type)" class="items-center">
     <div class="flex flex-wrap mt-4">
       <div class="w-full xl:w-8/12 mb-12 xl:mb-0 px-4">
         <card-page-visits />

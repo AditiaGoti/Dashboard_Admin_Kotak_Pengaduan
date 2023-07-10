@@ -182,14 +182,15 @@
                 <div class="modal-backdrop"></div>
                 <div class="modal">
                   <div class="flex flex-row justify-between">
-                  <p class="text-xl font-bold	text-red-500 mb-6">Moderasi Keluhan</p>
+                  <p class="text-xl font-bold	text-red-500 mb-6">Moderasi Pengaduan</p>
                   <div>
-                          <img
-                            :src="close"
-                            class="h-8 w-8 cursor-pointer"
-                            alt="..."
-                            @click="showModal = false"
-                          />
+                          <button @click="closeModal">
+<img
+:src="close"
+class="h-8 w-8 cursor-pointer"
+alt="..."
+/>
+</button>
                   </div>
                   </div>  
                 <div class="grid grid-cols-2 mb-4" >
@@ -215,7 +216,7 @@
                         <p class="text-md mt-1"> {{ moment(selectedComplaint.createdAt).locale("id").format("DD-MM-YYYY") }} </p>
                         <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Foto </p>
                         <img :src="selectedComplaint.attachmentImage"
-                        class="h-8 w-8 "
+                        class="w-64"
 >
                       </div>
                 </div>
@@ -306,7 +307,6 @@
         this.getComplaint();
         this.profile();
         this.getPageModerateComplaint();
-        console.log(this.complaint,"complaint"); // Add this line to log the complaint data
   
       },
       created() {
@@ -316,8 +316,12 @@
     this.complaint.attachmentImage = ''; // Remove this line
   },
     methods: {
-        async getComplaintModerated(page, limit) {
-          return this.complaint.getComplaintModerated(page, limit);
+      closeModal() {
+    this.showModal = false;
+    console.log('Modal telah ditutup');
+  },
+        async getComplaintListSuperBystatus(page, limit) {
+          return this.complaint.getComplaintListSuperBystatus(page, limit);
         },
         toComplaintDetail(index) {
     this.selectedComplaint = this.ComplaintList[index];
@@ -325,7 +329,7 @@
   this.showModal = true;
 },
         async getComplaint() {
-          await this.getComplaintModerated(this.meta.page, this.meta.limit);
+          await this.getComplaintListSuperBystatus(this.meta.page, this.meta.limit);
         },
         async getComplaintModeratedSuperPage(page, limit) {
   return this.complaint.getComplaintModeratedSuperPage(page, limit);

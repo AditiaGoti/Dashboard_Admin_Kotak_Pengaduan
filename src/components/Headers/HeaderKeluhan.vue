@@ -5,7 +5,7 @@
       <div>
         <!-- Card stats -->
         <div class="flex flex-wrap">
-          <div v-if="[1,2,5, 11, 12, 13, 14,17,18].includes(profileList.lecturer_type)" class="w-full lg:w-6/12 xl:w-4/12 px-4">
+          <div v-if="[1,2,5].includes(profileList.lecturer_type)" class="w-full lg:w-6/12 xl:w-4/12 px-4">
             <card-stats
             v-if="ComplaintModeratedList.totalData"
               statSubtitle="JUMLAH MODERASI KELUHAN"
@@ -86,14 +86,11 @@ export default {
         return this.complaint.error;
       },
       ComplaintModeratedList() {
-        return this.complaint.data;
+        return this.complaint.datas;
       },
       ComplaintList() {
         return this.complaint.data;
       },
-      //  ComplaintSuperList() {
-      //   return this.complaint.data;
-      // },
       errorCause() {
         return this.complaint.errorCause;
       },
@@ -107,7 +104,6 @@ export default {
   },
   mounted() {
       this.getComplaintList();
-      // this.getComplaintSuper();
       console.log(this.complaint,"complaint"); // Add this line to log the complaint data
       this.profile();
       this.getComplaint();
@@ -128,12 +124,6 @@ export default {
       async getComplaintList() {
         await this.getComplaintListLecturer(this.meta.page, this.meta.size);
       },
-      //  async getComplaintListSuper(page, size) {
-      //   return this.complaint.getComplaintListSuper(page, size);
-      // },
-      // async getComplaintSuper() {
-      //   await this.getComplaintListSuper(this.meta.page, this.meta.size);
-      // },
       async getComplaintbyStatus(page, size) {
         return this.complaint.getComplaintbyStatus(page, size);
       },

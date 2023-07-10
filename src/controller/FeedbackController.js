@@ -6,6 +6,8 @@ export class FeedbackController {
     response = []
     lists =[]
     data = []
+    datas = []
+    datatotal =[]
     constructor(loading, error, errorCause) {
         this.loading = loading
         this.error = error
@@ -38,8 +40,8 @@ export class FeedbackController {
             setBearerToken(token);  
                   const response = await axiosInstance.get(`/super/v1/feedback`)
                   this.setLists(response.data.data.list);
-                  this.setData(response.data.data);
-                  console.log("feedback super",response.data.data.list)
+                  this.setDataTotal(response.data.data);
+                  console.log("feedback super",response.data.data)
                   return response   
               }
               async getFeedbackSuperPage(page,limit) {
@@ -79,7 +81,8 @@ export class FeedbackController {
                 setBearerToken(token);  
                       const response = await axiosInstance.get(`/lecturer/v1/feedback/moderated`)
                       this.setLists(response.data.data.list);
-                      this.setData(response.data.data);
+                      this.setData(response.data.data);                              
+                      this.setDatas(response.data.data);
                       console.log("feedback",response.data.data.list)
                       return response   
                   }
@@ -89,6 +92,7 @@ export class FeedbackController {
                 setBearerToken(token);  
                       const response = await axiosInstance.get(`/super/v1/feedback?status=Moderated`)
                       this.setLists(response.data.data.list);
+                      this.setDatas(response.data.data);
                       console.log("feedback super",response.data.data.list)
                       return response   
                   }
@@ -118,7 +122,8 @@ export class FeedbackController {
                             setBearerToken(token);  
                                   const response = await axiosInstance.get(`/lecturer/v1/feedback?status=Moderated`)
                                   this.setLists(response.data.data.list);
-                                  console.log("feedback super",response.data.data.list)
+                                  this.setDatas(response.data.data);
+                                  console.log("feedback super",response.data.data)
                                   return response  
                               }
           async feedbackPublish(feedback_id,message) {
@@ -163,6 +168,12 @@ export class FeedbackController {
             setData(data) {
               this.data = data
           }
+          setDatas(data) {
+            this.datas = data
+        }
+        setDataTotal(data){
+          this.datatotal = data
+      }
           setErrorCause(cause) {
             this.errorCause = cause
         }

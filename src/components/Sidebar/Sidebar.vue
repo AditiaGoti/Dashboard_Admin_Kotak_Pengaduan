@@ -109,7 +109,7 @@
         :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
 
       ></i>
-      Moderasi Keluhan
+      Moderasi Pengaduan
  <i
         v-if="isDropdownOpen"
         class="fas fa-chevron-up ml-2"
@@ -138,7 +138,7 @@
                   class="fas fa-table mr-2 text-sm"
                   :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
                 ></i>
-            Moderasi Keluhan
+            Moderasi Pengaduan
           </a>
         </router-link>
       </li>
@@ -161,7 +161,7 @@
                   class="fas fa-table mr-2 text-sm"
                   :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
                 ></i>
-            Moderasi Semua Keluhan
+            Moderasi Semua Pengaduan
           </a>
         </router-link>
       </li>
@@ -248,7 +248,7 @@
         :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
 
       ></i>
-      Keluhan
+      Pengaduan
  <i
         v-if="isDropdownKeluhanOpen"
         class="fas fa-chevron-up ml-2"
@@ -277,7 +277,7 @@
                   class="fas fa-table mr-2 text-sm"
                   :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
                 ></i>
-                Keluhan
+                Pengaduan
               </a>
             </router-link>
           </li>
@@ -301,7 +301,7 @@
                   class="fas fa-table mr-2 text-sm"
                   :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
                 ></i>
-               Semua Keluhan
+               Semua Pengaduan
               </a>
             </router-link>
           </li>
@@ -328,7 +328,7 @@
                   class="fas fa-table mr-2 text-sm"
                   :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
                 ></i>
-                Keluhan
+                Pengaduan
               </a>
             </router-link>
           </li>

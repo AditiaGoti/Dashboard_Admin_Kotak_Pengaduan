@@ -109,7 +109,7 @@
       class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
       id="lecturer-select"
     >
-      <option value="" disabled selected>Pilih Role Pengguna</option>
+      <option value="" disabled selected>Pilih Divisi</option>
       <option v-for="lecturer in lecturerList" :value="lecturer._id" :key="lecturer._id">{{ lecturer.name }}</option>
     </select>
   </div>
@@ -128,6 +128,7 @@
                 class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                 placeholder="Masukan Nomor Telpon Pengguna"
               />
+                            <p class="text-grey-100 py-2 ml-1 font-extralight text-xs">No.Telp: 62xxxxxxxxxxx </p>
             </div>
           </div>
         </div>
@@ -175,7 +176,7 @@ export default {
         page: 1,
         size: "",
       },
-  avatar:null,
+  avatar:'https://storage.googleapis.com/kotak-pengaduanjtik.appspot.com/student/default_avatar.png',
   file:"",
   name: "",
   nip: "",
@@ -241,6 +242,10 @@ created() {
   let formData = new FormData();
   this.file = event.target.files[0];
   
+  if (!this.file) {
+    this.setAvatar('https://storage.googleapis.com/kotak-pengaduanjtik.appspot.com/student/default_avatar.png');
+    return;
+  }
   if (this.file.size > maxFileSize) {
           this.errorMessage = "Gagal Menggunakan Gambar, Ukuran Gambar Maksimal 2Mb";
           const toast = document.createElement("div");

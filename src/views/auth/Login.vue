@@ -23,7 +23,7 @@
                 v-model="nip"
                   type="email"
                   class="border-0 px-3 py-3 placeholder-blueGray-300 text-red-600 bg-white rounded text-sm shadow focus:outline-emerald-900 focus:ring w-full ease-linear transition-all duration-150"
-                  placeholder="Nim"
+                  placeholder="NIP"
                     @focus="focus"
                 @keyup.enter="loginAction"
                 :class="{

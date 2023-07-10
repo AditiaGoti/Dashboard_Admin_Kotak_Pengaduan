@@ -5,22 +5,56 @@
       <div>
         <!-- Card stats -->
         <div class="flex flex-wrap">
-          <div class="w-full lg:w-6/12 xl:w-3/12 px-4 xl:text-sm">
+          <div v-if="[1,2,5].includes(profileList.lecturer_type)" class="w-full lg:w-6/12 xl:w-4/12 px-4">
             <card-stats
-              v-if="FeedbackSuperList.totalData"
-              statSubtitle="TOTAL SEMUA TANGGAPAN"
-              :statTitle="feedbackList.totalData"
+            v-if="feedbackModeratedList.totalData"
+              statSubtitle="JUMLAH SEMUA MODERASI TANGGAPAN"
+              :statTitle="feedbackModeratedList.totalData"
+              statPercentColor="text-emerald-500"
               statIconName="far fa-chart-bar"
               statIconColor="bg-red-500"
             />
             <card-stats
-              v-else
+            v-else
+              statSubtitle="JUMLAH SEMUA MODERASI TANGGAPAN"
+              :statTitle="0"
+              statPercentColor="text-emerald-500"
+              statIconName="far fa-chart-bar"
+              statIconColor="bg-red-500"
+            />
+          </div>
+          <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
+            <card-stats
+            v-if="FeedbackSuperList.totalData"
+              statSubtitle="TOTAL SEMUA TANGGAPAN"
+              :statTitle="FeedbackSuperList.totalData"
+              statIconName="far fa-chart-bar"
+              statIconColor="bg-red-500"
+            />
+             <card-stats
+             v-else
               statSubtitle="TOTAL TANGGAPAN"
               :statTitle="0"
               statIconName="far fa-chart-bar"
               statIconColor="bg-red-500"
             />
           </div>
+           <!-- <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
+            <card-stats
+            v-if="ComplaintSuperList.totalData"
+              statSubtitle="TOTAL KELUHAN"
+              :statTitle="ComplaintSuperList.totalData"
+              statIconName="far fa-chart-bar"
+              statIconColor="bg-red-500"
+            />
+            <card-stats
+            v-else
+              statSubtitle="TOTAL KELUHAN"
+              :statTitle="0"
+              statIconName="far fa-chart-bar"
+              statIconColor="bg-red-500"
+            />
+          </div> -->
         </div>
       </div>
     </div>
@@ -48,23 +82,18 @@ export default {
     }},
      computed:{
       feedbackModeratedList(){
-        return this.feedback.data;
+        return this.feedback.datas;
       },
       FeedbackSuperList() {
-        return this.feedback.data;
+        return this.feedback.datatotal;
       },
-      feedbackList(){
-        return this.feedback.data;
-      },
-     
-         profileList() {
+      profileList() {
       return this.Profile.list;
     },
   },
   mounted() {
       this.getFeedbackSuper();
       this.feedbackModerated();
-      this.getFeedback();
       this.profile();
       console.log(this.student,"student"); // Add this line to log the complaint data
 
@@ -76,17 +105,11 @@ export default {
       async getFeedbackSuper() {
         await this.getFeedbackSuperList(this.meta.page, this.meta.size);
       },
-      async getFeedbackList(page, size) {
-        return this.feedback.getFeedbackList(page, size);
-      },
-      async getFeedback() {
-        await this.getFeedbackList(this.meta.page, this.meta.size);
-      },
-      async getFeedbackModerated(page, size) {
-        return this.feedback.getFeedbackModerated(page, size);
+      async getAllFeedbackModerated(page, size) {
+        return this.feedback.getAllFeedbackModerated(page, size);
       },
       async feedbackModerated() {
-        await this.getFeedbackModerated(this.meta.page, this.meta.size);
+        await this.getAllFeedbackModerated(this.meta.page, this.meta.size);
       },
       async getProfile() {
       return this.Profile.getProfile();

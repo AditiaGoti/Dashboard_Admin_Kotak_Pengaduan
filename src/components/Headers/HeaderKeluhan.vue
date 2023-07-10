@@ -5,7 +5,7 @@
       <div>
         <!-- Card stats -->
         <div class="flex flex-wrap">
-          <div v-if="[5, 11, 12, 13, 14,17,18].includes(profileList.lecturer_type)" class="w-full lg:w-6/12 xl:w-4/12 px-4">
+          <div v-if="[1,2,5, 11, 12, 13, 14,17,18].includes(profileList.lecturer_type)" class="w-full lg:w-6/12 xl:w-4/12 px-4">
             <card-stats
             v-if="ComplaintModeratedList.totalData"
               statSubtitle="JUMLAH MODERASI KELUHAN"

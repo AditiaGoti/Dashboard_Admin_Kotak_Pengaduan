@@ -7,8 +7,10 @@
       </div>
       <div class="flex-auto px-4 lg:px-10 py-10 pt-0">
         <form>
+<div class="text-center flex justify-between">
           <label class="block mb-2 text-lg mt-5 ml-1 font-medium text-gray-900 dark:text-white" for="file_input">Upload file</label>
-          <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"  @change="handleFileChange" aria-describedby="file_input_help"  ref="file" accept=".xlsx" type="file">
+          <a class="mt-5 mr-6 cursor-pointer text-black hover:text-blue-600 hover:underline">Contoh Template File</a>
+        </div>          <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"  @change="handleFileChange" aria-describedby="file_input_help"  ref="file" accept=".xlsx" type="file">
           <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">.xlsx</p>
           <div class="flex justify-end">
             <div class="px-2">

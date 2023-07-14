@@ -242,7 +242,7 @@ alt="..."
         <p class="text-md mt-1">  {{ moment(selectedComplaint.createdAt).locale("id").format("DD-MM-YYYY") }}</p>
         <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Foto </p>
                         <img :src="selectedComplaint.attachmentImage"
-                        class="h-8 w-8 "
+                        class="w-64"
 >
       </div>
 </div>

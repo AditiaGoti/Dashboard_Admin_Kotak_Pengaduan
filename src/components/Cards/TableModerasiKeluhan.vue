@@ -139,7 +139,43 @@
       <td colspan="5" class="text-center py-4">Tidak ada data</td>
     </tr>
   </tbody>
-  <div class="modal-backdrop" v-if="showModal"></div>
+      </table>
+      <nav class="text-center py-3">
+  <ul class="list-style-none flex px-3 justify-between mb-3">
+    <li>
+      <a
+        class="relative block cursor-pointer rounded bg-blue-600 px-3 py-1.5 text-sm text-white font-bold transition-all duration-300 hover:bg-blue-400"
+        @click="goToPreviousPage"
+        :disabled="meta.page === 1"
+        :class="{ 'pointer-events-none': meta.page === 1 }"
+      >
+        Previous
+      </a>
+    </li>
+    <li class="px-3 mt-1 max-w overflow-x-scroll">
+      <a
+        class="rounded overflow-x-scroll px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-200  hover:text-black"
+        v-for="page in complaintData.totalPage"
+        :key="page"
+        :class="{ 'bg-blue-600 font-bold text-white': page === meta.page }"
+        @click="goToPage(page)"
+      >
+        {{ page }}
+      </a>
+    </li>
+    <li>
+      <a
+        class="relative block cursor-pointer rounded bg-blue-600 px-3 py-1.5 text-sm text-white font-bold transition-all duration-300 hover:bg-blue-400"
+        @click="goToNextPage"
+        :disabled="page === complaintData.totalPage"
+        :class="{ 'pointer-events-none': page === complaintData.totalPage }"
+      >
+        Next
+      </a>
+    </li>
+  </ul>
+</nav>
+<div class="modal-backdrop" v-if="showModal"></div>
   <div v-if="showModal">
                 <div class="modal-backdrop"></div>
                 <div class="modal">
@@ -177,9 +213,7 @@ alt="..."
                         <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Waktu Pembuatan </p>
                         <p class="text-md mt-1"> {{ moment(selectedComplaint.createdAt).locale("id").format("DD-MM-YYYY") }} </p>
                         <p class="align-middle text-xs uppercase whitespace-nowrap font-semibold text-left"> Foto </p>
-                        <img :src="selectedComplaint.attachmentImage"
-                        class="h-8 w-8 "
->
+                        <img :src="selectedComplaint.attachmentImage">
                       </div>
                 </div>
                 <hr class="mb-5 "/>
@@ -196,7 +230,7 @@ alt="..."
         text-white
         hover:bg-blue-300"
         @click="publishComplaint(selectedComplaint._id, selectedComplaint.title, selectedComplaint.body, selectedComplaint.attachmentImage)">
-              Publikasikan Keluhan
+              Publikasikan Pengaduan
             </button>
             <button class="w-fit
         py-3
@@ -209,47 +243,11 @@ alt="..."
         text-white
         hover:bg-red-300"
         @click="rejectComplaint(selectedComplaint._id)">
-              Tolak Keluhan
+              Tolak Pengaduan
             </button>
           </footer>
                 </div>
                 </div>
-      </table>
-      <nav class="text-center py-3">
-  <ul class="list-style-none flex px-3 justify-between mb-3">
-    <li>
-      <a
-        class="relative block cursor-pointer rounded bg-blue-600 px-3 py-1.5 text-sm text-white font-bold transition-all duration-300 hover:bg-blue-400"
-        @click="goToPreviousPage"
-        :disabled="meta.page === 1"
-        :class="{ 'pointer-events-none': meta.page === 1 }"
-      >
-        Previous
-      </a>
-    </li>
-    <li class="px-3 mt-1 max-w overflow-x-scroll">
-      <a
-        class="rounded overflow-x-scroll px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-200  hover:text-black"
-        v-for="page in complaintData.totalPage"
-        :key="page"
-        :class="{ 'bg-blue-600 font-bold text-white': page === meta.page }"
-        @click="goToPage(page)"
-      >
-        {{ page }}
-      </a>
-    </li>
-    <li>
-      <a
-        class="relative block cursor-pointer rounded bg-blue-600 px-3 py-1.5 text-sm text-white font-bold transition-all duration-300 hover:bg-blue-400"
-        @click="goToNextPage"
-        :disabled="page === complaintData.totalPage"
-        :class="{ 'pointer-events-none': page === complaintData.totalPage }"
-      >
-        Next
-      </a>
-    </li>
-  </ul>
-</nav>
       <div class="toast-container"></div>
     </div>
               </div>

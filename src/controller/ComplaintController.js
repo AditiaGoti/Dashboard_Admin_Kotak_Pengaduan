@@ -88,7 +88,7 @@ export class ComplaintControllers {
                   setBearerToken(token);  
                         const response = await axiosInstance.get(`/lecturer/v1/complaint?status=Moderated`);
                         this.setLists(response.data.data.list);
-                        this.setData(response.data.data);
+                        this.setDatas(response.data.data);
                         console.log(response.data.data.list,"list complaint Moderate")
                         console.log(response.data.data,"Data complaint Moderate")
                         return response
@@ -130,6 +130,7 @@ export class ComplaintControllers {
               this.datas = data
           }
               async complaintPublish(complaint_id,title,body,attachmentImage) {
+                try{
                 const token = localStorage.getItem('kpjtik_access_token')
                 setBearerToken(token);                  
                 const response = await axiosInstance.put(`/lecturer/v1/complaint/publish`,{
@@ -142,6 +143,10 @@ export class ComplaintControllers {
                       this.setLists(response.data.data.list);
                       console.log(response.data.data.list,"list publish")
                       return response
+              }catch(error){
+                this.setErrorCause(error.response.data.message)
+                throw error
+              }
                   }
                   async complaintRejected(complaint_id) {
                     const token = localStorage.getItem('kpjtik_access_token')

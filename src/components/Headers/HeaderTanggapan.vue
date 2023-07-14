@@ -5,23 +5,6 @@
       <div>
         <!-- Card stats -->
         <div class="flex flex-wrap">
-         
-          <div v-if="[1,2,5, 11, 12, 13, 14,17,18].includes(profileList.lecturer_type)" class="w-full lg:w-6/12 xl:w-4/12 px-4">
-            <card-stats
-            v-if="feedbackModeratedList.totalData"
-              statSubtitle="TOTAL MODERASI TANGGAPAN"
-              :statTitle="feedbackModeratedList.totalData"
-              statIconName="far fa-chart-bar"
-              statIconColor="bg-red-500"
-            />
-             <card-stats
-           v-else
-              statSubtitle="TOTAL MODERASI TANGGAPAN"
-              :statTitle="0"
-              statIconName="far fa-chart-bar"
-              statIconColor="bg-red-500"
-            />
-          </div>
           <div class="w-full lg:w-6/12 xl:w-3/12 px-4 xl:text-sm">
             <card-stats
               v-if="feedbackList.totalData"

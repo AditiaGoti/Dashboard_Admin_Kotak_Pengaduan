@@ -10,7 +10,7 @@
             class="font-semibold text-lg"
             :class="[color === 'light' ? 'text-blueGray-700' : 'text-white']"
           >
-            Tabel Admin
+            Tabel Dosen
           </h3>
         </div>
       <div v-if="[1, 2, 5].includes(profileList.lecturer_type)" class="items-center">
@@ -169,7 +169,7 @@
 <div class="modal-backdrop"></div>
 <div class="modal">
   <div class="flex flex-row justify-between">
-  <p class="text-xl font-bold	text-red-500 mb-6">Detail Admin</p>
+  <p class="text-xl font-bold	text-red-500 mb-6">Detail Dosen</p>
   <div>
     <button @click="closeModal">
 <img

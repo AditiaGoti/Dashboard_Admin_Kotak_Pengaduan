@@ -81,7 +81,7 @@
           </div>
             <div v-if="[1, 2, 3, 4,5,6,7,8,9,10].includes(profileList.lecturer_type)" class="w-full lg:w-6/12 xl:w-3/12 px-4" >
           <card-stats
-              statSubtitle="ADMIN"
+              statSubtitle="DOSEN"
               :statTitle="lecturerList.totalData"
               statIconName="fas fa-users"
               statIconColor="bg-pink-500"

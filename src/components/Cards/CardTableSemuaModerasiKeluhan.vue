@@ -377,6 +377,20 @@ async getPageModerateComplaint() {
             }, 2000);
           })
           .catch((error) => {
+            if(this.errorCause === "Pengaduan sudah diterbitkan") {
+               console.error(error);
+            this.errorMessage = "Pengaduan sudah diterbitkan";
+            const toast = document.createElement("div");
+            toast.className = "toast toast-error";
+            toast.innerHTML = this.errorMessage;
+            const toastContainer = document.querySelector(".toast-container");
+            toastContainer.appendChild(toast);
+  
+            setTimeout(() => {
+              toastContainer.removeChild(toast);
+            }, 1500);     
+            }
+            else {
             console.error(error);
             this.errorMessage = "Terjadi kesalahan saat Moderasi Keluhan ";
             const toast = document.createElement("div");
@@ -387,7 +401,7 @@ async getPageModerateComplaint() {
   
             setTimeout(() => {
               toastContainer.removeChild(toast);
-            }, 2000);        });
+            }, 1500);     }   });
   },
       async complaintPublish(complaint_id,title,body,attachmentImage) {
         return this.complaint.complaintPublish(

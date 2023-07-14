@@ -24,17 +24,8 @@
                   type="email"
                   class="border-0 px-3 py-3 placeholder-blueGray-300 text-red-600 bg-white rounded text-sm shadow focus:outline-emerald-900 focus:ring w-full ease-linear transition-all duration-150"
                   placeholder="NIP"
-                    @focus="focus"
-                @keyup.enter="loginAction"
-                :class="{
-                   'mb-4': !errorMsg.nim,
-                  'outline-blue-input': !errorMsg.nim,
-                  'outline-red-star': errorMsg.nim,
-                }"                />
+                  />
               </div>
-              <p v-if="errorMsg.nim" class="text-red-star mb-2">
-              {{ errorMsg.nim }}
-            </p>
               <div class="relative w-full mb-3">
                 <label
                   class="block uppercase text-white text-xs font-bold mb-2"
@@ -47,17 +38,8 @@
                   type="password"
                   class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                   placeholder="Password"
-                  @focus="focus"
-                @keyup.enter="loginAction"
-                :class="{
-                  'outline-blue-input': !errorMsg.password,
-                  'outline-red-star': errorMsg.password,
-                }"
                 />
               </div>
-              <p v-if="errorMsg.password" class="text-red-star mx-[30px] mb-4">
-            {{ errorMsg.password }}
-          </p>
               <div class="flex flex-row justify-between">
                 <div class="relative bottom-1">
             <a href="javascript:void(0)" class=" font-semibold text-white">

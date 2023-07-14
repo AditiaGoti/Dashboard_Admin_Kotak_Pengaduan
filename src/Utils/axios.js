@@ -2,7 +2,6 @@ import axios from 'axios';
 
 const axiosInstance = axios.create({
   baseURL:  'https://kpjtiklecturer-001.et.r.appspot.com',
-  timeout : 10000,
   headers: {
     'Content-Type': 'multipart/form-data',
   },

@@ -8,7 +8,7 @@
           <div v-if="[1,2,5].includes(profileList.lecturer_type)" class="w-full lg:w-6/12 xl:w-4/12 px-4">
             <card-stats
             v-if="ComplaintModeratedList.totalData"
-              statSubtitle="JUMLAH MODERASI KELUHAN"
+              statSubtitle="JUMLAH MODERASI PENGADUAN"
               :statTitle="ComplaintModeratedList.totalData"
               statPercentColor="text-emerald-500"
               statIconName="far fa-chart-bar"
@@ -16,7 +16,7 @@
             />
             <card-stats
             v-else
-              statSubtitle="JUMLAH MODERASI KELUHAN"
+              statSubtitle="JUMLAH MODERASI PENGADUAN"
               :statTitle="0"
               statPercentColor="text-emerald-500"
               statIconName="far fa-chart-bar"
@@ -26,14 +26,14 @@
           <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
             <card-stats
             v-if="ComplaintList.totalData"
-              statSubtitle="TOTAL KELUHAN"
+              statSubtitle="TOTAL PENGADUAN"
               :statTitle="ComplaintList.totalData"
               statIconName="far fa-chart-bar"
               statIconColor="bg-red-500"
             />
              <card-stats
              v-else
-              statSubtitle="TOTAL KELUHAN"
+              statSubtitle="TOTAL PENGADUAN"
               :statTitle="0"
               statIconName="far fa-chart-bar"
               statIconColor="bg-red-500"

@@ -2,12 +2,15 @@
     <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-100 border-0">
       <div class="rounded-t bg-white mb-0 px-6 py-6">
         <div class="text-center flex justify-between">
-          <h6 class="text-blueGray-700 text-xl font-bold">Import Data Admin Baru</h6>
+          <h6 class="text-blueGray-700 text-xl font-bold">Import Data Dosen Baru</h6>
         </div>
       </div>
       <div class="flex-auto px-4 lg:px-10 py-10 pt-0">
         <form>
+          <div class="text-center flex justify-between">
           <label class="block mb-2 text-lg mt-5 ml-1 font-medium text-gray-900 dark:text-white" for="file_input">Upload file</label>
+          <a class="mt-5 mr-6 cursor-pointer text-black hover:text-blue-600 hover:underline">Contoh Template File</a>
+        </div>
           <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"  @change="handleFileChange" aria-describedby="file_input_help"  ref="file" accept=".xlsx" type="file">
           <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">.xlsx</p>
           <div class="flex justify-end">
@@ -76,7 +79,7 @@ export default {
       .then(() => {
           const toast = document.createElement("div");
           toast.className = "toast toast-success";
-          toast.innerHTML = "Berhasil Import data Mahasiswa";
+          toast.innerHTML = "Berhasil Import data Dosen";
 
           const toastContainer = document.querySelector(".toast-container");
           toastContainer.appendChild(toast);
@@ -88,7 +91,7 @@ export default {
         })
         .catch((error) => {
           console.error(error);
-          this.errorMessage = "Terjadi kesalahan saat Import data mahasiswa";
+          this.errorMessage = "Terjadi kesalahan saat Import data Dosen";
           const toast = document.createElement("div");
           toast.className = "toast toast-error";
           toast.innerHTML = this.errorMessage;
